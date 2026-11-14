@@ -479,6 +479,623 @@ window.getTermVisualSvg = function(row) {
   }
 
   
+
+    // ==================== BATCH 1: ILLUSTRATION & RENDERING (33 TERMS) ====================
+    if (t === 'bump map') {
+      return wrapSvg('BUMP MAP (GREYSCALE SURFACE RELIEF)', `
+        <rect x="24" y="34" width="68" height="68" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+        <circle cx="44" cy="54" r="9" fill="#ffffff"/>
+        <circle cx="72" cy="54" r="9" fill="#64748b"/>
+        <circle cx="44" cy="82" r="9" fill="#94a3b8"/>
+        <circle cx="72" cy="82" r="9" fill="#ffffff"/>
+        <text x="58" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">2D Greyscale Map</text>
+        <text x="58" y="127" text-anchor="middle" font-size="7" fill="#64748b">White = High · Black = Low</text>
+        <path d="M104,68 H134 M127,62 L134,68 L127,74" fill="none" stroke="#dc2626" stroke-width="2"/>
+        <defs>
+          <radialGradient id="bmSph" cx="38%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#93c5fd"/>
+            <stop offset="55%" stop-color="#2563eb"/>
+            <stop offset="100%" stop-color="#1e3a8a"/>
+          </radialGradient>
+        </defs>
+        <circle cx="186" cy="68" r="36" fill="url(#bmSph)" stroke="#1e3a8a" stroke-width="1.5"/>
+        <circle cx="173" cy="56" r="7" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1"/>
+        <path d="M168,53 A6,6 0 0,1 177,52" fill="none" stroke="#eff6ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M169,61 A6,6 0 0,0 179,59" fill="none" stroke="#172554" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="198" cy="58" r="6.5" fill="#2563eb" stroke="#1e40af" stroke-width="1"/>
+        <path d="M194,55 A5,5 0 0,1 202,54" fill="none" stroke="#dbeafe" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M195,62 A5,5 0 0,0 203,60" fill="none" stroke="#172554" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="175" cy="80" r="6.5" fill="#2563eb" stroke="#1e40af" stroke-width="1"/>
+        <path d="M171,77 A5,5 0 0,1 179,76" fill="none" stroke="#dbeafe" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M172,84 A5,5 0 0,0 180,82" fill="none" stroke="#172554" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="198" cy="80" r="7" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1"/>
+        <path d="M193,77 A6,6 0 0,1 202,76" fill="none" stroke="#eff6ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M194,85 A6,6 0 0,0 204,83" fill="none" stroke="#172554" stroke-width="2" stroke-linecap="round"/>
+        <text x="186" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#155eef">Faked Surface Relief</text>
+        <text x="186" y="127" text-anchor="middle" font-size="7" fill="#64748b">Smooth Outer Silhouette</text>
+        <text x="130" y="152" text-anchor="middle" font-size="8" font-weight="800" fill="#b42318">Simulates 3D Texture Without Changing Geometry</text>
+      `);
+    }
+    if (t === 'decal') {
+      return wrapSvg('DECAL (2D GRAPHIC APPLIED TO 3D SURFACE)', `
+        <rect x="26" y="46" width="66" height="50" rx="5" fill="#ffffff" stroke="#155eef" stroke-width="1.8"/>
+        <polygon points="59,54 64,65 76,65 66,72 70,83 59,76 48,83 52,72 42,65 54,65" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>
+        <text x="59" y="92" text-anchor="middle" font-size="6.8" font-weight="800" fill="#155eef">BRAND LOGO</text>
+        <text x="59" y="114" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">2D Graphic Decal</text>
+        <text x="59" y="125" text-anchor="middle" font-size="7" fill="#64748b">PNG with Alpha</text>
+        <path d="M102,72 H134 M127,66 L134,72 L127,78" fill="none" stroke="#155eef" stroke-width="2"/>
+        <path d="M152,44 C152,37 216,37 216,44 V100 C216,108 152,108 152,100 Z" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
+        <ellipse cx="184" cy="44" rx="32" ry="7" fill="#e2e8f0" stroke="#334155" stroke-width="1.6"/>
+        <path d="M160,60 C172,64 196,64 208,60 V88 C196,92 172,92 160,88 Z" fill="#ffffff" stroke="#155eef" stroke-width="1.5"/>
+        <polygon points="184,65 187,72 195,72 189,77 191,84 184,79 177,84 179,77 173,72 181,72" fill="#f59e0b"/>
+        <text x="184" y="119" text-anchor="middle" font-size="8" font-weight="700" fill="#155eef">Mapped onto 3D Model</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Places a Label or Logo Directly on a 3D Surface</text>
+      `);
+    }
+    if (t === 'electronic sketching') {
+      return wrapSvg('ELECTRONIC SKETCHING (TABLET & STYLUS)', `
+        <rect x="34" y="32" width="168" height="104" rx="10" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
+        <rect x="44" y="40" width="148" height="88" rx="5" fill="#ffffff"/>
+        <path d="M58,96 Q85,62 132,68 Q162,72 172,94 Z" fill="#dbeafe" stroke="#155eef" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="82" cy="96" r="11" fill="#e2e8f0" stroke="#1e293b" stroke-width="2"/>
+        <circle cx="148" cy="96" r="11" fill="#e2e8f0" stroke="#1e293b" stroke-width="2"/>
+        <path d="M52,56 H98 M52,64 H80" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <g transform="translate(142, 68) rotate(-35)">
+          <polygon points="0,0 10,-4 68,-4 68,4 10,4" fill="#334155" stroke="#0f172a" stroke-width="1.2"/>
+          <polygon points="0,0 10,-4 10,4" fill="#155eef"/>
+        </g>
+        <circle cx="142" cy="68" r="3.5" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="130" y="154" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Freehand Concept Sketching with Stylus on Graphics Tablet</text>
+      `);
+    }
+    if (t === 'freehand sketch') {
+      return wrapSvg('FREEHAND SKETCH (UNRULED CONCEPT DRAWING)', `
+        <path d="M44,54 L126,34 L208,52 L126,74 Z" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <path d="M44,54 V110 L126,134 L208,108 V52" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="126" y1="74" x2="126" y2="134" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <path d="M52,56 L126,38 L200,54 L126,72 Z" fill="#eff6ff" stroke="#1e293b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M52,56 L52,106 L126,128 L126,72 Z" fill="#dbeafe" stroke="#1e293b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M126,72 L126,128 L200,104 L200,54 Z" fill="#bfdbfe" stroke="#1e293b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="58" y="38" font-size="7.5" font-weight="700" fill="#64748b">Light Construction Crate</text>
+        <text x="130" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Quick Unruled Hand Drawing Exploring 3D Form &amp; Proportion</text>
+      `);
+    }
+    if (t === 'fresnel effect') {
+      return wrapSvg('FRESNEL EFFECT (GLANCING ANGLE REFLECTANCE)', `
+        <rect x="20" y="92" width="220" height="40" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="1.8"/>
+        <text x="130" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Glass / Water Surface</text>
+        <circle cx="56" cy="40" r="8" fill="#1e293b"/>
+        <text x="56" y="29" text-anchor="middle" font-size="7.2" font-weight="700" fill="#1e293b">Steep Angle (90°)</text>
+        <line x1="56" y1="48" x2="72" y2="92" stroke="#155eef" stroke-width="2"/>
+        <line x1="72" y1="92" x2="82" y2="128" stroke="#155eef" stroke-width="2" stroke-dasharray="3,2"/>
+        <line x1="72" y1="92" x2="84" y2="62" stroke="#93c5fd" stroke-width="1.2"/>
+        <text x="72" y="146" text-anchor="middle" font-size="7.2" font-weight="700" fill="#0e6245">Low Reflection (See-Through)</text>
+        <circle cx="132" cy="72" r="8" fill="#1e293b"/>
+        <text x="132" y="60" text-anchor="middle" font-size="7.2" font-weight="700" fill="#dc2626">Glancing Angle (~10°)</text>
+        <line x1="140" y1="74" x2="184" y2="92" stroke="#dc2626" stroke-width="2.4"/>
+        <path d="M184,92 L230,74 M222,72 L230,74 L225,80" fill="none" stroke="#dc2626" stroke-width="2.6"/>
+        <text x="190" y="146" text-anchor="middle" font-size="7.2" font-weight="800" fill="#dc2626">Strong Mirror Reflection</text>
+      `);
+    }
+    if (t === 'rendering marker' || t === 'coloured pencil') {
+      const isMarker = t === 'rendering marker';
+      return wrapSvg(isMarker ? 'RENDERING MARKER (LAYERED TONAL SHADING)' : 'COLOURED PENCIL (GRADED TONAL BLENDING)', `
+        <!-- Layered tonal swatches from 1 pass to 3 passes -->
+        <rect x="26" y="44" width="44" height="58" rx="4" fill="#dbeafe" stroke="#93c5fd"/>
+        <text x="48" y="76" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">1 Layer</text>
+        <text x="48" y="88" text-anchor="middle" font-size="7" fill="#334155">Light Tint</text>
+        <rect x="78" y="44" width="44" height="58" rx="4" fill="#60a5fa" stroke="#2563eb"/>
+        <text x="100" y="76" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">2 Layers</text>
+        <text x="100" y="88" text-anchor="middle" font-size="7" fill="#eff6ff">Mid-Tone</text>
+        <rect x="130" y="44" width="44" height="58" rx="4" fill="#1d4ed8" stroke="#1e3a8a"/>
+        <text x="152" y="76" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">3 Layers</text>
+        <text x="152" y="88" text-anchor="middle" font-size="7" fill="#dbeafe">Deep Core</text>
+        <!-- Chisel-tip marker / pencil icon -->
+        <g transform="translate(202, 78) rotate(-30)">
+          <rect x="-8" y="-32" width="16" height="52" rx="3" fill="#1e293b" stroke="#0f172a"/>
+          <polygon points="-8,-32 8,-32 5,-44 -5,-44" fill="#2563eb"/>
+        </g>
+        <text x="130" y="124" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">${isMarker ? 'Chisel &amp; Brush Nib Alcohol Marker' : 'Layered Wax/Pigment Core'}</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Smooth Overlapping Strokes Build Depth &amp; Form</text>
+      `);
+    }
+    if (t === 'illustration' || t === 'visual enhancement') {
+      return wrapSvg(t === 'visual enhancement' ? 'VISUAL ENHANCEMENT (OUTLINE, TONE & SHADOW)' : 'PRODUCT ILLUSTRATION & PRESENTATION', `
+        <rect x="44" y="48" width="150" height="72" rx="8" fill="#fde68a" opacity="0.55"/>
+        <ellipse cx="134" cy="118" rx="54" ry="9" fill="#94a3b8" opacity="0.55"/>
+        <rect x="76" y="42" width="108" height="68" rx="12" fill="#2563eb" stroke="#0f172a" stroke-width="3"/>
+        <rect x="84" y="48" width="92" height="22" rx="6" fill="#93c5fd" opacity="0.65"/>
+        <line x1="90" y1="54" x2="146" y2="54" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="164" cy="88" r="10" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+        <text x="48" y="40" font-size="7.5" font-weight="800" fill="#0f172a">Thick Outer Profile</text>
+        <text x="190" y="58" font-size="7.5" font-weight="800" fill="#155eef">White Highlight</text>
+        <text x="192" y="118" font-size="7.5" font-weight="700" fill="#475569">Cast Shadow</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Tonal Shading, Line Weight &amp; Highlights Communicate 3D Form</text>
+      `);
+    }
+    if (/image based lighting|ibl|hdri/.test(t)) {
+      return wrapSvg('IMAGE BASED LIGHTING (360° HDRI ENVIRONMENT DOME)', `
+        <path d="M36,116 A94,76 0 0,1 224,116 Z" fill="#dbeafe" stroke="#155eef" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="82" cy="64" r="10" fill="#facc15" stroke="#eab308" stroke-width="1.5"/>
+        <path d="M156,62 Q166,54 176,62 Q186,62 186,70 H148 Q148,62 156,62 Z" fill="#ffffff" stroke="#93c5fd"/>
+        <path d="M92,72 L114,90 M162,72 L144,90 M130,48 V80" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="3,2"/>
+        <circle cx="130" cy="102" r="18" fill="#1e40af" stroke="#0f172a" stroke-width="1.6"/>
+        <circle cx="123" cy="95" r="5" fill="#fef08a"/>
+        <ellipse cx="136" cy="96" rx="5" ry="2.5" fill="#ffffff" opacity="0.8"/>
+        <line x1="24" y1="116" x2="236" y2="116" stroke="#334155" stroke-width="2"/>
+        <text x="130" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">360° Photographic HDRI Dome</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Real-World Panorama Illuminates &amp; Reflects on 3D Scene</text>
+      `);
+    }
+    if (t === 'line quality') {
+      return wrapSvg('LINE QUALITY (CRISP & CONSISTENT VS POOR)', `
+        <rect x="22" y="36" width="102" height="86" rx="6" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.6"/>
+        <text x="73" y="52" text-anchor="middle" font-size="8" font-weight="800" fill="#15803d">GOOD LINE QUALITY</text>
+        <line x1="36" y1="74" x2="110" y2="74" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/>
+        <rect x="44" y="84" width="58" height="24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linejoin="miter"/>
+        <rect x="136" y="36" width="102" height="86" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+        <text x="187" y="52" text-anchor="middle" font-size="8" font-weight="800" fill="#b91c1c">POOR (FEATHERED)</text>
+        <path d="M148,73 L172,75 M166,72 L196,76 M190,73 L222,74" stroke="#475569" stroke-width="1.4"/>
+        <path d="M156,84 L216,86 M158,108 L218,106 M157,82 L155,112 M213,82 L215,112" stroke="#475569" stroke-width="1.3"/>
+        <text x="130" y="146" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Crisp, Single-Stroke, Uniform Darkness &amp; Sharp Corners</text>
+      `);
+    }
+    if (t === 'line weight') {
+      return wrapSvg('LINE WEIGHT (HIERARCHY OF LINE THICKNESS)', `
+        <line x1="24" y1="50" x2="134" y2="50" stroke="#0f172a" stroke-width="3.8"/>
+        <text x="142" y="53" font-size="7.8" font-weight="800" fill="#0f172a">Thick: Visible Outline (0.7 mm)</text>
+        <line x1="24" y1="84" x2="134" y2="84" stroke="#155eef" stroke-width="1.8"/>
+        <text x="142" y="87" font-size="7.8" font-weight="700" fill="#155eef">Medium: Hidden / Fold (0.35 mm)</text>
+        <line x1="24" y1="118" x2="134" y2="118" stroke="#64748b" stroke-width="0.9"/>
+        <text x="142" y="121" font-size="7.8" font-weight="700" fill="#475569">Thin: Construction / Dim (0.18 mm)</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Contrast in Line Thickness Separates Outlines from Guides</text>
+      `);
+    }
+    if (t === 'material' || t === 'surface finish') {
+      return wrapSvg(t === 'surface finish' ? 'SURFACE FINISH (MATT, GLOSS & BRUSHED)' : '3D CAD RENDER MATERIALS & SHADERS', `
+        <circle cx="52" cy="76" r="24" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5"/>
+        <circle cx="44" cy="68" r="8" fill="#60a5fa" opacity="0.5"/>
+        <text x="52" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Matt Plastic</text>
+        <text x="52" y="126" text-anchor="middle" font-size="7" fill="#64748b">Soft Diffuse</text>
+        <circle cx="130" cy="76" r="24" fill="#64748b" stroke="#0f172a" stroke-width="1.5"/>
+        <path d="M107,76 Q130,68 153,76 A24,24 0 0,1 107,76 Z" fill="#1e293b"/>
+        <circle cx="121" cy="65" r="5" fill="#ffffff"/>
+        <text x="130" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#155eef">Gloss / Chrome</text>
+        <text x="130" y="126" text-anchor="middle" font-size="7" fill="#64748b">Sharp Specular</text>
+        <circle cx="208" cy="76" r="24" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
+        <path d="M190,64 Q208,70 226,64 M186,76 Q208,82 230,76 M190,88 Q208,94 226,88" fill="none" stroke="#78350f" stroke-width="1.4"/>
+        <text x="208" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Timber / Textured</text>
+        <text x="208" y="126" text-anchor="middle" font-size="7" fill="#64748b">Grain Pattern</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Shaders Simulate Physical Substance &amp; Exterior Finish</text>
+      `);
+    }
+    if (t === 'texture' || t === 'texture map') {
+      return wrapSvg(t === 'texture map' ? 'TEXTURE MAP (2D IMAGE WRAPPED ON 3D MODEL)' : 'SURFACE TEXTURE (WOOD, METAL & BRICK GRAIN)', `
+        <!-- 2D Bitmap Texture Image -->
+        <rect x="24" y="42" width="66" height="66" rx="4" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
+        <path d="M24,56 Q57,48 90,56 M24,74 Q57,66 90,74 M24,92 Q57,84 90,92" fill="none" stroke="#b45309" stroke-width="1.6"/>
+        <text x="57" y="122" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">2D Texture Image</text>
+        <path d="M98,75 H132 M125,69 L132,75 L125,81" fill="none" stroke="#155eef" stroke-width="2"/>
+        <text x="115" y="63" text-anchor="middle" font-size="7" font-weight="700" fill="#155eef">UV Wrap</text>
+        <!-- 3D Cube with wood grain texture mapped onto faces -->
+        <polygon points="184,38 228,58 184,78 140,58" fill="#fef3c7" stroke="#92400e" stroke-width="1.6"/>
+        <polygon points="140,58 184,78 184,118 140,98" fill="#fde68a" stroke="#92400e" stroke-width="1.6"/>
+        <polygon points="184,78 228,58 228,98 184,118" fill="#f59e0b" stroke="#92400e" stroke-width="1.6"/>
+        <path d="M144,72 Q162,78 180,86 M144,86 Q162,92 180,100" fill="none" stroke="#92400e" stroke-width="1.2"/>
+        <text x="184" y="132" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Textured 3D Model</text>
+        <text x="130" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Applies Realistic Surface Grain or Pattern to 3D Geometry</text>
+      `);
+    }
+    if (t === 'texture tessellation') {
+      return wrapSvg('TEXTURE TESSELLATION (SEAMLESS TILING)', `
+        <g stroke="#155eef" stroke-width="1.4" fill="#dbeafe">
+          <rect x="46" y="36" width="42" height="42"/><rect x="88" y="36" width="42" height="42"/><rect x="130" y="36" width="42" height="42"/><rect x="172" y="36" width="42" height="42"/>
+          <rect x="46" y="78" width="42" height="42"/><rect x="88" y="78" width="42" height="42"/><rect x="130" y="78" width="42" height="42"/><rect x="172" y="78" width="42" height="42"/>
+        </g>
+        <path d="M46,57 Q67,45 88,57 Q109,45 130,57 Q151,45 172,57 Q193,45 214,57" fill="none" stroke="#b45309" stroke-width="2"/>
+        <path d="M46,99 Q67,87 88,99 Q109,87 130,99 Q151,87 172,99 Q193,87 214,99" fill="none" stroke="#b45309" stroke-width="2"/>
+        <text x="130" y="136" text-anchor="middle" font-size="8" font-weight="700" fill="#155eef">4 × 2 Seamless Repeating Bitmap Grid</text>
+        <text x="130" y="150" text-anchor="middle" font-size="7.5" fill="#334155">Opposite Edges Match So No Visible Join Appears</text>
+      `);
+    }
+    if (t === 'mediated reality' || t === 'context') {
+      return wrapSvg(t === 'context' ? 'PRODUCT IN CONTEXT (REAL-WORLD SETTING)' : 'MEDIATED REALITY (3D CAD COMPOSITED IN PHOTO)', `
+        <rect x="24" y="32" width="212" height="92" rx="6" fill="#e0f2fe" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="24,92 84,56 142,92" fill="#cbd5e1"/>
+        <polygon points="110,92 172,48 236,92" fill="#94a3b8"/>
+        <rect x="24" y="92" width="212" height="32" fill="#e2e8f0"/>
+        <line x1="130" y1="92" x2="60" y2="124" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="130" y1="92" x2="200" y2="124" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <ellipse cx="144" cy="112" rx="34" ry="6" fill="#475569" opacity="0.5"/>
+        <rect x="104" y="72" width="62" height="36" rx="6" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.8"/>
+        <rect x="112" y="77" width="26" height="14" rx="2" fill="#bae6fd"/>
+        <text x="68" y="46" font-size="7.5" font-weight="700" fill="#0369a1">Real Background Photo</text>
+        <text x="135" y="67" text-anchor="middle" font-size="7.5" font-weight="800" fill="#b91c1c">3D CAD Model</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Matched Perspective, Horizon, Lighting &amp; Cast Shadow</text>
+      `);
+    }
+    if (t === 'scene') {
+      return wrapSvg('3D RENDERING SCENE (CAMERA, LIGHTS, MODEL & FLOOR)', `
+        <rect x="22" y="30" width="216" height="104" rx="6" fill="#0f172a"/>
+        <!-- Ground plane grid -->
+        <polygon points="40,124 220,124 190,94 70,94" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+        <text x="195" y="118" font-size="6.8" fill="#94a3b8">Ground Plane</text>
+        <!-- 3D Model in centre -->
+        <rect x="112" y="70" width="36" height="36" rx="4" fill="#3b82f6" stroke="#93c5fd" stroke-width="1.5"/>
+        <text x="130" y="91" text-anchor="middle" font-size="7" font-weight="800" fill="#ffffff">3D Model</text>
+        <!-- Camera icon on left -->
+        <rect x="34" y="76" width="22" height="16" rx="2" fill="#e2e8f0"/>
+        <polygon points="56,80 66,74 66,90 56,84" fill="#93c5fd"/>
+        <line x1="66" y1="82" x2="108" y2="86" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="46" y="103" text-anchor="middle" font-size="7" font-weight="700" fill="#38bdf8">Camera</text>
+        <!-- Light source top-right -->
+        <circle cx="192" cy="48" r="7" fill="#facc15"/>
+        <line x1="184" y1="53" x2="150" y2="72" stroke="#facc15" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="192" y="66" text-anchor="middle" font-size="7" font-weight="700" fill="#facc15">Light Rig</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Complete 3D Environment: Model, Floor, Camera &amp; Lights</text>
+      `);
+    }
+    if (t === 'lighting rig' || t === 'light source') {
+      return wrapSvg(t === 'light source' ? '3D LIGHT SOURCES (DIRECTIONAL, SPOT & POINT)' : '3D LIGHTING RIG (KEY, FILL & BACK LIGHTS)', `
+        <rect x="22" y="30" width="216" height="106" rx="8" fill="#0f172a"/>
+        <circle cx="130" cy="82" r="18" fill="#3b82f6" stroke="#93c5fd" stroke-width="1.5"/>
+        <text x="130" y="85" text-anchor="middle" font-size="7" font-weight="800" fill="#ffffff">3D Model</text>
+        <circle cx="54" cy="114" r="8" fill="#facc15"/>
+        <line x1="62" y1="110" x2="112" y2="90" stroke="#facc15" stroke-width="2.2" stroke-dasharray="4,2"/>
+        <text x="54" y="129" text-anchor="middle" font-size="7.5" font-weight="800" fill="#facc15">Key Light (100%)</text>
+        <circle cx="204" cy="114" r="7" fill="#93c5fd"/>
+        <line x1="196" y1="110" x2="148" y2="90" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <text x="204" y="129" text-anchor="middle" font-size="7.5" font-weight="700" fill="#93c5fd">Fill Light (50%)</text>
+        <circle cx="156" cy="42" r="6" fill="#f8fafc"/>
+        <line x1="152" y1="48" x2="138" y2="65" stroke="#f8fafc" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="194" y="45" text-anchor="middle" font-size="7.5" font-weight="700" fill="#f8fafc">Back/Rim Light</text>
+        <text x="130" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Planned Multi-Light Setup Revealing 3D Form &amp; Depth</text>
+      `);
+    }
+    if (t === 'volumetric lighting') {
+      return wrapSvg('VOLUMETRIC LIGHTING (ATMOSPHERIC LIGHT BEAMS)', `
+        <rect x="22" y="30" width="216" height="104" rx="8" fill="#0f172a"/>
+        <defs>
+          <linearGradient id="godRay" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fef08a" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#fef08a" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+        <polygon points="48,40 70,36 218,126 118,126" fill="url(#godRay)"/>
+        <circle cx="56" cy="40" r="7" fill="#fde047"/>
+        <circle cx="110" cy="74" r="1.8" fill="#fef9c3"/><circle cx="136" cy="86" r="1.5" fill="#fef9c3"/>
+        <circle cx="124" cy="98" r="2" fill="#fef9c3"/><circle cx="158" cy="104" r="1.6" fill="#fef9c3"/>
+        <rect x="148" y="88" width="28" height="38" rx="3" fill="#1e40af" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Visible Light Beams Scattering Through Fog or Dust</text>
+      `);
+    }
+    if (t === 'shade' || t === 'tone' || t === 'tint' || t === 'value') {
+      const isShade = t === 'shade';
+      const isTone = t === 'tone';
+      if (isShade || isTone) {
+        return wrapSvg(isShade ? 'SHADE (PURE HUE + BLACK)' : 'TONE (PURE HUE + GREY)', `
+          <rect x="24" y="50" width="56" height="50" rx="6" fill="#2563eb" stroke="#1e3a8a" stroke-width="1.6"/>
+          <text x="52" y="79" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ffffff">Pure Hue</text>
+          <text x="94" y="81" text-anchor="middle" font-size="16" font-weight="900" fill="#1e293b">+</text>
+          <rect x="108" y="50" width="56" height="50" rx="6" fill="${isShade ? '#0f172a' : '#94a3b8'}" stroke="#334155" stroke-width="1.6"/>
+          <text x="136" y="79" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ffffff">${isShade ? 'Pure Black' : 'Neutral Grey'}</text>
+          <text x="178" y="81" text-anchor="middle" font-size="16" font-weight="900" fill="#1e293b">=</text>
+          <rect x="192" y="50" width="46" height="50" rx="6" fill="${isShade ? '#172554' : '#475569'}" stroke="#0f172a" stroke-width="1.6"/>
+          <text x="215" y="79" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ffffff">${isShade ? 'Shade' : 'Tone'}</text>
+          <text x="130" y="136" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">${isShade ? 'Adding Black Darkens Value (Creates a Shade)' : 'Adding Grey Desaturates / Mutes Colour (Creates a Tone)'}</text>
+        `);
+      }
+      return wrapSvg('COLOUR VALUE SCALE (TINT → PURE HUE → SHADE)', `
+        <rect x="26" y="52" width="40" height="52" fill="#dbeafe" stroke="#cbd5e1"/>
+        <rect x="66" y="52" width="40" height="52" fill="#60a5fa" stroke="#cbd5e1"/>
+        <rect x="106" y="52" width="44" height="52" fill="#2563eb" stroke="#0f172a" stroke-width="1.8"/>
+        <rect x="150" y="52" width="40" height="52" fill="#1e40af" stroke="#cbd5e1"/>
+        <rect x="190" y="52" width="44" height="52" fill="#172554" stroke="#cbd5e1"/>
+        <text x="46" y="118" text-anchor="middle" font-size="7.5" font-weight="700" fill="#155eef">High Value (Tint)</text>
+        <text x="128" y="118" text-anchor="middle" font-size="7.5" font-weight="800" fill="#0f172a">Pure Hue</text>
+        <text x="212" y="118" text-anchor="middle" font-size="7.5" font-weight="700" fill="#172554">Low Value (Shade)</text>
+        <text x="130" y="146" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Relative Lightness (+White) or Darkness (+Black) of a Colour</text>
+      `);
+    }
+    if (t === 'reflection') {
+      return wrapSvg('SPECULAR & MIRROR REFLECTION IN 3D RENDER', `
+        <polygon points="24,104 236,104 220,136 40,136" fill="#dbeafe" stroke="#155eef" stroke-width="1.5"/>
+        <rect x="74" y="52" width="40" height="52" rx="4" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.6"/>
+        <rect x="74" y="104" width="40" height="26" rx="2" fill="#f87171" opacity="0.45"/>
+        <circle cx="148" cy="44" r="8" fill="#facc15" stroke="#ca8a04"/>
+        <line x1="154" y1="50" x2="184" y2="104" stroke="#f59e0b" stroke-width="2"/>
+        <path d="M184,104 L218,54 M211,56 L218,54 L217,62" fill="none" stroke="#f59e0b" stroke-width="2"/>
+        <text x="184" y="96" text-anchor="middle" font-size="7.5" font-weight="700" fill="#b45309">θi = θr</text>
+        <text x="130" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Glossy &amp; Metallic Surfaces Mirror Surrounding Objects &amp; Lights</text>
+      `);
+    }
+    if (t === '3d rendering' || t === 'render' || t === 'rendering') {
+      return wrapSvg('3D RENDERING (WIREFRAME → PHOTOREALISTIC SHADED)', `
+        <!-- Left: 3D Wireframe Mesh -->
+        <circle cx="68" cy="78" r="30" fill="none" stroke="#155eef" stroke-width="1.6"/>
+        <ellipse cx="68" cy="78" rx="30" ry="11" fill="none" stroke="#155eef" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <ellipse cx="68" cy="78" rx="11" ry="30" fill="none" stroke="#155eef" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="68" y="124" text-anchor="middle" font-size="8" font-weight="700" fill="#155eef">3D CAD Geometry</text>
+        <path d="M108,78 H138 M131,72 L138,78 L131,84" fill="none" stroke="#dc2626" stroke-width="2"/>
+        <!-- Right: Shaded Photorealistic Render with Highlight & Cast Shadow -->
+        <ellipse cx="196" cy="108" rx="28" ry="7" fill="#64748b" opacity="0.55"/>
+        <circle cx="184" cy="78" r="30" fill="#1e40af" stroke="#172554" stroke-width="1.5"/>
+        <circle cx="178" cy="72" r="22" fill="#2563eb"/>
+        <circle cx="172" cy="66" r="12" fill="#60a5fa"/>
+        <circle cx="168" cy="62" r="5" fill="#ffffff"/>
+        <text x="184" y="124" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Shaded Render</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Applies Materials, Lighting, Highlights &amp; Shadows to 3D Form</text>
+      `);
+    }
+    if (t === 'cast shadow' || t === 'shadow' || t === 'highlight' || t === 'light') {
+      return wrapSvg('LIGHT, SPECULAR HIGHLIGHT & CAST SHADOW', `
+        <rect x="22" y="28" width="216" height="114" rx="8" fill="#0f172a"/>
+        <circle cx="52" cy="48" r="10" fill="#facc15"/>
+        <line x1="64" y1="54" x2="112" y2="74" stroke="#facc15" stroke-width="1.6" stroke-dasharray="4,2"/>
+        <text x="52" y="70" text-anchor="middle" font-size="7.5" font-weight="700" fill="#facc15">Light Source</text>
+        <ellipse cx="174" cy="122" rx="40" ry="9" fill="#020617"/>
+        <circle cx="136" cy="88" r="30" fill="#1e40af"/>
+        <circle cx="128" cy="80" r="18" fill="#3b82f6"/>
+        <circle cx="122" cy="74" r="6" fill="#ffffff"/>
+        <line x1="122" y1="68" x2="122" y2="44" stroke="#ffffff" stroke-width="1.2"/>
+        <text x="122" y="40" text-anchor="middle" font-size="7.5" font-weight="800" fill="#ffffff">Highlight (Brightest Spot)</text>
+        <text x="196" y="108" text-anchor="middle" font-size="7.5" font-weight="700" fill="#94a3b8">Cast Shadow on Floor</text>
+        <text x="130" y="156" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Blocked Light Projects a Cast Shadow Opposite the Light Source</text>
+      `);
+    }
+
+    // ==================== BATCH 1B: PICTORIALS, TANGENCY & INTERSECTIONS (28 TERMS) ====================
+    if (t === 'external tangency' || t === 'internal tangency' || t === 'tangency' || t === 'arc of contact') {
+      const isInt = t === 'internal tangency';
+      const isExt = t === 'external tangency';
+      return wrapSvg(isInt ? 'INTERNAL TANGENCY (CENTRES = R1 − R2)' : (isExt ? 'EXTERNAL TANGENCY (CENTRES = R1 + R2)' : 'TANGENCY & EXACT POINT OF CONTACT (90° NORMAL)'), `
+        <!-- Left: External Tangency (R1 + R2) -->
+        <circle cx="54" cy="78" r="24" fill="#dbeafe" stroke="#155eef" stroke-width="1.8"/>
+        <circle cx="94" cy="78" r="16" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+        <line x1="54" y1="78" x2="94" y2="78" stroke="#64748b" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <circle cx="78" cy="78" r="3.5" fill="#dc2626"/>
+        <text x="74" y="118" text-anchor="middle" font-size="7.8" font-weight="800" fill="#155eef">External: d = R₁ + R₂</text>
+        <!-- Right: Internal Tangency (R1 - R2) -->
+        <circle cx="182" cy="78" r="30" fill="#fef3c7" stroke="#b45309" stroke-width="1.8"/>
+        <circle cx="194" cy="78" r="18" fill="#ffffff" stroke="#dc2626" stroke-width="1.8"/>
+        <circle cx="212" cy="78" r="3.5" fill="#dc2626"/>
+        <text x="184" y="118" text-anchor="middle" font-size="7.8" font-weight="800" fill="#b45309">Internal: d = R₁ − R₂</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Red Dot = Exact Tangency Point Along Line of Centres</text>
+      `);
+    }
+    if (t === 'isometric ellipse') {
+      return wrapSvg('ISOMETRIC ELLIPSE (CIRCLE IN 30° ISOMETRIC CRATE)', `
+        <!-- 30° Isometric diamond crate -->
+        <polygon points="130,38 204,80 130,122 56,80" fill="#f1f5f9" stroke="#64748b" stroke-width="1.4" stroke-dasharray="4,2"/>
+        <line x1="56" y1="80" x2="204" y2="80" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="130" y1="38" x2="130" y2="122" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Isometric Ellipse touching midpoints of crate -->
+        <ellipse cx="130" cy="80" rx="52" ry="30" fill="#dbeafe" fill-opacity="0.7" stroke="#155eef" stroke-width="2.2"/>
+        <circle cx="93" cy="59" r="3" fill="#dc2626"/><circle cx="167" cy="59" r="3" fill="#dc2626"/>
+        <circle cx="93" cy="101" r="3" fill="#dc2626"/><circle cx="167" cy="101" r="3" fill="#dc2626"/>
+        <text x="130" y="83" text-anchor="middle" font-size="7.5" font-weight="800" fill="#1e3a8a">Major &amp; Minor Axes</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">A Circle Projected on a 30° Isometric Plane Forms an Ellipse</text>
+      `);
+    }
+    if (t === 'frustum' || t === 'right prism') {
+      const isFrustum = t === 'frustum';
+      return wrapSvg(isFrustum ? 'FRUSTUM OF A CONE / PYRAMID (TRUNCATED)' : 'RIGHT PRISM (90° PERPENDICULAR SIDES)', isFrustum ? `
+        <!-- Removed apex ghosted -->
+        <polygon points="130,28 102,68 158,68" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <!-- Cutting plane -->
+        <line x1="78" y1="68" x2="182" y2="68" stroke="#dc2626" stroke-width="1.8" stroke-dasharray="6,2"/>
+        <!-- Frustum solid body -->
+        <polygon points="102,68 158,68 184,122 76,122" fill="#dbeafe" stroke="#155eef" stroke-width="2"/>
+        <ellipse cx="130" cy="68" rx="28" ry="7" fill="#93c5fd" stroke="#155eef" stroke-width="1.6"/>
+        <ellipse cx="130" cy="122" rx="54" ry="11" fill="#bfdbfe" stroke="#155eef" stroke-width="1.8"/>
+        <text x="206" y="65" font-size="7.5" font-weight="800" fill="#dc2626">Cut Plane</text>
+        <text x="130" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Base Portion Remaining After Top Apex Is Cut Off</text>
+      ` : `
+        <polygon points="86,44 130,30 174,44 130,58" fill="#dbeafe" stroke="#155eef" stroke-width="1.8"/>
+        <polygon points="86,44 130,58 130,124 86,110" fill="#93c5fd" stroke="#155eef" stroke-width="1.8"/>
+        <polygon points="130,58 174,44 174,110 130,124" fill="#60a5fa" stroke="#155eef" stroke-width="1.8"/>
+        <polyline points="174,100 164,103 164,113" fill="none" stroke="#dc2626" stroke-width="1.6"/>
+        <text x="204" y="92" font-size="8" font-weight="800" fill="#dc2626">90° Vertical</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Side Faces Perpendicular (90°) to Identical Top &amp; Base Ends</text>
+      `);
+    }
+    if (t === 'one-point perspective' || t === 'single-point perspective' || t === 'two-point perspective' || t === 'measured perspective' || t === 'perspective' || t === 'perspective drawing' || t === 'perspective convergence' || t === 'vanishing point' || t === 'horizon line' || t === 'station point') {
+      const is2pt = t === 'two-point perspective' || t === 'measured perspective';
+      return wrapSvg(is2pt ? 'TWO-POINT PERSPECTIVE (VP1 & VP2 ON HORIZON)' : 'PERSPECTIVE: HORIZON LINE, VANISHING POINT & CONVERGENCE', is2pt ? `
+        <line x1="18" y1="58" x2="242" y2="58" stroke="#155eef" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <circle cx="28" cy="58" r="4" fill="#dc2626"/><text x="28" y="49" text-anchor="middle" font-size="7.5" font-weight="800" fill="#dc2626">VP1</text>
+        <circle cx="232" cy="58" r="4" fill="#dc2626"/><text x="232" y="49" text-anchor="middle" font-size="7.5" font-weight="800" fill="#dc2626">VP2</text>
+        <!-- Projection rays to VP1 and VP2 -->
+        <line x1="28" y1="58" x2="130" y2="72" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="28" y1="58" x2="130" y2="128" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="232" y1="58" x2="130" y2="72" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="232" y1="58" x2="130" y2="128" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- 2-Point Perspective Block -->
+        <polygon points="82,66 130,72 130,128 82,110" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.8"/>
+        <polygon points="130,72 178,66 178,110 130,128" fill="#60a5fa" stroke="#1e3a8a" stroke-width="1.8"/>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Leading Vertical Edge Closest; Receding Edges Converge to VP1 &amp; VP2</text>
+      ` : `
+        <line x1="20" y1="46" x2="240" y2="46" stroke="#155eef" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <circle cx="130" cy="46" r="4.5" fill="#dc2626"/>
+        <text x="64" y="39" font-size="7.5" font-weight="800" fill="#155eef">Horizon Line (Eye Level)</text>
+        <text x="184" y="39" font-size="7.5" font-weight="800" fill="#dc2626">Vanishing Point (VP)</text>
+        <line x1="86" y1="84" x2="130" y2="46" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <line x1="174" y1="84" x2="130" y2="46" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <polygon points="104,68 156,68 174,84 86,84" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/>
+        <rect x="86" y="84" width="88" height="46" fill="#dbeafe" stroke="#1e3a8a" stroke-width="2"/>
+        <text x="130" y="110" text-anchor="middle" font-size="8" font-weight="800" fill="#1e3a8a">True Front Face</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Parallel Receding Depth Lines Converge Toward Vanishing Point</text>
+      `);
+    }
+
+    // ==================== BATCH 1C: DESIGN ELEMENTS, PRINCIPLES & COLOUR (41 TERMS) ====================
+    if (t === 'rule of thirds') {
+      return wrapSvg('RULE OF THIRDS (3 × 3 COMPOSITIONAL GRID)', `
+        <rect x="38" y="34" width="184" height="96" fill="#dbeafe" stroke="#1e293b" stroke-width="1.8"/>
+        <!-- 3x3 Thirds Grid Lines -->
+        <line x1="99" y1="34" x2="99" y2="130" stroke="#155eef" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="161" y1="34" x2="161" y2="130" stroke="#155eef" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="38" y1="66" x2="222" y2="66" stroke="#155eef" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="38" y1="98" x2="222" y2="98" stroke="#155eef" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <!-- 4 Power Points (Intersections) -->
+        <circle cx="99" cy="66" r="6" fill="#dc2626"/>
+        <circle cx="161" cy="66" r="4" fill="#f59e0b"/>
+        <circle cx="99" cy="98" r="4" fill="#f59e0b"/>
+        <circle cx="161" cy="98" r="4" fill="#f59e0b"/>
+        <text x="99" y="54" text-anchor="middle" font-size="7.5" font-weight="800" fill="#dc2626">Focal Point</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Key Subject Placed on Grid Intersections (Not Dead-Centre)</text>
+      `);
+    }
+    if (t === 'depth of field (dof)' || t === 'depth of field') {
+      return wrapSvg('DEPTH OF FIELD (SHARP FOCAL PLANE VS BLUR)', `
+        <!-- Blurred foreground -->
+        <circle cx="52" cy="92" r="18" fill="#94a3b8" opacity="0.45"/>
+        <text x="52" y="126" text-anchor="middle" font-size="7.5" fill="#64748b">Foreground (Blurred)</text>
+        <!-- Sharp In-Focus Subject -->
+        <rect x="106" y="48" width="48" height="64" rx="6" fill="#2563eb" stroke="#0f172a" stroke-width="2.4"/>
+        <text x="130" y="84" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ffffff">SHARP</text>
+        <text x="130" y="126" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">In-Focus Plane</text>
+        <!-- Blurred background -->
+        <circle cx="208" cy="72" r="22" fill="#94a3b8" opacity="0.35"/>
+        <text x="208" y="126" text-anchor="middle" font-size="7.5" fill="#64748b">Background (Bokeh)</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Camera Aperture Blurs Background to Isolate Hero Product</text>
+      `);
+    }
+    if (t === 'balance') {
+      return wrapSvg('VISUAL BALANCE: SYMMETRICAL VS ASYMMETRICAL', `
+        <!-- Left: Symmetrical (Formal) -->
+        <rect x="24" y="36" width="96" height="88" rx="4" fill="#ffffff" stroke="#155eef" stroke-width="1.6"/>
+        <line x1="72" y1="36" x2="72" y2="124" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <rect x="34" y="48" width="32" height="28" fill="#93c5fd"/><rect x="78" y="48" width="32" height="28" fill="#93c5fd"/>
+        <rect x="34" y="84" width="32" height="28" fill="#dbeafe"/><rect x="78" y="84" width="32" height="28" fill="#dbeafe"/>
+        <text x="72" y="138" text-anchor="middle" font-size="7.8" font-weight="800" fill="#155eef">Symmetrical (Formal)</text>
+        <!-- Right: Asymmetrical (Dynamic) -->
+        <rect x="140" y="36" width="96" height="88" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+        <rect x="148" y="46" width="46" height="68" fill="#86efac"/>
+        <rect x="200" y="46" width="28" height="20" fill="#dcfce7"/><rect x="200" y="70" width="28" height="20" fill="#dcfce7"/><rect x="200" y="94" width="28" height="20" fill="#dcfce7"/>
+        <text x="188" y="138" text-anchor="middle" font-size="7.8" font-weight="800" fill="#16a34a">Asymmetrical (Dynamic)</text>
+        <text x="130" y="156" text-anchor="middle" font-size="7.8" font-weight="700" fill="#334155">Equal Mirroring vs Counterbalanced Visual Weight</text>
+      `);
+    }
+    if (t === 'contrast' || t === 'colour contrast') {
+      return wrapSvg('CONTRAST (OPPOSITES IN SIZE, COLOUR & TONE)', `
+        <rect x="28" y="42" width="94" height="76" rx="6" fill="#0f172a"/>
+        <text x="75" y="76" text-anchor="middle" font-size="11" font-weight="900" fill="#facc15">HIGH</text>
+        <text x="75" y="94" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Dark vs Bright</text>
+        <rect x="138" y="42" width="94" height="76" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <circle cx="170" cy="80" r="22" fill="#dc2626"/>
+        <circle cx="208" cy="80" r="7" fill="#155eef"/>
+        <text x="130" y="144" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Pairing Opposites (Large/Small, Dark/Light) Creates Impact</text>
+      `);
+    }
+    if (t === 'dominance' || t === 'emphasis' || t === 'weight') {
+      return wrapSvg('DOMINANCE & EMPHASIS (VISUAL FOCAL WEIGHT)', `
+        <rect x="34" y="36" width="192" height="90" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <!-- Dominant hero element -->
+        <rect x="46" y="46" width="76" height="70" rx="6" fill="#dc2626"/>
+        <text x="84" y="84" text-anchor="middle" font-size="9" font-weight="900" fill="#ffffff">DOMINANT</text>
+        <!-- Subordinate elements -->
+        <rect x="134" y="46" width="80" height="18" rx="3" fill="#e2e8f0"/>
+        <rect x="134" y="72" width="80" height="18" rx="3" fill="#e2e8f0"/>
+        <rect x="134" y="98" width="80" height="18" rx="3" fill="#e2e8f0"/>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Scale, Boldness &amp; Colour Give One Element Primary Focus</text>
+      `);
+    }
+    if (t === 'proximity') {
+      return wrapSvg('PROXIMITY (GROUPING RELATED ITEMS TOGETHER)', `
+        <!-- Group 1: Image + Caption grouped tightly -->
+        <rect x="30" y="42" width="86" height="52" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="1.6"/>
+        <rect x="30" y="98" width="86" height="14" rx="2" fill="#155eef"/>
+        <text x="73" y="108" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Related Caption A</text>
+        <!-- Clear separation gap -->
+        <text x="130" y="80" text-anchor="middle" font-size="7.5" font-weight="800" fill="#dc2626">Gap</text>
+        <!-- Group 2: Image + Caption grouped tightly -->
+        <rect x="144" y="42" width="86" height="52" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+        <rect x="144" y="98" width="86" height="14" rx="2" fill="#16a34a"/>
+        <text x="187" y="108" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Related Caption B</text>
+        <text x="130" y="144" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Placing Related Elements Close Together Shows Connection</text>
+      `);
+    }
+    if (t === 'rhythm' || t === 'consistency' || t === 'unity') {
+      return wrapSvg(t === 'rhythm' ? 'VISUAL RHYTHM (REPEATED PATTERN & PACE)' : 'UNITY & CONSISTENCY ACROSS LAYOUT', `
+        <rect x="26" y="44" width="44" height="68" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="1.6"/>
+        <rect x="32" y="50" width="32" height="10" fill="#155eef"/>
+        <rect x="80" y="44" width="44" height="68" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="1.6"/>
+        <rect x="86" y="50" width="32" height="10" fill="#155eef"/>
+        <rect x="134" y="44" width="44" height="68" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="1.6"/>
+        <rect x="140" y="50" width="32" height="10" fill="#155eef"/>
+        <rect x="188" y="44" width="44" height="68" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="1.6"/>
+        <rect x="194" y="50" width="32" height="10" fill="#155eef"/>
+        <text x="130" y="144" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Consistent Repetition of Style, Colour &amp; Spacing Unifies Design</text>
+      `);
+    }
+    if (t === 'white space') {
+      return wrapSvg('WHITE SPACE (NEGATIVE BREATHING ROOM)', `
+        <rect x="34" y="34" width="192" height="94" rx="6" fill="#ffffff" stroke="#155eef" stroke-width="1.8"/>
+        <rect x="92" y="64" width="76" height="34" rx="4" fill="#0f172a"/>
+        <text x="130" y="85" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ffffff">FOCAL CONTENT</text>
+        <text x="64" y="52" font-size="7.5" font-weight="700" fill="#155eef">Generous Open</text>
+        <text x="194" y="118" text-anchor="middle" font-size="7.5" font-weight="700" fill="#155eef">White Space</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Uncluttered Empty Area Prevents Crowding &amp; Improves Legibility</text>
+      `);
+    }
+    if (t === 'depth' || t === 'drop shadow') {
+      return wrapSvg(t === 'drop shadow' ? 'DROP SHADOW (OFFSET SHADOW BEHIND ELEMENT)' : 'VISUAL DEPTH (OVERLAP, SCALE & DROP SHADOW)', `
+        <!-- Back card -->
+        <rect x="44" y="38" width="76" height="54" rx="5" fill="#cbd5e1" stroke="#64748b"/>
+        <!-- Drop shadow under front card -->
+        <rect x="104" y="62" width="96" height="64" rx="6" fill="#64748b" opacity="0.45"/>
+        <!-- Front overlapping card -->
+        <rect x="96" y="54" width="96" height="64" rx="6" fill="#2563eb" stroke="#0f172a" stroke-width="2"/>
+        <text x="144" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#ffffff">FOREGROUND</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Overlapping Layers &amp; Drop Shadows Create 3D Depth on a Flat Page</text>
+      `);
+    }
+    if (t === 'saturation') {
+      return wrapSvg('COLOUR SATURATION (VIVID PURE HUE → MUTED GREY)', `
+        <rect x="26" y="52" width="52" height="54" rx="4" fill="#ef4444"/>
+        <rect x="78" y="52" width="52" height="54" rx="4" fill="#dc6868"/>
+        <rect x="130" y="52" width="52" height="54" rx="4" fill="#b47b7b"/>
+        <rect x="182" y="52" width="52" height="54" rx="4" fill="#8e8e8e"/>
+        <text x="52" y="122" text-anchor="middle" font-size="7.5" font-weight="800" fill="#dc2626">100% Vivid</text>
+        <text x="208" y="122" text-anchor="middle" font-size="7.5" font-weight="700" fill="#475569">0% Desaturated</text>
+        <text x="130" y="146" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Intensity or Purity of a Colour From Vivid Chromatic to Muted</text>
+      `);
+    }
+    if (t === 'complementary colours' || t === 'analogous colours' || t === 'colour harmony' || t === 'colour theory' || t === 'colour' || t === 'hue') {
+      const isComp = t === 'complementary colours';
+      const isAna = t === 'analogous colours';
+      return wrapSvg(isComp ? 'COMPLEMENTARY COLOURS (OPPOSITE ON WHEEL)' : (isAna ? 'ANALOGOUS COLOURS (ADJACENT HARMONY)' : 'COLOUR WHEEL: HUE, HARMONY & CONTRAST'), `
+        <!-- 6-Segment Colour Wheel -->
+        <circle cx="84" cy="82" r="38" fill="none" stroke="#cbd5e1" stroke-width="14"/>
+        <circle cx="84" cy="44" r="9" fill="#ef4444" stroke="#0f172a" stroke-width="1.5"/>
+        <circle cx="117" cy="63" r="9" fill="#f97316"/>
+        <circle cx="117" cy="101" r="9" fill="#eab308"/>
+        <circle cx="84" cy="120" r="9" fill="#22c55e" stroke="#0f172a" stroke-width="1.5"/>
+        <circle cx="51" cy="101" r="9" fill="#3b82f6"/>
+        <circle cx="51" cy="63" r="9" fill="#a855f7"/>
+        <!-- Opposite arrow for complementary & adjacent arc for analogous -->
+        <line x1="84" y1="53" x2="84" y2="111" stroke="#dc2626" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="182" y="64" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Complementary = Opposite</text>
+        <text x="182" y="76" text-anchor="middle" font-size="7.2" fill="#334155">High Contrast (e.g. Red / Green)</text>
+        <text x="182" y="100" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Analogous = Side-by-Side</text>
+        <text x="182" y="112" text-anchor="middle" font-size="7.2" fill="#334155">Harmonious (Red / Orange / Yellow)</text>
+        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e293b">Colour Wheel Relationships Control Harmony &amp; Visual Impact</text>
+      `);
+    }
+    if (t === 'design element' || t === 'line' || t === 'shape' || t === 'mass') {
+      return wrapSvg('DESIGN ELEMENTS (LINE, SHAPE, MASS, TEXTURE & COLOUR)', `
+        <line x1="28" y1="62" x2="72" y2="62" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="28" y1="82" x2="72" y2="82" stroke="#155eef" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="50" y="116" text-anchor="middle" font-size="8" font-weight="800" fill="#0f172a">1. Line</text>
+        <polygon points="130,48 154,94 106,94" fill="#dbeafe" stroke="#155eef" stroke-width="2"/>
+        <text x="130" y="116" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">2. 2D Shape</text>
+        <rect x="180" y="48" width="48" height="48" rx="4" fill="#1e293b"/>
+        <text x="204" y="116" text-anchor="middle" font-size="8" font-weight="800" fill="#1e293b">3. Solid Mass</text>
+        <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Fundamental Visual Building Blocks Used to Construct Layouts</text>
+      `);
+    }
+
     // Stage 2: Commercial & Visual Media Graphics
     if (/pre-press colour management|icc profile|colour conversion/.test(t)) {
       return wrapSvg('PRE-PRESS ICC COLOUR MANAGEMENT', `
@@ -1300,7 +1917,7 @@ window.getTermVisualSvg = function(row) {
     }
 
     // 5. 3D Constraint (Mate / Align / Centre-axis in 3D assembly)
-    if (/3d constraint|mate|centre-axis|assembly|sub-assembly|component|library component|stock component/.test(t)) {
+    if (/3d constraint|\bmate\b|centre-axis|\bassembly\b|sub-assembly|component|library component|stock component/.test(t)) {
       return wrapSvg('3D ASSEMBLY CONSTRAINTS', `
         <rect x="34" y="52" width="66" height="68" rx="4" fill="#dbeafe" stroke="#155eef" stroke-width="2"/>
         <rect x="160" y="52" width="66" height="68" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
