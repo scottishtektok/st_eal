@@ -182,6 +182,21 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 .footer a{color:var(--blue)}
 .hidden{display:none!important}
 
+/* Flashcard Modal & Responsive Overrides */
+.fc-back-grid { display: grid; grid-template-columns: 1.15fr 240px; gap: 16px; width: 100%; align-items: stretch; text-align: left; }
+.fc-modal-header { padding: 16px 22px; background: linear-gradient(90deg, #155eef 0%, #1d4ed8 100%); color: #fff; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.fc-header-text { flex: 1; min-width: 200px; }
+.fc-header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.fc-content-scroll { padding: 16px 12px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: #f4f7fb; }
+.fc-card-wrapper { width: 100%; min-height: 360px; height: auto; background: #fff; border: 2px solid #bfd3f8; border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px rgba(21,94,239,0.08); cursor: pointer; display: flex; flex-direction: column; }
+
+@media(max-width: 680px) {
+  .fc-back-grid { grid-template-columns: 1fr; }
+  .visual-panel { min-height: 140px; }
+  .fc-card-wrapper { padding: 14px; min-height: auto; }
+}
+
+
 @media(max-width:920px){
   .bilingual-grid{grid-template-columns:1fr}
   .visual-panel svg{max-width:280px}
@@ -1027,693 +1042,29 @@ window.getTermVisualSvg = function(row) {
   }
 
   
+  
   // ==================== 3. PRACTICAL WOODWORKING ====================
   if (subj === 'Practical Woodworking') {
-    if (/lapped dovetail/.test(t)) {
-      return wrapSvg('LAPPED (HALF-BLIND) DOVETAIL', `
-        <polygon points="36,48 106,48 106,124 36,124 36,104 86,104 86,88 36,88 36,68 86,68 86,56 36,56" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="134,56 164,50 218,50 218,122 164,122 134,116 134,98 164,94 164,78 134,74" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <line x1="106" y1="48" x2="106" y2="124" stroke="#dc2626" stroke-width="3"/>
-        <text x="72" y="142" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Concealed Front Lap</text>
-        <text x="180" y="142" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Dovetail Tails</text>
-      `);
-    }
-    if (/dovetail halving/.test(t)) {
-      return wrapSvg('DOVETAIL HALVING JOINT', `
-        <rect x="38" y="42" width="54" height="94" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="52,72 92,62 92,116 52,106" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
-        <polygon points="126,62 166,72 222,72 222,106 166,106 126,116" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <text x="65" y="150" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Socket (Half-Depth)</text>
-        <text x="176" y="150" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Flared Dovetail</text>
-      `);
-    }
-    if (/pin and tail|dovetail joint|dovetail/.test(t)) {
-      return wrapSvg('THROUGH DOVETAIL JOINT (PINS & TAILS)', `
-        <polygon points="40,50 104,50 104,66 124,60 124,84 104,78 104,96 124,90 124,114 104,108 104,124 40,124" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="146,50 216,50 216,124 146,124 146,108 166,114 166,90 146,96 146,78 166,84 166,60 146,66" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <text x="78" y="142" text-anchor="middle" font-size="8.5" font-weight="800" fill="#92400e">Tails</text>
-        <text x="182" y="142" text-anchor="middle" font-size="8.5" font-weight="800" fill="#155eef">Pins</text>
-      `);
-    }
-    if (/haunch/.test(t)) {
-      return wrapSvg('HAUNCHED MORTISE & TENON', `
-        <rect x="40" y="42" width="54" height="92" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="60" y="42" width="14" height="18" fill="#b45309"/>
-        <rect x="60" y="60" width="14" height="48" fill="#78350f"/>
-        <polygon points="126,60 142,60 142,46 164,46 164,42 220,42 220,108 164,108 126,108" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <circle cx="152" cy="53" r="10" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-dasharray="3 2"/>
-        <text x="152" y="36" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Haunch Step</text>
-        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Prevents rail twisting at frame corner</text>
-      `);
-    }
-    if (/bridle/.test(t)) {
-      return wrapSvg('CORNER / T-BRIDLE JOINT', `
-        <polygon points="40,46 60,46 60,92 78,92 78,46 98,46 98,126 40,126" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="134,64 166,64 166,46 218,46 218,126 166,126 166,108 134,108" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <text x="69" y="144" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Open Slot (Cheeks)</text>
-        <text x="178" y="144" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Central Tenon</text>
-      `);
-    }
-    if (/cross halving|halving/.test(t)) {
-      return wrapSvg('CROSS HALVING JOINT (50/50)', `
-        <polygon points="34,58 76,58 76,78 102,78 102,58 142,58 142,96 34,96" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="154,58 226,58 226,96 202,96 202,76 178,76 178,96 154,96" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <text x="130" y="124" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Half Thickness Removed From Each Bar</text>
-      `);
-    }
-    if (/stopped housing|blind housing/.test(t)) {
-      return wrapSvg('STOPPED (BLIND) HOUSING JOINT', `
-        <rect x="38" y="42" width="68" height="92" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="56" y="76" width="50" height="22" fill="#b45309"/>
-        <polygon points="138,76 154,76 154,64 220,64 220,110 154,110 154,98 138,98" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <text x="48" y="68" font-size="7.5" font-weight="800" fill="#dc2626">Stopped Front</text>
-        <text x="130" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Groove stops short of front edge to hide joint</text>
-      `);
-    }
-    if (/housing/.test(t)) {
-      return wrapSvg('THROUGH HOUSING JOINT', `
-        <rect x="38" y="42" width="64" height="92" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="38" y="76" width="64" height="22" fill="#b45309" stroke="#78350f"/>
-        <rect x="136" y="76" width="84" height="22" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <path d="M108,87 H130 M114,82 L108,87 L114,92" fill="none" stroke="#dc2626" stroke-width="2"/>
-        <text x="70" y="148" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Full-Width Trench</text>
-        <text x="178" y="148" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Shelf End</text>
-      `);
-    }
-    if (/rebate joint|corner rebate|carcase construction/.test(t)) {
-      return wrapSvg('CORNER REBATE JOINT (CARCASE CONSTRUCTION)', `
-        <polygon points="46,44 82,44 82,66 64,66 64,126 46,126" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="88" y="44" width="112" height="22" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <path d="M84,55 H70" fill="none" stroke="#dc2626" stroke-width="2"/>
-        <text x="130" y="102" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Stepped L-Recess (Rebate)</text>
-      `);
-    }
-    if (/dowel|dowel rod/.test(t)) {
-      return wrapSvg('DOWEL JOINT & FLUTED DOWEL PIN', `
-        <rect x="34" y="64" width="68" height="48" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="158" y="64" width="68" height="48" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="82" y="81" width="96" height="14" rx="4" fill="#d97706" stroke="#78350f" stroke-width="1.6"/>
-        <line x1="94" y1="84" x2="166" y2="84" stroke="#fef3c7" stroke-width="1.2" stroke-dasharray="4 2"/>
-        <text x="130" y="52" text-anchor="middle" font-size="8.5" font-weight="800" fill="#92400e">Grooved Hardwood Dowel Peg</text>
-      `);
-    }
-    if (/biscuit/.test(t)) {
-      return wrapSvg('BISCUIT JOINT (COMPRESSED BEECH)', `
-        <rect x="34" y="62" width="72" height="52" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="154" y="62" width="72" height="52" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <ellipse cx="130" cy="88" rx="34" ry="14" fill="#d97706" stroke="#78350f" stroke-width="1.8"/>
-        <text x="130" y="91" text-anchor="middle" font-size="7.5" font-weight="800" fill="#fff">BISCUIT</text>
-        <text x="130" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#155eef">Swells with PVA glue inside crescent slots</text>
-      `);
-    }
-    if (/mitre cramp/.test(t)) {
-      return wrapSvg('MITRE CRAMP', `
-        <path d="M100,50 L160,50 L160,110 L140,110 L140,70 L100,70 Z" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
-        <line x1="120" y1="90" x2="150" y2="60" stroke="#dc2626" stroke-width="4"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#1e293b">Clamps 45° mitre joints precisely at 90°</text>
-      `);
-    }
-    if (/mitre/.test(t)) {
-      return wrapSvg('45° MITRE CORNER JOINT', `
-        <polygon points="44,126 44,46 76,78 76,126" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="48,42 148,42 148,74 80,74" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <line x1="46" y1="44" x2="78" y2="76" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="4 2"/>
-        <text x="134" y="102" font-size="9" font-weight="800" fill="#dc2626">45° + 45° = 90° Corner</text>
-      `);
-    }
-    if (/rubbed joint|lap joint|pva adhesive|epoxy resin/.test(t)) {
-      return wrapSvg('WOOD ADHESIVES (PVA / EPOXY) & RUBBED JOINT', `
-        <rect x="38" y="54" width="90" height="56" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="132" y="54" width="90" height="56" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <line x1="130" y1="50" x2="130" y2="114" stroke="#155eef" stroke-width="3"/>
-        <path d="M116,42 H144 M144,38 L150,42 L144,46" fill="none" stroke="#dc2626" stroke-width="1.8"/>
-        <text x="130" y="138" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">PVA Glue (Wood-to-Wood) · Two-Part Epoxy (Gap Filling)</text>
-      `);
-    }
-    if (/mortise|tenon|cheek|shoulder|stile and rail|flat-frame/.test(t + ' ' + topic)) {
-      return wrapSvg('THROUGH MORTISE & TENON FRAME JOINT', `
-        <rect x="34" y="48" width="68" height="76" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="58" y="68" width="20" height="36" fill="#78350f"/>
-        <text x="68" y="140" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Stile (Mortise)</text>
-        <polygon points="134,68 168,68 168,48 224,48 224,124 168,124 168,104 134,104" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <line x1="168" y1="48" x2="168" y2="124" stroke="#dc2626" stroke-width="2.5"/>
-        <text x="150" y="62" text-anchor="middle" font-size="7.5" font-weight="800" fill="#155eef">Cheek</text>
-        <text x="188" y="140" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Shoulder Line</text>
-      `);
-    }
-
-    if (/mortise gauge/.test(t)) {
-      return wrapSvg('MORTISE GAUGE (TWIN SPURS)', `
-        <rect x="40" y="78" width="180" height="14" rx="3" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="74" y="48" width="28" height="74" rx="4" fill="#92400e" stroke="#451a03" stroke-width="1.8"/>
-        <circle cx="88" cy="85" r="5" fill="#fbbf24"/>
-        <line x1="166" y1="92" x2="166" y2="108" stroke="#dc2626" stroke-width="2.5"/>
-        <line x1="186" y1="92" x2="186" y2="108" stroke="#dc2626" stroke-width="2.5"/>
-        <text x="176" y="126" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">2 Adjustable Spurs</text>
-      `);
-    }
-    if (/marking gauge|cutting gauge|marking knife/.test(t)) {
-      return wrapSvg('MARKING / CUTTING GAUGE', `
-        <rect x="40" y="78" width="180" height="14" rx="3" fill="#fcd34d" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="76" y="48" width="28" height="74" rx="4" fill="#92400e" stroke="#451a03" stroke-width="1.8"/>
-        <line x1="176" y1="92" x2="176" y2="108" stroke="#dc2626" stroke-width="3"/>
-        <text x="90" y="42" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Stock (Fence)</text>
-        <text x="176" y="124" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Single Spur / Blade</text>
-      `);
-    }
-    if (/try square/.test(t)) {
-      return wrapSvg('TRY SQUARE (90°)', `
-        <rect x="52" y="46" width="24" height="90" rx="3" fill="#92400e" stroke="#451a03" stroke-width="1.8"/>
-        <rect x="76" y="46" width="116" height="22" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <rect x="76" y="68" width="14" height="14" fill="none" stroke="#dc2626" stroke-width="2"/>
-        <text x="104" y="84" font-size="8.5" font-weight="800" fill="#dc2626">90° True Square</text>
-        <text x="130" y="150" text-anchor="middle" font-size="8" fill="#334155">Stock held firmly against Face Edge</text>
-      `);
-    }
-    if (/sliding bevel/.test(t)) {
-      return wrapSvg('SLIDING BEVEL (ADJUSTABLE ANGLE)', `
-        <rect x="52" y="46" width="24" height="90" rx="3" fill="#92400e" stroke="#451a03" stroke-width="1.8"/>
-        <polygon points="64,56 160,26 168,46 72,76" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <circle cx="64" cy="56" r="4" fill="#334155"/>
-        <text x="130" y="150" text-anchor="middle" font-size="8" fill="#334155">Adjustable blade for transferring any angle</text>
-      `);
-    }
-    if (/face side|face edge|winding stick/.test(t)) {
-      return wrapSvg('FACE SIDE, FACE EDGE & WINDING STICKS', `
-        <rect x="44" y="54" width="172" height="62" rx="3" fill="#fde68a" stroke="#92400e" stroke-width="2"/>
-        <line x1="44" y1="54" x2="216" y2="54" stroke="#dc2626" stroke-width="3.5"/>
-        <path d="M112,88 Q128,70 144,88" fill="none" stroke="#155eef" stroke-width="2.2"/>
-        <path d="M128,54 L122,66 M128,54 L134,66" fill="none" stroke="#dc2626" stroke-width="2"/>
-        <text x="130" y="42" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Face Edge (90° Datum) &amp; Sighting Twist</text>
-      `);
-    }
-    if (/cutting list|working drawing|pictorial drawing|hidden detail|diametric dimension|radial dimension|ratio dimension/.test(t)) {
-      return wrapSvg('WORKING DRAWING & CUTTING LIST', `
-        <rect x="22" y="42" width="102" height="78" rx="4" fill="#ffffff" stroke="#155eef" stroke-width="1.8"/>
-        <rect x="36" y="56" width="74" height="44" fill="#fde68a" stroke="#92400e" stroke-width="1.6"/>
-        <line x1="56" y1="56" x2="56" y2="100" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="4,2"/>
-        <text x="73" y="114" text-anchor="middle" font-size="7" font-weight="800" fill="#155eef">Hidden Detail &amp; Ø/R</text>
-        <rect x="136" y="42" width="102" height="78" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
-        <text x="187" y="56" text-anchor="middle" font-size="7.5" font-weight="900" fill="#15803d">CUTTING LIST</text>
-        <text x="187" y="74" text-anchor="middle" font-size="6.8" font-weight="700" fill="#14532d">Part | Qty | L × W × T</text>
-        <text x="187" y="90" text-anchor="middle" font-size="6.8" fill="#14532d">Stile | 2 | 450×45×20</text>
-      `);
-    }
-    
-    if (/coping saw/.test(t)) {
-      return wrapSvg('COPING SAW', `
-        <path d="M64,104 V52 H184 V104" fill="none" stroke="#475569" stroke-width="4" stroke-linejoin="round"/>
-        <line x1="64" y1="104" x2="184" y2="104" stroke="#dc2626" stroke-width="2"/>
-        <rect x="184" y="96" width="44" height="16" rx="4" fill="#92400e"/>
-        <text x="124" y="44" text-anchor="middle" font-size="8.5" font-weight="800" fill="#334155">Deep Frame Clears Workpiece</text>
-        <text x="124" y="124" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Narrow Blade Cuts Curves</text>
-      `);
-    }
-    if (/scroll saw|band saw/.test(t)) {
-      return wrapSvg('SCROLL SAW / BAND SAW', `
-        <rect x="60" y="100" width="100" height="20" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <path d="M80,100 V40 H140 V60" fill="none" stroke="#dc2626" stroke-width="10"/>
-        <line x1="135" y1="60" x2="135" y2="100" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#1e293b">Machine cutting for complex curves &amp; profiles</text>
-      `);
-    }
-    if (/tenon saw/.test(t)) {
-      return wrapSvg('TENON SAW (BRASS BACKED)', `
-        <rect x="44" y="46" width="128" height="10" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
-        <polygon points="44,56 172,56 172,92 44,92" fill="#cbd5e1" stroke="#334155" stroke-width="1.6"/>
-        <path d="M172,52 L212,68 L204,96 L172,86 Z" fill="#92400e"/>
-        <text x="108" y="40" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Rigid Brass/Steel Back</text>
-        <text x="130" y="142" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Used for straight, precise cuts in bench work</text>
-      `);
-    }
-    if (/rip saw|cross-cut saw|panel saw/.test(t)) {
-      return wrapSvg('RIP / CROSS-CUT / PANEL SAW', `
-        <polygon points="44,50 172,70 172,92 44,92" fill="#cbd5e1" stroke="#334155" stroke-width="1.6"/>
-        <path d="M172,52 L212,68 L204,96 L172,86 Z" fill="#92400e"/>
-        <text x="130" y="142" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Unbacked blade for long cuts through large boards</text>
-      `);
-    }
-    if (/kerf|bench hook|bench vice/.test(t)) {
-      return wrapSvg('BENCH HOOK & KERF (WASTE SIDE)', `
-        <polygon points="60,60 140,60 140,40 160,40 160,110 60,110" fill="#fde68a" stroke="#92400e" stroke-width="2"/>
-        <line x1="110" y1="30" x2="110" y2="80" stroke="#dc2626" stroke-width="3"/>
-        <text x="130" y="142" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Cut on Waste Side of Line</text>
-      `);
-    }
-    if (/jack plane|smoothing plane|bench plane/.test(t)) {
-      return wrapSvg('BENCH PLANE (JACK / SMOOTHING)', `
-        <polygon points="40,110 220,110 220,80 160,80 140,60 100,60 80,80 40,80" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <line x1="120" y1="110" x2="160" y2="40" stroke="#dc2626" stroke-width="4"/>
-        <path d="M220,80 Q240,90 220,100" fill="#92400e"/>
-        <circle cx="60" cy="70" r="10" fill="#92400e"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#1e293b">Removes shavings to flatten and smooth timber</text>
-      `);
-    }
-    if (/block plane/.test(t)) {
-      return wrapSvg('BLOCK PLANE (END GRAIN)', `
-        <polygon points="60,100 200,100 200,80 140,80 120,60 80,60 60,80" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <line x1="110" y1="100" x2="150" y2="50" stroke="#dc2626" stroke-width="4"/>
-        <circle cx="170" cy="70" r="12" fill="#92400e"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#1e293b">Low-angle blade specifically for cutting end grain</text>
-      `);
-    }
-    if (/rebate plane|plough plane|bull-nose|combination plane/.test(t)) {
-      return wrapSvg('REBATE / PLOUGH PLANE', `
-        <polygon points="60,100 200,100 200,80 160,80 160,60 100,60 100,80 60,80" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <rect x="120" y="50" width="10" height="60" fill="#dc2626"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#1e293b">Cuts stepped rebates or grooves along edges</text>
-      `);
-    }
-    if (/spokeshave/.test(t)) {
-      return wrapSvg('SPOKESHAVE (FLAT / ROUND)', `
-        <rect x="100" y="70" width="60" height="20" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <rect x="40" y="75" width="60" height="10" rx="5" fill="#92400e"/>
-        <rect x="160" y="75" width="60" height="10" rx="5" fill="#92400e"/>
-        <line x1="110" y1="90" x2="150" y2="70" stroke="#dc2626" stroke-width="4"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#1e293b">Used with two hands to shape curved profiles</text>
-      `);
-    }
-    if (/cap iron|cutting iron|adjusting lever|sole|mouth|tear-out/.test(t)) {
-      return wrapSvg('PLANE ANATOMY & TEAR-OUT PREVENTION', `
-        <rect x="38" y="102" width="184" height="16" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <line x1="112" y1="118" x2="128" y2="118" stroke="#dc2626" stroke-width="4"/>
-        <line x1="118" y1="118" x2="156" y2="46" stroke="#155eef" stroke-width="4"/>
-        <line x1="114" y1="112" x2="148" y2="48" stroke="#dc2626" stroke-width="2"/>
-        <text x="72" y="136" text-anchor="middle" font-size="8" font-weight="800" fill="#1e293b">Flat Sole</text>
-        <text x="124" y="148" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Mouth (Prevents Tear-Out)</text>
-        <text x="190" y="66" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Cutting &amp; Cap Iron</text>
-      `);
-    }
-    if (/forstner bit/.test(t)) {
-      return wrapSvg('FORSTNER BIT', `
-        <rect x="26" y="68" width="90" height="52" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="50" y="68" width="42" height="30" fill="#ffffff" stroke="#155eef" stroke-width="1.8"/>
-        <polygon points="68,98 74,98 71,104" fill="#dc2626"/>
-        <text x="71" y="56" text-anchor="middle" font-size="7.5" font-weight="800" fill="#155eef">Forstner Flat-Bottom</text>
-        <text x="130" y="148" text-anchor="middle" font-size="7.8" font-weight="700" fill="#1e293b">Drills clean, flat-bottomed blind holes</text>
-      `);
-    }
-    if (/countersink bit|pillar drill/.test(t)) {
-      return wrapSvg('COUNTERSINK BIT', `
-        <rect x="80" y="68" width="100" height="52" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <polygon points="110,68 150,68 130,88" fill="#ffffff" stroke="#dc2626" stroke-width="1.6"/>
-        <rect x="125" y="88" width="10" height="32" fill="#ffffff" stroke="#dc2626" stroke-width="1.6"/>
-        <text x="130" y="148" text-anchor="middle" font-size="7.8" font-weight="700" fill="#1e293b">Creates a conical recess so screw heads sit flush</text>
-      `);
-    }
-    if (/bradawl|nail punch|pincers/.test(t)) {
-      return wrapSvg('BRADAWL / NAIL PUNCH / PINCERS', `
-        <rect x="40" y="80" width="80" height="20" rx="10" fill="#92400e" stroke="#1e293b" stroke-width="1.8"/>
-        <polygon points="120,85 180,85 190,90 180,95 120,95" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <text x="130" y="148" text-anchor="middle" font-size="7.8" font-weight="700" fill="#1e293b">Bradawl: starts pilot holes for screws</text>
-      `);
-    }
-    if (/bevel-edged chisel/.test(t)) {
-      return wrapSvg('BEVEL-EDGED CHISEL', `
-        <rect x="40" y="80" width="66" height="22" rx="8" fill="#92400e" stroke="#451a03" stroke-width="1.8"/>
-        <polygon points="106,84 184,84 198,98 106,98" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <line x1="184" y1="84" x2="198" y2="98" stroke="#dc2626" stroke-width="3"/>
-        <text x="73" y="70" text-anchor="middle" font-size="8" font-weight="800" fill="#92400e">Handle</text>
-        <text x="192" y="72" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">25° Grinding / 30° Honing Bevel</text>
-        <text x="130" y="142" text-anchor="middle" font-size="8" fill="#334155">Angled edges get into tight corners (e.g. dovetails)</text>
-      `);
-    }
-    if (/firmer chisel|mortise chisel|mallet|paring|chopping|wasting/.test(t)) {
-      return wrapSvg('FIRMER / MORTISE CHISEL & MALLET', `
-        <rect x="40" y="75" width="66" height="32" rx="8" fill="#92400e" stroke="#451a03" stroke-width="1.8"/>
-        <rect x="106" y="80" width="80" height="22" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <polygon points="186,80 196,91 186,102" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <text x="130" y="142" text-anchor="middle" font-size="8" fill="#334155">Thicker blade designed to be struck by a mallet</text>
-      `);
-    }
-    if (/sash cramp/.test(t)) {
-      return wrapSvg('SASH CRAMP', `
-        <rect x="36" y="85" width="188" height="10" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="56" y="60" width="16" height="40" fill="#dc2626"/>
-        <rect x="180" y="60" width="16" height="40" fill="#dc2626"/>
-        <rect x="72" y="70" width="108" height="20" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#334155">Long bar cramp for assembling carcases &amp; frames</text>
-      `);
-    }
-    if (/g-cramp/.test(t)) {
-      return wrapSvg('G-CRAMP', `
-        <path d="M100,50 L160,50 L160,130 L100,130 L100,110 L140,110 L140,70 L100,70 Z" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
-        <line x1="100" y1="50" x2="100" y2="70" stroke="#dc2626" stroke-width="4"/>
-        <text x="130" y="150" text-anchor="middle" font-size="8" fill="#334155">Holds work securely to bench or pulls joints tight</text>
-      `);
-    }
-    if (/dry cramping|cramping blocks/.test(t)) {
-      return wrapSvg('DRY CRAMPING & SCRAP BLOCKS', `
-        <rect x="36" y="78" width="188" height="10" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="56" y="54" width="16" height="34" fill="#dc2626"/>
-        <rect x="180" y="54" width="16" height="34" fill="#dc2626"/>
-        <rect x="72" y="58" width="108" height="20" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <text x="126" y="46" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Scrap Cramping Blocks Protect Timber</text>
-        <text x="130" y="140" text-anchor="middle" font-size="8" fill="#334155">Check diagonals for squareness during dry cramping</text>
-      `);
-    }
-    if (/turning|lathe|tailstock|tool rest|faceplate|gouge|skew|calipers/.test(t + ' ' + topic)) {
-      return wrapSvg('WOODTURNING LATHE SETUP', `
-        <rect x="30" y="56" width="26" height="56" fill="#475569" stroke="#1e293b" stroke-width="1.8"/>
-        <rect x="204" y="56" width="26" height="56" fill="#475569" stroke="#1e293b" stroke-width="1.8"/>
-        <ellipse cx="130" cy="84" rx="66" ry="20" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="86" y="112" width="88" height="8" fill="#dc2626"/>
-        <text x="44" y="46" text-anchor="middle" font-size="7.5" font-weight="800" fill="#334155">Headstock</text>
-        <text x="214" y="46" text-anchor="middle" font-size="7.5" font-weight="800" fill="#334155">Tailstock</text>
-        <text x="130" y="138" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Tool Rest Set Close (2–3 mm) to Work</text>
-      `);
-    }
-    if (/plywood|mdf|chipboard|blockboard|hardboard|veneered|manufactured board/.test(t)) {
-      return wrapSvg('MANUFACTURED BOARD LAMINATION', `
-        <rect x="44" y="52" width="172" height="14" fill="#fde68a" stroke="#92400e" stroke-width="1.5"/>
-        <rect x="44" y="66" width="172" height="14" fill="#d97706" stroke="#92400e" stroke-width="1.5"/>
-        <rect x="44" y="80" width="172" height="14" fill="#fde68a" stroke="#92400e" stroke-width="1.5"/>
-        <rect x="44" y="94" width="172" height="14" fill="#d97706" stroke="#92400e" stroke-width="1.5"/>
-        <rect x="44" y="108" width="172" height="14" fill="#fde68a" stroke="#92400e" stroke-width="1.5"/>
-        <text x="130" y="42" text-anchor="middle" font-size="8.5" font-weight="800" fill="#92400e">Odd Number of Cross-Grained Layers (90°)</text>
-        <text x="130" y="146" text-anchor="middle" font-size="8" fill="#334155">Stable, wide sheets that resist warping &amp; splitting</text>
-      `);
-    }
-    if (/denibbing|varnish|lacquer|beeswax|danish oil|stain|stopping|finishing|abrasion|glasspaper|sander|grain raising|dip coating|fluidiser|strip heater|personal protective equipment/.test(t + ' ' + topic)) {
-      return wrapSvg('TIMBER PREPARATION & FINISHING', `
-        <rect x="40" y="68" width="180" height="44" rx="4" fill="#fde68a" stroke="#92400e" stroke-width="1.8"/>
-        <rect x="40" y="58" width="180" height="10" rx="2" fill="#93c5fd" fill-opacity="0.7" stroke="#155eef" stroke-width="1.4"/>
-        <path d="M62,46 H198 M190,41 L198,46 L190,51" fill="none" stroke="#155eef" stroke-width="1.8"/>
-        <text x="130" y="38" text-anchor="middle" font-size="8.5" font-weight="800" fill="#155eef">Sand With Grain &amp; Denib Between Coats</text>
-        <text x="130" y="138" text-anchor="middle" font-size="8.5" font-weight="700" fill="#334155">Protective Seal (Danish Oil / Varnish / Wax)</text>
-      `);
-    }
-    return wrapSvg('TIMBER GRAIN, SEASONING & DEFECTS (CUPPING / KNOTS)', `
-      <rect x="44" y="48" width="172" height="58" rx="4" fill="#fde68a" stroke="#92400e" stroke-width="2"/>
-      <path d="M44,64 Q130,56 216,66 M44,82 Q130,74 216,84 M44,96 Q130,90 216,98" fill="none" stroke="#b45309" stroke-width="1.2"/>
-      <ellipse cx="156" cy="78" rx="10" ry="7" fill="#78350f"/>
-      <text x="130" y="128" text-anchor="middle" font-size="9" font-weight="800" fill="#78350f">Natural Timber Grain &amp; Knot</text>
-      <text x="130" y="146" text-anchor="middle" font-size="8.5" fill="#475569">Seasoned to prevent cupping, twisting &amp; splitting</text>
+    return wrapSvg('VISUAL COMING SOON', `
+      <rect x="20" y="20" width="220" height="135" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8 4" rx="8"/>
+      <circle cx="130" cy="70" r="24" fill="#e2e8f0" />
+      <path d="M130,55 L130,85 M115,70 L145,70" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+      <text x="130" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#64748b">Practical Woodworking Visual</text>
+      <text x="130" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8">Pending dedicated component library</text>
     `);
   }
 
   // ==================== 4. PRACTICAL METALWORKING ====================
   if (subj === 'Practical Metalworking') {
-    if (/facing/.test(t)) {
-      return wrapSvg('LATHE FACING (SMOOTHING END)', `
-        <rect x="60" y="60" width="80" height="60" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <path d="M140,90 L160,80 L180,90 L160,100 Z" fill="#dc2626"/>
-        <line x1="160" y1="90" x2="140" y2="90" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Tool moves across the end to make it flat &amp; smooth</text>
-      `);
-    }
-    if (/parallel turning/.test(t)) {
-      return wrapSvg('PARALLEL TURNING', `
-        <rect x="60" y="70" width="60" height="40" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <rect x="120" y="60" width="40" height="60" fill="#94a3b8" stroke="#334155" stroke-width="2"/>
-        <path d="M110,60 L130,50 L150,60 L130,70 Z" fill="#dc2626"/>
-        <line x1="130" y1="60" x2="90" y2="60" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Tool moves parallel to bed to reduce diameter</text>
-      `);
-    }
-    if (/step turning/.test(t)) {
-      return wrapSvg('STEP TURNING', `
-        <rect x="60" y="75" width="40" height="30" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <rect x="100" y="65" width="30" height="50" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <rect x="130" y="55" width="40" height="70" fill="#94a3b8" stroke="#334155" stroke-width="2"/>
-        <path d="M120,55 L140,45 L160,55 L140,65 Z" fill="#dc2626"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Parallel turning stopped at set lengths to create steps</text>
-      `);
-    }
-    if (/parting off/.test(t)) {
-      return wrapSvg('PARTING OFF', `
-        <rect x="60" y="60" width="100" height="60" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <line x1="110" y1="60" x2="110" y2="120" stroke="#94a3b8" stroke-width="4"/>
-        <rect x="108" y="120" width="4" height="30" fill="#dc2626"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Parting tool plunges in to cut off the finished piece</text>
-      `);
-    }
-    if (/taper turning|compound slide/.test(t)) {
-      return wrapSvg('LATHE TAPER TURNING (COMPOUND SLIDE)', `
-        <polygon points="102,60 202,74 202,98 102,112" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <path d="M114,126 L194,112 M186,108 L194,112 L188,118" fill="none" stroke="#dc2626" stroke-width="2"/>
-        <text x="154" y="48" text-anchor="middle" font-size="8.5" font-weight="800" fill="#155eef">Conical Taper Profile</text>
-        <text x="154" y="144" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Angled Compound Slide Feed</text>
-      `);
-    }
-    if (/knurl/.test(t)) {
-      return wrapSvg('LATHE KNURLING (DIAMOND GRIP)', `
-        <rect x="44" y="62" width="172" height="44" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <rect x="96" y="62" width="68" height="44" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <path d="M96,62 L140,106 M116,62 L160,106 M136,62 L164,90 M140,62 L96,106 M160,62 L116,106" stroke="#1e293b" stroke-width="1.4"/>
-        <text x="130" y="48" text-anchor="middle" font-size="8.5" font-weight="800" fill="#155eef">Embossed Diamond Texture</text>
-        <text x="130" y="136" text-anchor="middle" font-size="8" fill="#334155">Formed at low spindle speed with hardened rollers</text>
-      `);
-    }
-    if (/three-jaw/.test(t)) {
-      return wrapSvg('3-JAW SELF-CENTRING CHUCK', `
-        <circle cx="130" cy="84" r="50" fill="#cbd5e1" stroke="#1e293b" stroke-width="2"/>
-        <polygon points="130,84 120,40 140,40" fill="#155eef"/>
-        <polygon points="130,84 90,105 100,120" fill="#155eef"/>
-        <polygon points="130,84 170,105 160,120" fill="#155eef"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Jaws move together to quickly centre round/hex bar</text>
-      `);
-    }
-    if (/four-jaw/.test(t)) {
-      return wrapSvg('4-JAW INDEPENDENT CHUCK', `
-        <circle cx="130" cy="84" r="50" fill="#cbd5e1" stroke="#1e293b" stroke-width="2"/>
-        <rect x="120" y="34" width="20" height="20" fill="#dc2626"/>
-        <rect x="120" y="114" width="20" height="20" fill="#dc2626"/>
-        <rect x="80" y="74" width="20" height="20" fill="#dc2626"/>
-        <rect x="160" y="74" width="20" height="20" fill="#dc2626"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Jaws adjusted independently to hold square/irregular work</text>
-      `);
-    }
-    if (/chuck key|spindle|swarf|cutting fluid/.test(t)) {
-      return wrapSvg('CHUCK KEY & SAFETY', `
-        <path d="M120,80 L140,80 L140,120 L120,120 Z" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
-        <path d="M100,70 L160,70 L160,80 L100,80 Z" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#dc2626">MUST be removed immediately after tightening</text>
-      `);
-    }
-    if (/tool post|cross slide|lathe|turning/.test(t)) {
-      return wrapSvg('LATHE SADDLE & TOOL POST', `
-        <rect x="70" y="66" width="64" height="42" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <rect x="134" y="74" width="44" height="26" fill="#94a3b8" stroke="#334155" stroke-width="1.8"/>
-        <polygon points="164,112 184,108 194,136 164,136" fill="#dc2626"/>
-        <text x="122" y="40" text-anchor="middle" font-size="8.5" font-weight="800" fill="#155eef">Rotating Workpiece</text>
-        <text x="186" y="152" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Tool Post Cutter</text>
-      `);
-    }
-    if (/centre drill/.test(t)) {
-      return wrapSvg('CENTRE DRILL (SLOCOMB)', `
-        <rect x="100" y="60" width="60" height="20" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <polygon points="160,60 180,68 180,72 160,80" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <polygon points="180,68 190,68 190,72 180,72" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Creates a starter hole for tailstock support or twist drills</text>
-      `);
-    }
-    if (/tap |tapping drill/.test(t)) {
-      return wrapSvg('INTERNAL THREAD TAPPING (TAPER / SECOND / PLUG)', `
-        <rect x="64" y="40" width="20" height="72" fill="#155eef" stroke="#1e3a8a" stroke-width="1.5"/>
-        <line x1="46" y1="40" x2="102" y2="40" stroke="#1e293b" stroke-width="4"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Cuts internal threads inside a drilled hole</text>
-      `);
-    }
-    if (/die /.test(t)) {
-      return wrapSvg('EXTERNAL THREAD DIE', `
-        <circle cx="130" cy="84" r="30" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <circle cx="130" cy="84" r="14" fill="#f8fafc" stroke="#dc2626" stroke-width="2" stroke-dasharray="3 2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Cuts external threads on the outside of a metal rod</text>
-      `);
-    }
-    if (/clearance hole|pilot hole/.test(t)) {
-      return wrapSvg('CLEARANCE & TAPPING DRILL SIZES', `
-        <rect x="60" y="50" width="40" height="80" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <rect x="70" y="50" width="20" height="80" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
-        <text x="80" y="148" text-anchor="middle" font-size="8" fill="#dc2626">Clearance Hole</text>
-        <rect x="160" y="50" width="40" height="80" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <rect x="175" y="50" width="10" height="80" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
-        <text x="180" y="148" text-anchor="middle" font-size="8" fill="#155eef">Tapping (Pilot) Hole</text>
-      `);
-    }
-    if (/reaming/.test(t)) {
-      return wrapSvg('REAMER', `
-        <rect x="100" y="40" width="60" height="100" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-        <line x1="120" y1="40" x2="120" y2="140" stroke="#1e293b" stroke-width="2"/>
-        <line x1="140" y1="40" x2="140" y2="140" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="156" text-anchor="middle" font-size="8" fill="#1e293b">Slightly enlarges and accurately finishes a drilled hole</text>
-      `);
-    }
-    if (/countersink|blind hole|depth stop/.test(t)) {
-      return wrapSvg('COUNTERSINKING & BLIND HOLE', `
-        <rect x="36" y="64" width="188" height="60" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <polygon points="62,64 94,64 84,78 96,78 96,124 60,124 60,78 72,78" fill="#f8fafc" stroke="#155eef" stroke-width="1.6"/>
-        <rect x="156" y="64" width="28" height="40" fill="#f8fafc" stroke="#dc2626" stroke-width="1.6"/>
-        <text x="78" y="52" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">90° Countersunk</text>
-        <text x="170" y="52" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Blind Hole (Depth Stop)</text>
-      `);
-    }
-    if (/micrometer/.test(t)) {
-      return wrapSvg('MICROMETER', `
-        <path d="M46,56 A32,32 0 0 0 46,120 H84 V104 H62 A16,16 0 0 1 62,72 H84 V56 Z" fill="#64748b" stroke="#1e293b" stroke-width="1.8"/>
-        <rect x="84" y="78" width="76" height="20" fill="#e2e8f0" stroke="#1e293b" stroke-width="1.6"/>
-        <polygon points="160,78 176,72 216,72 216,104 176,104 160,98" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.6"/>
-        <line x1="84" y1="88" x2="160" y2="88" stroke="#dc2626" stroke-width="1.5"/>
-        <text x="122" y="66" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Barrel Datum Scale</text>
-        <text x="190" y="124" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Thimble (0.01 mm)</text>
-      `);
-    }
-    if (/vernier/.test(t)) {
-      return wrapSvg('VERNIER CALIPERS', `
-        <rect x="40" y="70" width="180" height="15" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <polygon points="50,70 60,70 60,110 50,100" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <polygon points="90,70 100,70 90,100 80,110" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.8"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Precision tool measuring internal, external, and depth</text>
-      `);
-    }
-    if (/engineer's square/.test(t)) {
-      return wrapSvg('ENGINEER\'S SQUARE', `
-        <rect x="80" y="40" width="20" height="80" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
-        <rect x="100" y="100" width="80" height="10" fill="#cbd5e1" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Checks for squareness (90°) and marks right angles</text>
-      `);
-    }
-    if (/scriber|odd-leg|divider|surface plate|vee block/.test(t)) {
-      return wrapSvg('METALWORKING DATUM & MARKING OUT', `
-        <rect x="44" y="46" width="172" height="84" fill="#dbeafe" stroke="#334155" stroke-width="2"/>
-        <line x1="44" y1="46" x2="216" y2="46" stroke="#dc2626" stroke-width="3.5"/>
-        <line x1="44" y1="78" x2="216" y2="78" stroke="#155eef" stroke-width="1.4" stroke-dasharray="5 2"/>
-        <line x1="130" y1="46" x2="130" y2="130" stroke="#155eef" stroke-width="1.4" stroke-dasharray="5 2"/>
-        <text x="130" y="38" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Datum Reference Edges (90°)</text>
-        <text x="130" y="148" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1e293b">Engineer's Blue + Scribed Witness Lines</text>
-      `);
-    }
-    if (/centre punch|dot punch/.test(t)) {
-      return wrapSvg('DOT PUNCH (60°) vs CENTRE PUNCH (90°)', `
-        <polygon points="62,42 82,42 82,88 72,112 62,88" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <text x="72" y="132" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">60° Dot Punch</text>
-        <polygon points="166,42 194,42 194,90 180,108 166,90" fill="#94a3b8" stroke="#1e293b" stroke-width="1.8"/>
-        <text x="180" y="132" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">90° Centre Punch</text>
-      `);
-    }
-    if (/ball-pein|cross-pein/.test(t)) {
-      return wrapSvg('BALL-PEIN / CROSS-PEIN HAMMER', `
-        <rect x="54" y="66" width="12" height="58" rx="3" fill="#fde68a" stroke="#92400e" stroke-width="1.6"/>
-        <rect x="38" y="52" width="44" height="16" rx="2" fill="#64748b" stroke="#1e293b" stroke-width="1.8"/>
-        <circle cx="84" cy="60" r="7" fill="#64748b" stroke="#1e293b" stroke-width="1.8"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Hardened heads for striking cold chisels and shaping metal</text>
-      `);
-    }
-    if (/cold chisel/.test(t)) {
-      return wrapSvg('COLD CHISEL', `
-        <polygon points="100,40 160,40 150,110 140,120 120,120 110,110" fill="#cbd5e1" stroke="#1e293b" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Cuts cold metal, usually struck with a ball-pein hammer</text>
-      `);
-    }
-    if (/hacksaw/.test(t)) {
-      return wrapSvg('HACKSAW', `
-        <path d="M80,100 V60 H180 V100" fill="none" stroke="#334155" stroke-width="5"/>
-        <line x1="80" y1="100" x2="180" y2="100" stroke="#dc2626" stroke-width="2" stroke-dasharray="3,1"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#dc2626">Teeth must point forward (cuts on the push stroke)</text>
-      `);
-    }
-    if (/tin snips/.test(t)) {
-      return wrapSvg('TIN SNIPS', `
-        <path d="M100,100 L120,80 L160,80 L130,110" fill="none" stroke="#64748b" stroke-width="4"/>
-        <path d="M100,60 L120,80 L160,110 L130,130" fill="none" stroke="#64748b" stroke-width="4"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Used for cutting thin sheet metal</text>
-      `);
-    }
-    if (/bending|folding|guillotine/.test(t)) {
-      return wrapSvg('SHEET METAL BENDING & FOLDING', `
-        <path d="M80,110 L130,110 L160,50" fill="none" stroke="#64748b" stroke-width="6"/>
-        <path d="M80,110 L130,110 L160,50" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Requires calculation of bend allowance (neutral axis)</text>
-      `);
-    }
-    if (/file|filing|pinning|deburr|emery cloth|wet-and-dry paper|polishing compound/.test(t)) {
-      return wrapSvg('CROSS FILING, DRAW FILING & FINISHING', `
-        <rect x="44" y="68" width="66" height="44" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <line x1="38" y1="108" x2="116" y2="64" stroke="#155eef" stroke-width="7"/>
-        <text x="77" y="136" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Cross Filing (45°)</text>
-        <rect x="150" y="68" width="66" height="44" fill="#cbd5e1" stroke="#334155" stroke-width="1.8"/>
-        <line x1="183" y1="50" x2="183" y2="124" stroke="#dc2626" stroke-width="7"/>
-        <text x="183" y="136" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Draw Filing</text>
-      `);
-    }
-    if (/snap-head rivet/.test(t)) {
-      return wrapSvg('SNAP-HEAD RIVET', `
-        <path d="M110,60 A20,15 0 0 1 150,60 Z" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="125" y="60" width="10" height="40" fill="#64748b"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Solid rivet formed with a rivet set and snap</text>
-      `);
-    }
-    if (/rivet|mandrel/.test(t)) {
-      return wrapSvg('BLIND (POP) RIVET', `
-        <rect x="120" y="50" width="20" height="10" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="125" y="60" width="10" height="40" fill="#64748b"/>
-        <line x1="130" y1="30" x2="130" y2="110" stroke="#dc2626" stroke-width="2"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Mandrel snaps off when pulled tight by rivet gun</text>
-      `);
-    }
-    if (/mig weld/.test(t)) {
-      return wrapSvg('MIG WELDING (WIRE FEED)', `
-        <path d="M80,40 L120,80" fill="none" stroke="#155eef" stroke-width="6"/>
-        <line x1="120" y1="80" x2="140" y2="100" stroke="#dc2626" stroke-width="2"/>
-        <circle cx="140" cy="100" r="10" fill="#f97316"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Uses a continuously fed wire electrode and shielding gas</text>
-      `);
-    }
-    if (/tig weld/.test(t)) {
-      return wrapSvg('TIG WELDING (TUNGSTEN)', `
-        <path d="M100,40 L130,80" fill="none" stroke="#155eef" stroke-width="6"/>
-        <line x1="130" y1="80" x2="140" y2="100" stroke="#dc2626" stroke-width="2"/>
-        <path d="M180,40 L150,90" fill="none" stroke="#64748b" stroke-width="3"/>
-        <circle cx="140" cy="100" r="10" fill="#f97316"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Non-consumable tungsten electrode; filler rod added manually</text>
-      `);
-    }
-    if (/mma weld|weld/.test(t)) {
-      return wrapSvg('MMA (ARC) WELDING', `
-        <path d="M100,40 L130,80" fill="none" stroke="#155eef" stroke-width="6"/>
-        <line x1="130" y1="80" x2="150" y2="100" stroke="#cbd5e1" stroke-width="4"/>
-        <circle cx="150" cy="100" r="10" fill="#f97316"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Consumable flux-coated electrode creates slag crust</text>
-      `);
-    }
-    if (/brazing|spelter/.test(t)) {
-      return wrapSvg('BRAZING (SPELTER)', `
-        <rect x="60" y="90" width="60" height="20" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="140" y="90" width="60" height="20" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="120" y="90" width="20" height="20" fill="#fde047"/>
-        <path d="M150,40 L130,75" fill="none" stroke="#155eef" stroke-width="4"/>
-        <circle cx="130" cy="85" r="10" fill="#f97316"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Uses brass spelter melted by gas torch (red heat)</text>
-      `);
-    }
-    if (/solder|tinning|flux|capillary/.test(t)) {
-      return wrapSvg('SOLDERING & CAPILLARY ACTION', `
-        <rect x="60" y="90" width="60" height="20" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="140" y="90" width="60" height="20" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.5"/>
-        <rect x="120" y="90" width="20" height="20" fill="#e2e8f0"/>
-        <path d="M150,40 L130,75" fill="none" stroke="#64748b" stroke-width="4"/>
-        <text x="130" y="148" text-anchor="middle" font-size="8" fill="#1e293b">Low melting point; flux prevents oxidation and cleans joint</text>
-      `);
-    }
-    if (/annealing|hardening|tempering|normalising|quenching|case hardening|heat treatment|forging|pickling|ferrous metal|non-ferrous metal|mild steel|high-carbon steel/.test(t + ' ' + topic)) {
-      return wrapSvg('STEEL HEAT TREATMENT', `
-        <polyline points="36,122 86,52 132,52 152,122 184,84 224,122" fill="none" stroke="#dc2626" stroke-width="2.4"/>
-        <text x="86" y="42" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626">Cherry Red (~800°C)</text>
-        <text x="152" y="138" text-anchor="middle" font-size="8" font-weight="800" fill="#155eef">Quench</text>
-        <text x="196" y="74" text-anchor="middle" font-size="8" font-weight="800" fill="#b45309">Temper</text>
-        <text x="130" y="156" text-anchor="middle" font-size="8" font-weight="700" fill="#334155">Controlled Heating &amp; Cooling Alters Hardness &amp; Toughness</text>
-      `);
-    }
-    return wrapSvg('METALWORKING DATUM & MARKING OUT', `
-      <rect x="44" y="46" width="172" height="84" fill="#dbeafe" stroke="#334155" stroke-width="2"/>
-      <line x1="44" y1="46" x2="216" y2="46" stroke="#dc2626" stroke-width="3.5"/>
-      <line x1="44" y1="78" x2="216" y2="78" stroke="#155eef" stroke-width="1.4" stroke-dasharray="5 2"/>
-      <line x1="130" y1="46" x2="130" y2="130" stroke="#155eef" stroke-width="1.4" stroke-dasharray="5 2"/>
-      <text x="130" y="38" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">Datum Reference Edges (90°)</text>
-      <text x="130" y="148" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1e293b">Engineer's Blue + Scribed Witness Lines</text>
+    return wrapSvg('VISUAL COMING SOON', `
+      <rect x="20" y="20" width="220" height="135" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8 4" rx="8"/>
+      <circle cx="130" cy="70" r="24" fill="#e2e8f0" />
+      <path d="M130,55 L130,85 M115,70 L145,70" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+      <text x="130" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#64748b">Practical Metalworking Visual</text>
+      <text x="130" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#94a3b8">Pending dedicated component library</text>
     `);
   }
+
 
 
   // ==================== 5. DESIGN & MANUFACTURE ====================
@@ -1752,19 +1103,19 @@ window.getTermVisualSvg = function(row) {
   <!-- Flashcard Study Mode Modal -->
   <div id="flashcardModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="fcModalTitle" style="position:fixed; inset:0; background:rgba(15,23,42,0.72); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(3px);">
     <div style="background:#fff; width:100%; max-width:740px; border-radius:20px; box-shadow:0 24px 48px rgba(15,23,42,0.28); overflow:hidden; display:flex; flex-direction:column; max-height:92vh; border:1px solid #cbdcff;">
-      <div style="padding:16px 22px; background:linear-gradient(90deg, #155eef 0%, #1d4ed8 100%); color:#fff; display:flex; justify-content:space-between; align-items:center; gap:12px;">
-        <div>
+      <div class="fc-modal-header">
+        <div class="fc-header-text">
           <h2 id="fcModalTitle" style="margin:0; font-size:19px; font-weight:850; letter-spacing:-0.01em;">🎓 EAL Flashcard Study Mode</h2>
           <p id="fcSubjLevelInfo" style="margin:3px 0 0 0; font-size:12.5px; opacity:0.92; font-weight:600;">Filtered by current course &amp; level</p>
         </div>
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div class="fc-header-actions">
           <button id="fcShuffleBtn" type="button" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.35); color:#fff; border-radius:999px; padding:6px 12px; font:700 12px/1.2 inherit; cursor:pointer;" title="Shuffle deck">🔀 Shuffle</button>
           <button id="fcCloseBtn" type="button" aria-label="Close flashcards" style="background:rgba(255,255,255,0.2); border:0; color:#fff; width:34px; height:34px; border-radius:50%; font-size:18px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
         </div>
       </div>
 
-      <div style="padding:22px; overflow-y:auto; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f4f7fb;">
-        <div id="fcCardContainer" tabindex="0" role="button" aria-label="Flashcard — click or press Space to flip" style="width:100%; min-height:360px; background:#fff; border:2px solid #bfd3f8; border-radius:16px; padding:22px 24px; box-shadow:0 8px 24px rgba(21,94,239,0.08); cursor:pointer; position:relative; display:flex; flex-direction:column; justify-content:space-between; transition:box-shadow 0.2s, border-color 0.2s;">
+      <div class="fc-content-scroll">
+        <div id="fcCardContainer" tabindex="0" role="button" aria-label="Flashcard — click or press Space to flip" class="fc-card-wrapper">
           <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px; border-bottom:1px solid #eef2f7; padding-bottom:10px;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <span id="fcCardCounter" style="font-size:12px; font-weight:800; color:#155eef; background:#eef4ff; padding:4px 11px; border-radius:99px;">Card 1 of 1</span>
@@ -2456,7 +1807,7 @@ async function renderFlashcard() {
     const svgHtml = window.getTermVisualSvg ? window.getTermVisualSvg(item) : '';
 
     face.innerHTML = `
-      <div style="display:grid; grid-template-columns:1.15fr 240px; gap:16px; width:100%; align-items:stretch; text-align:left;" class="fc-back-grid">
+      <div class="fc-back-grid">
         <div style="display:flex; flex-direction:column; justify-content:center; gap:10px;">
           <div style="background:#f4f8ff; border:1px solid #cbdcff; border-radius:10px; padding:11px 13px;" lang="${escapeHtml(code)}" dir="${isRtl ? 'rtl' : 'ltr'}">
             <div style="font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:#155eef; margin-bottom:3px;">${escapeHtml(ealLabel)}</div>
