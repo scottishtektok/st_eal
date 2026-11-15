@@ -1331,7 +1331,11 @@ function frame(title,body,course,not){var cl=wrapTxt(course,46),nl=not?wrapTxt(n
  return '<svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(title+'. '+course.replace(/\n/g,' ')+(not?' '+not:''))+'" font-family="'+FF+'">'+rc(1,1,398,288,'#fff',C.line,{r:14,w:1.5})+'<path d="M1 15 a14 14 0 0 1 14 -14 h370 a14 14 0 0 1 14 14 v28 h-398 z" fill="'+C.pale+'"/>'+tx(18,30,title,{a:'start',s:17,w:800,c:C.navy,ls:0.4})+body+o+'</svg>';}
 function grad(id,a,b,horiz){return '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="'+(horiz===false?0:1)+'" y2="'+(horiz===false?1:0)+'"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs>';}
 function pat(id,c){return '<defs><pattern id="'+id+'" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="'+(c||C.navy)+'" stroke-width="1.3"/></pattern></defs>';}
-window.V2={C:C,FF:FF,esc:esc,tx:tx,ln:ln,rc:rc,pg:pg,ci:ci,ar:ar,dar:dar,tl:tl,box:box,frame:frame,grad:grad,pat:pat,map:{},nid:function(p){return p+(++uid);},def:function(names,fn){names.forEach(function(n){window.V2.map[n.toLowerCase()]=fn;});}};
+function cub(ox,oy,a,b,h,fT,fL,fR,sk){var u=[0.866,-0.5],v=[-0.866,-0.5];function p(i,j,k){return [ox+i*a*u[0]+j*b*v[0],oy+i*a*u[1]+j*b*v[1]-k*h];}
+ function S(P){return P.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' ');}sk=sk||C.navy;
+ return pg(S([p(0,0,1),p(1,0,1),p(1,1,1),p(0,1,1)]),fT||'#e9d5b0',sk,1.4)+pg(S([p(0,1,0),p(0,0,0),p(0,0,1),p(0,1,1)]),fL||'#c9a66b',sk,1.4)+pg(S([p(0,0,0),p(1,0,0),p(1,0,1),p(0,0,1)]),fR||'#b08850',sk,1.4);}
+function sdef(subj,names,fn){names.forEach(function(n){window.V2.map[subj.toLowerCase()+'|'+n.toLowerCase()]=fn;});}
+window.V2={cub:cub,sdef:sdef,C:C,FF:FF,esc:esc,tx:tx,ln:ln,rc:rc,pg:pg,ci:ci,ar:ar,dar:dar,tl:tl,box:box,frame:frame,grad:grad,pat:pat,map:{},nid:function(p){return p+(++uid);},def:function(names,fn){names.forEach(function(n){window.V2.map[n.toLowerCase()]=fn;});}};
 })();
 
 (function(){
@@ -1544,8 +1548,592 @@ def(['development','surface development'],function(){var o=rc(40,82,130,62,'#dbe
  return F('DEVELOPMENT',o,'Development = a 3D shape opened out into a flat pattern','Not "growth" or "a new event"');});
 })();
 
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,tl=X.tl,F=X.frame,sd=X.sdef,S='Practical Woodworking';
+var W1='#f3dfb5',W2='#d9a864',W3='#a8742f',W4='#7a4a1c';
+function d(names,fn){sd(S,names,fn);}
+function grain(x,y,w,h,n){var o='';for(var i=1;i<=n;i++)o+=ln(x+4,y+i*h/(n+1),x+w-4,y+i*h/(n+1),'#c9a56a',1);return o;}
+function lab(x,y,s,c,a){return tx(x,y,s,{a:a||'start',s:13,w:800,c:c||C.red});}
+// ---------- JOINTS ----------
+d(['Dovetail joint','Pin and tail (dovetail joint)'],function(){
+ var o=rc(30,62,160,112,W1,C.navy,{w:1.8})+rc(190,62,160,112,W3,C.navy,{w:1.8});
+ [98,140].forEach(function(y){o+=pg('190,'+(y-10)+' 140,'+(y-20)+' 140,'+(y+20)+' 190,'+(y+10),W3,C.navy,1.8);});
+ o+=ar(236,182,160,142,C.red)+tx(240,186,'tail',{a:'start',s:14,w:800,c:C.red})+ar(290,56,182,78,C.blue)+tx(294,56,'pin',{a:'start',s:14,w:800,c:C.blue})+tx(110,56,'board 1',{s:12,w:700,c:C.slate})+tx(300,76,'',{});
+ return F('DOVETAIL JOINT',o,'Dovetail = wedge-shaped tails and pins that lock together','They resist pulling apart in one direction');});
+d(['Mortise and tenon joint'],function(){
+ var o=rc(50,56,56,120,W1,C.navy,{w:1.8})+rc(66,90,24,48,W4,C.navy,{w:1.5})+lab(34,162,'',C.red)+tx(78,190,'',{})+rc(216,92,150,36,W2,C.navy,{w:1.8})+rc(184,100,32,20,W2,C.navy,{w:1.8})+ar(180,110,112,114,C.red,2.5)
+ +ar(142,70,92,100,C.blue)+lab(146,66,'mortise = slot',C.blue)+ar(214,150,196,122,C.red)+lab(160,168,'tenon = tongue',C.red);
+ return F('MORTISE AND TENON',o,'Tenon (tongue) fits into the mortise (slot)','A very strong frame joint');});
+d(['Haunched mortise and tenon','Haunch'],function(){
+ var o=rc(50,56,56,120,W1,C.navy,{w:1.8})+rc(66,86,24,52,W4,C.navy,{w:1.5})+rc(216,88,150,44,W2,C.navy,{w:1.8})
+ +pg('216,98 184,98 184,108 196,108 196,124 216,124',W2,C.navy,1.8)+ar(236,70,200,102,C.red)+lab(206,62,'haunch (small step)')+tx(0,0,'',{});
+ return F('HAUNCHED TENON',o,'Haunch = a small step on the tenon that stops twisting','It also fills the groove at the end of a frame');});
+d(['Through mortise and tenon','Stopped mortise (blind mortise)'],function(){
+ var o=tx(110,66,'THROUGH',{s:13,w:800,c:C.blue})+rc(60,76,100,70,W1,C.navy,{w:1.8})+rc(60,100,100,22,W4,C.navy)+tx(310,66,'STOPPED (blind)',{s:13,w:800,c:C.blue})+rc(260,76,100,70,W1,C.navy,{w:1.8})+rc(260,100,60,22,W4,C.navy)
+ +tx(110,164,'slot goes all the way through',{s:12,w:700,c:C.slate})+tx(310,164,'slot stops inside: hidden',{s:12,w:700,c:C.slate});
+ return F('THROUGH / STOPPED MORTISE',o,'Through mortise = tenon end is visible. Stopped = hidden','Seen from the side of the stile');});
+d(['Bridle joint'],function(){
+ var o=rc(40,60,66,110,W1,C.navy,{w:1.8})+rc(60,60,26,50,'#fff',C.navy,{w:1.4})+tx(73,86,'',{})+rc(190,100,160,40,W2,C.navy,{w:1.8})+rc(172,110,18,20,W2,C.navy,{w:1.8})
+ +rc(190,100,0,0)+tx(0,0,'',{});
+ o=rc(40,60,160,34,W1,C.navy,{w:1.8})+rc(40,60,0,0)+pg('40,60 80,60 80,94 40,94',W1,'none',0)+rc(200,60,0,0)
+ // end view: piece A with open slot, piece B with tongue
+ o=pg('50,60 150,60 150,100 110,100 110,80 90,80 90,100 50,100',W1,C.navy,1.8)+tx(100,120,'open slot',{s:12,w:700,c:C.slate})+pg('220,76 280,76 280,64 320,64 320,116 280,116 280,104 220,104',W2,C.navy,1.8)
+ +ar(210,90,160,90,C.red,2.5)+tx(270,134,'tongue',{s:12,w:700,c:C.slate});
+ o=rc(40,60,24,110,W1,C.navy,{w:1.8})+rc(64,60,24,38,W1,C.navy,{w:1.8})+rc(64,132,24,38,W1,C.navy,{w:1.8})+rc(64,98,24,34,'#fff',C.navy,{w:1.4,d:'4 3'})+tx(76,119,'',{})
+ +rc(220,100,140,34,W2,C.navy,{w:1.8})+rc(190,108,30,18,W2,C.navy,{w:1.8})+ar(186,117,96,117,C.red,2.5)+lab(100,52,'open slot',C.blue)+lab(244,160,'tongue',C.red);
+ return F('BRIDLE JOINT',o,'Bridle joint = a slot in one piece takes the tongue of the other','The slot is open at the end');});
+d(['Cross halving joint'],function(){
+ var o=rc(40,72,160,30,W1,C.navy,{w:1.8})+rc(100,72,40,15,'#fff',C.navy,{w:1.4,d:'4 3'})+tx(120,118,'top half removed',{s:12,w:700,c:C.slate})+rc(210,110,150,30,W3,C.navy,{w:1.8})+rc(250,125,40,15,'#fff',C.navy,{w:1.4,d:'4 3'})+tx(270,156,'bottom half removed',{s:12,w:700,c:C.slate})+ar(120,124,120,124,C.red,0.1);
+ return F('HALVING JOINT',o,'Halving = half the thickness is cut from each piece so they overlap','The surfaces finish flush (level)');});
+d(['Mitre joint'],function(){
+ var o=pg('40,70 190,70 160,100 40,100',W1,C.navy,1.8)+pg('220,70 360,70 360,100 250,100',W1,C.navy,0)+pg('60,120 90,120 90,170 60,170',W3,'none',0)+'';
+ o=pg('50,64 150,64 120,94 50,94',W1,C.navy,1.8)+tx(90,112,'45° end',{s:12,w:700,c:C.slate})+pg('230,64 360,64 360,94 260,94',W3,'none',0);
+ o=pg('50,62 220,62 190,92 50,92',W1,C.navy,1.8)+pg('50,62 80,92 80,172 50,172',W3,C.navy,1.8)+ln(50,62,80,92,C.red,3.5)+tx(250,92,'45° + 45°',{a:'start',s:15,w:800,c:C.red})+tx(250,110,'= a 90° corner',{a:'start',s:15,w:800,c:C.red})+ar(244,118,92,84,C.red,0.1);
+ return F('MITRE JOINT',o,'Mitre = two pieces cut at 45° to make a 90° corner','Used on picture frames');});
+d(['Dowel joint','Dowel'],function(){
+ var o=rc(40,80,90,60,W1,C.navy,{w:1.8})+rc(90,100,40,20,'#fff',C.navy,{w:1.3,d:'4 3'})+rc(150,102,100,16,W3,C.navy,{r:8,w:1.8})+rc(270,80,90,60,W2,C.navy,{w:1.8})+rc(270,100,40,20,'#fff',C.navy,{w:1.3,d:'4 3'})
+ +ar(200,150,200,122,C.red)+lab(200,166,'dowel (round pin)',C.red,'middle')+tx(85,160,'hole',{s:12,w:700,c:C.slate})+tx(315,160,'hole',{s:12,w:700,c:C.slate});
+ return F('DOWEL JOINT',o,'Dowel joint = round wooden pins fit into matching holes','Dowels line up and strengthen the joint');});
+d(['Housing joint','Through housing','Stopped housing'],function(){
+ var o=tx(110,66,'THROUGH',{s:13,w:800,c:C.blue})+rc(50,76,120,84,W1,C.navy,{w:1.8})+rc(50,108,120,16,W4,C.navy)+tx(110,178,'groove reaches both edges',{s:12,w:700,c:C.slate})
+ +tx(300,66,'STOPPED',{s:13,w:800,c:C.blue})+rc(240,76,120,84,W1,C.navy,{w:1.8})+rc(240,108,90,16,W4,C.navy)+tx(300,178,'groove stops before the edge',{s:12,w:700,c:C.slate});
+ return F('HOUSING JOINT',o,'Housing = a groove across a board that holds the end of another','Through goes edge to edge. Stopped does not');});
+d(['Rebate joint','Corner rebate joint'],function(){
+ var o=pg('60,60 160,60 160,100 110,100 110,170 60,170',W1,C.navy,1.8)+rc(190,100,100,70,W2,C.navy,{w:1.8})+ar(185,100,135,100,C.red,0.1)+tx(110,184,'',{})+lab(64,56,'rebate = step',C.red)+ar(250,62,246,96,C.blue,2)+tx(0,0,'',{});
+ o=pg('50,60 150,60 150,98 100,98 100,170 50,170',W1,C.navy,1.8)+tx(100,50,'',{})+ar(180,76,126,80,C.red)+lab(186,72,'rebate = a step')+lab(186,88,'cut along an edge')+rc(220,112,110,56,W2,C.navy,{w:1.8})+tx(275,186,'other piece fits',{s:12,w:700,c:C.slate});
+ return F('REBATE JOINT',o,'Rebate = a step-shaped recess cut along an edge','Not a refund of money');});
+d(['Biscuit joint'],function(){
+ var o=rc(40,80,140,50,W1,C.navy,{w:1.8})+rc(200,80,140,50,W2,C.navy,{w:1.8})+'<ellipse cx="190" cy="105" rx="32" ry="12" fill="'+W3+'" stroke="'+C.navy+'" stroke-width="1.8"/>'+ar(190,160,190,120,C.red)+lab(190,176,'biscuit (oval piece of beech)',C.red,'middle')+tx(110,70,'board 1',{s:12,w:700,c:C.slate})+tx(270,70,'board 2',{s:12,w:700,c:C.slate});
+ return F('BISCUIT JOINT',o,'Biscuit joint = an oval wooden biscuit in slots in two boards','Glue makes it swell and hold. Not a food biscuit');});
+// ---------- MARKING & MEASURING ----------
+d(['Try square'],function(){
+ var o=rc(40,84,320,60,W1,C.navy,{w:1.8})+rc(40,60,0,0)+rc(34,70,18,88,'#6b4423',C.navy,{w:1.5})+rc(52,100,170,10,'#cbd5e1',C.navy,{w:1.5})+ln(60,100,60,100)+ln(130,84,130,144,C.red,2.4)+tx(110,172,'stock (handle) against the edge',{s:12,w:700,c:C.slate})+tx(290,106,'blade',{s:12,w:700,c:C.slate})+tx(290,124,'line at 90°',{s:13,w:800,c:C.red});
+ return F('TRY SQUARE',o,'Try square = checks and marks a 90° angle','Not "try" as in an attempt');});
+d(['Marking gauge'],function(){
+ var o=rc(40,96,300,56,W1,C.navy,{w:1.8})+rc(40,96,300,0)+rc(92,70,36,28,'#6b4423',C.navy,{w:1.5})+rc(104,98,6,0)+ln(106,98,106,110,C.navy,2.5)+ln(40,110,340,110,C.red,2.2)+dar(40,86,106,86,C.blue,2)+tx(210,72,'set distance from the edge',{s:12,w:800,c:C.blue})+tx(240,134,'scribed line (parallel to the edge)',{s:12,w:800,c:C.red})+tx(60,172,'',{});
+ return F('MARKING GAUGE',o,'Marking gauge = scratches a line parallel to an edge','The pin marks at a set distance');});
+d(['Marking knife'],function(){
+ var o=rc(40,90,300,60,W1,C.navy,{w:1.8})+ln(40,120,340,120,C.navy,1)+pg('130,76 200,76 206,92 130,98','#cbd5e1',C.navy,1.5)+tx(220,70,'',{})+ln(168,98,168,120,C.navy,2.5)+ln(120,120,260,120,C.red,2.2)+lab(210,146,'fine cut line',C.red)+lab(206,84,'marking knife',C.slate);
+ return F('MARKING KNIFE',o,'Marking knife = cuts a fine line to guide a saw or chisel','The shoulder line is cut with it');});
+d(['Mortise gauge'],function(){
+ var o=rc(40,96,300,56,W1,C.navy,{w:1.8})+rc(100,70,40,26,'#6b4423',C.navy,{w:1.5})+ln(112,96,112,108,C.navy,2.5)+ln(128,96,128,108,C.navy,2.5)+ln(40,108,340,108,C.red,2.2)+ln(40,124,340,124,C.red,2.2)+dar(300,108,300,124,C.blue,1.6)+lab(212,86,'two pins = two lines',C.blue)+tx(190,172,'width of the mortise',{s:12,w:700,c:C.slate});
+ return F('MORTISE GAUGE',o,'Mortise gauge = a marking gauge with two pins','It marks both sides of a mortise or tenon at once');});
+d(['Sliding bevel'],function(){
+ var o=rc(40,130,300,26,W1,C.navy,{w:1.8})+rc(110,94,18,44,'#6b4423',C.navy,{w:1.5})+pg('116,100 220,60 226,70 122,112','#cbd5e1',C.navy,1.5)+'<path d="M146 130 A30 30 0 0 0 138 112" fill="none" stroke="'+C.red+'" stroke-width="2.5"/>'+tx(270,100,'copies and',{s:13,w:800,c:C.red})+tx(270,116,'marks any angle',{s:13,w:800,c:C.red});
+ return F('SLIDING BEVEL',o,'Sliding bevel = an adjustable tool to set and copy angles','');});
+d(['Winding sticks'],function(){
+ var o=pg('60,150 300,150 330,128 90,128',W1,C.navy,1.5)+rc(0,0,0,0)+pg('78,116 108,126 108,134 78,124','#6b4423',C.navy,1.4)+pg('292,106 322,116 322,124 292,114','#6b4423',C.navy,1.4)+ln(78,118,322,108,C.red,1.4,'4 3')+ln(78,121,322,112,C.slate,0.1)+tx(200,92,'sight along the tops',{s:13,w:800,c:C.red})+tx(200,176,'if the sticks are not parallel, the board is twisted',{s:12,w:700,c:C.slate});
+ return F('WINDING STICKS',o,'Winding sticks = two straight sticks that show if a board is twisted','');});
+d(['Face side and face edge'],function(){
+ var ox=96,oy=164,a=130,b=50,h=26,u=[0.866,-0.5],v=[-0.866,-0.5];function p(i,j,k){return [ox+i*a*u[0]+j*b*v[0],oy+i*a*u[1]+j*b*v[1]-k*h];}
+ var t=p(0.5,0.5,1),e=p(0.5,0,0.5);
+ var o=window.V2.cub(ox,oy,a,b,h,W1,W2,W3)+tx(t[0],t[1]+8,'~',{s:26,w:900,c:C.red})+tx(e[0],e[1]+7,'×',{s:20,w:900,c:C.blue})+ar(300,86,t[0]+16,t[1]-2,C.red)+tx(304,84,'face side',{a:'start',s:14,w:800,c:C.red})+ar(300,160,e[0]+14,e[1]+6,C.blue)+tx(304,168,'face edge',{a:'start',s:14,w:800,c:C.blue});
+ return F('FACE SIDE AND EDGE',o,'Face side and face edge = two flat, straight surfaces at 90°','All marking out starts from these two');});
+d(['Cross-cut saw','Rip saw'],function(){
+ var o=tx(110,62,'CROSS-CUT',{s:13,w:800,c:C.blue})+rc(40,72,140,70,W1,C.navy,{w:1.8})+grain(40,72,140,70,6)+ln(110,64,110,150,C.red,2.5,'6 3')+tx(110,164,'cuts ACROSS the grain',{s:12,w:700,c:C.slate})
+ +tx(290,62,'RIP',{s:13,w:800,c:C.blue})+rc(220,72,140,70,W1,C.navy,{w:1.8})+grain(220,72,140,70,6)+ln(212,107,368,107,C.red,2.5,'6 3')+tx(290,164,'cuts ALONG the grain',{s:12,w:700,c:C.slate});
+ return F('CROSS-CUT AND RIP SAWS',o,'Cross-cut saw cuts across the grain. Rip saw cuts along it','The teeth are shaped differently');});
+d(['Bevel-edged chisel','Firmer chisel'],function(){
+ function ch(x,y){return rc(x,y,56,20,W4,C.navy,{r:8,w:1.5})+rc(x+56,y+4,16,12,'#94a3b8',C.navy,{w:1.4})+pg((x+72)+','+(y+5)+' '+(x+160)+','+(y+5)+' '+(x+166)+','+(y+15)+' '+(x+72)+','+(y+15),'#cbd5e1',C.navy,1.5);}
+ var o=ch(40,70)+tx(120,112,'handle',{s:12,w:700,c:C.slate})+tx(215,112,'steel blade',{s:12,w:700,c:C.slate})
+ +tx(120,138,'BEVEL-EDGED',{s:12,w:800,c:C.blue})+pg('70,148 110,148 104,160 76,160','#cbd5e1',C.navy,1.8)+tx(240,138,'FIRMER',{s:12,w:800,c:C.blue})+rc(218,148,44,12,'#cbd5e1',C.navy,{w:1.8})+tx(120,176,'sloping sides: reach corners',{s:11.5,w:700,c:C.slate})+tx(290,176,'square sides: strong',{s:11.5,w:700,c:C.slate})+tx(320,110,'cross-section of the blade below',{s:11,w:600,c:C.slate});
+ return F('CHISELS',o,'Bevel-edged chisel = sloping sides, good for corners','Firmer chisel = strong, square sides');});
+d(['Sole (plane sole)','Mouth (plane mouth)','Cap iron','Cutting iron','Adjusting lever'],function(){
+ var o=rc(60,130,260,16,'#94a3b8',C.navy,{w:1.8})+pg('120,130 150,70 170,70 170,130','#cbd5e1',C.navy,1.4)+pg('150,130 196,76 204,82 170,130','#475569',C.navy,1.4)+rc(224,100,60,30,'#6b4423',C.navy,{w:1.5})+ci(110,104,12,'#6b4423',C.navy,1.5)
+ +ar(64,170,90,148,C.red)+lab(30,184,'sole = flat bottom',C.red)+ar(176,176,166,148,C.blue)+lab(150,190,'mouth = slot',C.blue)+ar(250,66,196,82,C.green)+lab(210,60,'cutting iron (blade)',C.green)+ar(110,62,140,80,C.amber)+lab(24,60,'cap iron',C.amber);
+ return F('HAND PLANE PARTS',o,'Sole = flat bottom. Mouth = slot where the blade shows','Cutting iron = the sharp blade');});
+d(['Spokeshave'],function(){
+ var o='<path d="M60 150 Q200 98 340 150" fill="none" stroke="'+W3+'" stroke-width="18" stroke-linecap="round"/>'+rc(86,76,24,34,'#6b4423',C.navy,{w:1.5})+rc(290,76,24,34,'#6b4423',C.navy,{w:1.5})+rc(110,86,180,12,'#cbd5e1',C.navy,{w:1.5})+pg('186,98 214,98 206,116 194,116','#475569',C.navy,1.4)+tx(200,70,'two handles',{s:12,w:700,c:C.slate})+tx(200,176,'blade shaves the curved surface',{s:13,w:800,c:C.red});
+ return F('SPOKESHAVE',o,'Spokeshave = a hand tool with a short blade for curved shapes','');});
+d(['Grain','Knot'],function(){
+ var o=rc(40,70,320,90,W1,C.navy,{w:1.8})+grain(40,70,320,90,7)+'<ellipse cx="250" cy="115" rx="22" ry="14" fill="'+W4+'"/>'+ar(250,176,250,134,C.red)+lab(250,190,'knot (hard, dark)',C.red,'middle')+ar(100,176,100,142,C.blue)+lab(100,190,'grain lines',C.blue,'middle');
+ return F('GRAIN',o,'Grain = the lines in wood from the direction of its fibres','Cut and plane with the grain, not against it');});
+d(['Seasoning'],function(){
+ var o=rc(30,72,100,70,'#b7d0a2',C.navy,{w:1.8})+tx(80,112,'GREEN',{s:14,w:900,c:'#166534'})+tx(80,128,'wet wood',{s:12,w:700,c:C.slate})+ar(142,108,230,108,C.red,3)+tx(186,98,'drying',{s:13,w:800,c:C.red})+rc(244,72,100,70,W1,C.navy,{w:1.8})+tx(294,112,'SEASONED',{s:13,w:900,c:C.navy})+tx(294,128,'dry wood',{s:12,w:700,c:C.slate})+tx(190,168,'air: 1 year per 25 mm   ·   kiln: a few days',{s:12,w:700,c:C.slate});
+ return F('SEASONING',o,'Seasoning = drying freshly cut wood so it does not bend or crack','Not adding salt to food');});
+d(['Hardwood','Softwood'],function(){
+ var o=ci(100,98,28,'#86c27a',C.navy,2)+rc(95,124,10,24,W4,C.navy)+tx(100,64,'HARDWOOD',{s:13,w:800,c:C.blue})+tx(100,168,'broad-leaved tree',{s:12,w:700,c:C.slate})+pg('300,76 276,114 324,114','#2f7d4f',C.navy,2)+pg('300,96 270,132 330,132','#2f7d4f',C.navy,2)+rc(294,132,12,18,W4,C.navy)+tx(300,64,'SOFTWOOD',{s:13,w:800,c:C.blue})+tx(300,168,'needle-leaved tree (conifer)',{s:12,w:700,c:C.slate});
+ return F('HARDWOOD / SOFTWOOD',o,'Hardwood = broad-leaved trees. Softwood = conifers (needles)','Hard and soft do NOT always mean how hard the wood is');});
+d(['Plywood'],function(){
+ var o='',cs=[W1,W2,W1,W2,W1];for(var i=0;i<5;i++){o+=rc(70,66+i*16,260,16,cs[i],C.navy,{w:1.4});o+=i%2==0?ln(80,74+i*16,320,74+i*16,'#c9a56a',1):tx(0,0,'',{})+ln(120,70+i*16,120,78+i*16,W4,2)+ln(200,70+i*16,200,78+i*16,W4,2)+ln(280,70+i*16,280,78+i*16,W4,2);}
+ o+=tx(200,168,'thin layers, grain at 90° to each other',{s:13,w:800,c:C.red});
+ return F('PLYWOOD',o,'Plywood = thin layers of wood glued with grain at 90°','This makes it strong and stops it warping');});
+d(['Blockboard','Chipboard','MDF','Manufactured board'],function(){
+ var o=tx(70,64,'BLOCKBOARD',{s:11,w:800,c:C.blue});o+=rc(30,72,80,70,W1,C.navy,{w:1.4});for(var i=0;i<6;i++)o+=rc(30,82+i*9,80,0,'none',C.navy,{w:0.8});
+ o+=rc(30,72,80,10,W2,C.navy,{w:1.2})+rc(30,132,80,10,W2,C.navy,{w:1.2})+tx(70,160,'strips inside',{s:12,w:700,c:C.slate})
+ +tx(200,64,'CHIPBOARD',{s:11,w:800,c:C.blue})+rc(160,72,80,70,W1,C.navy,{w:1.4});for(var j=0;j<22;j++)o+=rc(166+(j*37)%66,78+(j*23)%56,10,5,W3,null);o+=tx(200,160,'chips + glue',{s:12,w:700,c:C.slate})
+ +tx(330,64,'MDF',{s:11,w:800,c:C.blue})+rc(290,72,80,70,'#c9a66b',C.navy,{w:1.4});for(var k=0;k<30;k++)o+=ln(296+(k*13)%68,78+(k*17)%56,300+(k*13)%68,80+(k*17)%56,'#a8742f',1);o+=tx(330,160,'fine fibres, smooth',{s:12,w:700,c:C.slate});
+ return F('MANUFACTURED BOARDS',o,'Manufactured board = a flat board made from wood pieces and glue','Examples: blockboard, chipboard and MDF');});
+// ---------- WORKHOLDING ----------
+d(['G-cramp'],function(){
+ var o='<path d="M120 70 H250 V150 H120" fill="none" stroke="#475569" stroke-width="14" stroke-linejoin="round"/>'+rc(104,60,0,0)+rc(100,96,70,30,W1,C.navy,{w:1.8})+rc(166,102,14,18,W3,C.navy,{w:1.2})+ln(250,110,200,110,C.navy,6)+rc(172,98,16,24,'#475569',C.navy,{w:1.4})+ln(250,124,280,124,C.navy,5)+ln(280,114,280,134,C.navy,5)+tx(185,172,'shaped like the letter G',{s:12,w:700,c:C.slate})+lab(280,70,'screw tightens',C.red)+ar(300,76,250,104,C.red,0.1);
+ o='<path d="M120 66 H260 V148 H120" fill="none" stroke="#475569" stroke-width="12" stroke-linejoin="round"/>'+rc(150,92,80,32,W1,C.navy,{w:1.8})+rc(230,98,18,20,'#94a3b8',C.navy,{w:1.4})+ln(248,108,300,108,C.navy,7)+ln(300,96,300,120,C.navy,6)+tx(330,92,'screw',{a:'middle',s:12,w:800,c:C.red})+tx(190,172,'G-cramp: holds work tightly',{s:13,w:800,c:C.slate});
+ return F('G-CRAMP',o,'G-cramp = a clamp shaped like the letter G','Cramp = hold tightly. Not a leg cramp');});
+d(['Shooting board'],function(){
+ var o=rc(40,120,320,22,W3,C.navy,{w:1.8})+rc(40,96,320,0)+rc(100,96,90,24,W1,C.navy,{w:1.8})+rc(190,96,14,24,'#6b4423',C.navy,{w:1.4})+pg('250,86 250,120 330,120 330,100 290,86','#94a3b8',C.navy,1.8)+tx(150,86,'workpiece',{s:12,w:700,c:C.slate})+tx(290,76,'plane lies on its side',{s:12,w:800,c:C.red})+tx(200,172,'planes the end square (90°) or at 45°',{s:13,w:700,c:C.slate});
+ return F('SHOOTING BOARD',o,'Shooting board = a jig that holds wood while you plane the end','It gives an exact 90° or 45° end');});
+d(['Stile and rail'],function(){
+ var o=rc(110,60,26,116,W2,C.navy,{w:1.8})+rc(264,60,26,116,W2,C.navy,{w:1.8})+rc(136,60,128,26,W1,C.navy,{w:1.8})+rc(136,150,128,26,W1,C.navy,{w:1.8})+ar(84,118,106,118,C.red,2.2)+tx(30,114,'stile',{a:'start',s:14,w:800,c:C.red})+tx(30,130,'upright',{a:'start',s:12,w:700,c:C.slate})+ar(332,118,294,160,C.blue,0.1)+ar(332,100,268,72,C.blue)+tx(300,114,'rail',{a:'start',s:14,w:800,c:C.blue})+tx(300,130,'cross piece',{a:'start',s:12,w:700,c:C.slate})+tx(200,118,'frame',{s:13,w:700,c:C.slate});
+ return F('STILE AND RAIL',o,'Stile = upright side piece. Rail = cross piece','They make a frame, such as a door');});
+d(['Tailstock','Tool rest'],function(){
+ var o=rc(30,128,340,16,'#94a3b8',C.navy,{w:1.8})+rc(40,92,50,36,'#64748b',C.navy,{w:1.8})+rc(310,100,50,28,'#64748b',C.navy,{w:1.8})+rc(90,106,220,20,W2,C.navy,{w:1.5})+rc(150,98,0,0)+rc(150,124,90,10,'#475569',C.navy,{w:1.2})+tx(65,82,'headstock',{s:12,w:800,c:C.blue})+tx(335,90,'tailstock',{s:12,w:800,c:C.red})+tx(195,154,'tool rest',{s:12,w:800,c:C.slate})+tx(200,96,'wood spins between centres',{s:12,w:700,c:C.slate});
+ return F('WOODTURNING LATHE',o,'Tailstock = supports the free end of the wood on a lathe','Tool rest = supports the turning tool');});
+d(['Countersink bit'],function(){
+ var o=rc(60,90,110,46,W1,C.navy,{w:1.8})+pg('100,90 130,90 120,110 110,110',W3,C.navy,1.4)+ln(115,60,115,90,'#475569',5)+tx(115,160,'countersink hole',{s:12,w:800,c:C.slate})+rc(230,90,110,46,W1,C.navy,{w:1.8})+pg('250,90 320,90 300,92 270,92',W3,'none',0)+pg('268,90 302,90 300,100 270,100',W3,C.navy,1.2)+rc(284,70,12,20,'#475569',C.navy,{w:1.2})+ln(284,70,296,70,C.navy,1)+tx(285,160,'screw head sits flush',{s:12,w:800,c:C.slate});
+ return F('COUNTERSINK',o,'Countersink = a cone-shaped hole so the screw head sits flush','');});
+d(['Cutting list'],function(){
+ var o=rc(80,60,240,112,'#fff',C.navy,{r:4,w:1.8})+tx(200,82,'CUTTING LIST',{s:13,w:900})+ln(90,90,310,90,C.navy,1.5);['Leg ×4   400 × 40 × 40','Rail ×4   300 × 60 × 20','Top ×1   500 × 400 × 18'].forEach(function(s,i){o+=tx(100,112+i*20,s,{a:'start',s:13,w:700,c:C.slate});});
+ return F('CUTTING LIST',o,'Cutting list = every part you need, with sizes and quantities','You read it before you start cutting');});
+d(['Danish oil','Varnish','Lacquer','Wood stain','Beeswax finish','Finishing'],function(){
+ var o=rc(60,134,280,26,W1,C.navy,{w:1.8})+grain(60,134,280,26,2)+rc(60,118,280,16,'#fbbf24',C.navy,{w:1.2})+rc(60,104,280,14,'#fde68a',C.navy,{w:1.2})+tx(200,96,'finish (coats)',{s:12,w:800,c:C.red})+tx(200,176,'bare wood',{s:12,w:700,c:C.slate})+tx(200,74,'protects the wood and improves how it looks',{s:12,w:700,c:C.slate});
+ return F('FINISHING',o,'Finishing = a coating that protects wood and improves its look','Varnish, lacquer, oil, wax and stain are finishes');});
+d(['Wasting (waste wood)'],function(){
+ var o=rc(60,80,280,60,W1,C.navy,{w:1.8})+rc(130,80,60,40,'#fecaca',C.red,{d:'5 3',w:1.5})+tx(160,108,'× × ×',{s:18,w:900,c:C.red})+tx(200,164,'cross = waste wood to remove',{s:13,w:800,c:C.red});
+ return F('WASTING',o,'Wasting = removing the unwanted wood between saw cuts','Not "wasting" time or money');});
+d(['Chopping (mortise chopping)','Paring'],function(){
+ var o=tx(110,64,'PARING',{s:13,w:800,c:C.blue})+rc(40,112,140,36,W1,C.navy,{w:1.8})+pg('70,98 130,84 140,94 82,110','#cbd5e1',C.navy,1.4)+ar(124,76,116,92,C.red)+tx(110,168,'push by hand: thin slices',{s:12,w:700,c:C.slate})+tx(290,64,'CHOPPING',{s:13,w:800,c:C.blue})+rc(220,112,140,36,W1,C.navy,{w:1.8})+rc(284,92,12,56,'#cbd5e1',C.navy,{w:1.4})+rc(272,76,36,16,'#a8742f',C.navy,{w:1.4})+ar(290,68,290,76,C.red)+tx(290,168,'mallet hits the chisel',{s:12,w:700,c:C.slate});
+ return F('PARING AND CHOPPING',o,'Paring = thin slices with hand pressure. Chopping = hit with a mallet','');});
+})();
+
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,sd=X.sdef,S='Practical Metalworking';
+var ST='#cbd5e1',ST2='#94a3b8',ST3='#64748b',CU='#d98b4a';
+function d(n,f){sd(S,n,f);}
+function lab(x,y,s,c,a,sz){return tx(x,y,s,{a:a||'middle',s:sz||13,w:800,c:c||C.red});}
+// ---------- LATHE ----------
+function chuck(){return rc(26,62,34,100,ST3,C.navy,{w:1.8})+rc(60,76,16,72,ST2,C.navy,{w:1.5})+tx(43,176,'chuck',{s:12,w:700,c:C.slate});}
+function tool(x,y){return pg((x)+','+(y)+' '+(x+34)+','+(y-10)+' '+(x+34)+','+(y-30)+' '+(x+8)+','+(y-30),'#475569',C.navy,1.5);}
+d(['Facing'],function(){var o=chuck()+rc(76,86,230,52,ST,C.navy,{w:2})+pg('330,70 316,70 306,96 306,128 316,134 330,134','#475569',C.navy,1.5)+rc(306,86,4,52,C.red)+ar(322,62,322,150,C.red,2.5)+lab(326,168,'tool moves across the end',C.red,'end')+tx(190,108,'bar spinning',{s:12,w:700,c:C.slate}).replace('text-anchor="middle"','text-anchor="middle"');
+ return F('FACING',o,'Facing = cutting the end of a spinning bar flat','The tool moves across, at 90° to the bar');});
+d(['Parallel turning'],function(){var o=chuck()+rc(76,86,230,52,'#fff',C.navy,{w:1.2,d:'5 4'})+rc(76,96,230,32,ST,C.navy,{w:2})+pg('200,70 230,70 230,86 214,86','#475569',C.navy,1.5)+dar(76,82,306,82,'#fff',0.1)+ar(150,152,290,152,C.red,2.5)+lab(220,170,'tool moves along the bar',C.red)+tx(190,80,'',{});
+ o=chuck()+rc(76,80,230,64,'#fff',C.navy,{w:1.2,d:'5 4'})+rc(76,90,230,44,ST,C.navy,{w:2})+pg('222,58 246,58 246,80 232,90 222,90','#475569',C.navy,1.5)+ar(250,68,160,68,C.red,2.5)+lab(220,168,'smaller diameter, same along the whole length',C.slate,'middle',12);
+ return F('PARALLEL TURNING',o,'Parallel turning = making the bar the same diameter along its length','The tool moves along the bar');});
+d(['Step turning'],function(){var o=chuck()+pg('76,90 160,90 160,100 306,100 306,124 160,124 160,134 76,134',ST,C.navy,2)+tx(118,116,'big',{s:12,w:700,c:C.slate})+tx(236,116,'small',{s:12,w:700,c:C.slate})+ar(160,70,160,88,C.red)+lab(160,64,'step (shoulder)',C.red);
+ return F('STEP TURNING',o,'Step turning = two or more diameters on one bar','Each change in diameter is a step (shoulder)');});
+d(['Taper turning'],function(){var o=chuck()+pg('76,86 306,102 306,122 76,138',ST,C.navy,2)+ln(76,112,306,112,C.slate,1,'5 4')+lab(200,164,'diameter changes gradually: a cone',C.red);
+ return F('TAPER TURNING',o,'Taper turning = a cone shape: the diameter changes gradually','The compound slide is set at an angle');});
+d(['Parting off'],function(){var o=chuck()+rc(76,90,150,44,ST,C.navy,{w:2})+rc(240,90,80,44,ST2,C.navy,{w:2})+rc(226,90,14,44,'#fff',C.navy,{w:1.4})+pg('226,60 240,60 240,96 226,96','#475569',C.navy,1.5)+ar(233,54,233,40,C.red,0.1)+lab(300,164,'finished part drops off',C.red,'end')+lab(120,164,'bar',C.slate,'middle',12);
+ return F('PARTING OFF',o,'Parting off = cutting right through to separate the finished part','The tool cuts straight in');});
+d(['Knurling'],function(){var o=chuck()+rc(76,86,230,52,ST,C.navy,{w:2});for(var i=0;i<12;i++){o+=ln(200+i*8,86,184+i*8,138,C.slate,1.2)+ln(184+i*8,86,200+i*8,138,C.slate,1.2);}o+=lab(240,70,'diamond pattern',C.red)+tx(160,160,'smooth',{s:12,w:700,c:C.slate});
+ return F('KNURLING',o,'Knurling = a pattern of small ridges pressed in for grip','Used on handles and knobs');});
+d(['Three-jaw chuck','Four-jaw chuck'],function(){
+ function j3(){var o=ci(100,112,40,ST3,C.navy,2)+ci(100,112,15,'#fff',C.navy,1.5);for(var i=0;i<3;i++){var a=i*2*Math.PI/3-Math.PI/2;o+=pg([[100+16*Math.cos(a)-6*Math.sin(a),112+16*Math.sin(a)+6*Math.cos(a)],[100+16*Math.cos(a)+6*Math.sin(a),112+16*Math.sin(a)-6*Math.cos(a)],[100+30*Math.cos(a)+6*Math.sin(a),112+30*Math.sin(a)-6*Math.cos(a)],[100+30*Math.cos(a)-6*Math.sin(a),112+30*Math.sin(a)+6*Math.cos(a)]].map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' '),ST2,C.navy,1.4);}return o;}
+ var o=j3()+tx(100,172,'THREE-JAW',{s:13,w:800,c:C.blue})+tx(100,58,'',{});
+ o+=ci(300,112,40,ST3,C.navy,2)+rc(286,98,28,28,'#fff',C.navy,{w:1.5});[[0,-1],[1,0],[0,1],[-1,0]].forEach(function(p){o+=rc(300+p[0]*24-(p[0]?5:8),112+p[1]*24-(p[1]?5:8),(p[0]?10:16),(p[1]?10:16),ST2,C.navy,{w:1.2});});
+ o+=tx(300,172,'FOUR-JAW',{s:13,w:800,c:C.blue})+tx(100,66,'self-centring: round bar',{s:11.5,w:700,c:C.slate})+tx(300,66,'jaws move one by one: square bar',{s:11.5,w:700,c:C.slate});
+ return F('LATHE CHUCKS',o,'Three-jaw = jaws move together (round or hexagon bar)','Four-jaw = each jaw moves alone (square or odd shapes)');});
+// ---------- HOLES & THREADS ----------
+d(['Blind hole'],function(){var o=rc(40,70,140,90,ST,C.navy,{w:2})+rc(100,70,22,64,'#fff',C.navy,{w:1.6})+tx(110,178,'blind hole: stops inside',{s:12,w:800,c:C.red})+rc(220,70,140,90,ST,C.navy,{w:2})+rc(280,70,22,90,'#fff',C.navy,{w:1.6})+tx(290,178,'through hole: all the way',{s:12,w:700,c:C.slate});
+ return F('BLIND HOLE',o,'Blind hole = a hole that does not go all the way through','Not "blind" as in unable to see');});
+d(['Countersink','Countersinking'],function(){var o=rc(70,70,110,90,ST,C.navy,{w:2})+pg('110,70 150,70 138,90 122,90','#fff',C.navy,1.5)+rc(122,90,16,70,'#fff',C.navy,{w:1.4})+tx(125,178,'cone-shaped recess',{s:12,w:800,c:C.red})+rc(240,70,110,90,ST,C.navy,{w:2})+pg('280,70 320,70 308,90 292,90',ST2,C.navy,1.5)+rc(292,90,16,50,ST3,C.navy,{w:1.4})+tx(295,178,'screw head sits flush',{s:12,w:800,c:C.blue});
+ return F('COUNTERSINK',o,'Countersink = a cone-shaped recess so a screw head sits flush','');});
+d(['Clearance hole'],function(){var o=rc(60,92,120,40,ST,C.navy,{w:2})+rc(98,92,44,40,'#fff',C.navy,{w:1.4})+rc(108,70,24,100,ST3,C.navy,{w:1.5})+rc(86,60,68,12,ST3,C.navy,{w:1.5})+dar(98,176,142,176,C.red,2)+dar(108,184,132,184,C.blue,0.1)+lab(270,108,'hole is bigger',C.red)+lab(270,124,'than the bolt',C.red)+lab(270,148,'bolt passes through',C.slate,'middle',12)+lab(270,162,'freely (no thread)',C.slate,'middle',12);
+ return F('CLEARANCE HOLE',o,'Clearance hole = bigger than the bolt, so the bolt passes freely','');});
+d(['Tap','Tap wrench','Tapping drill size','Taper tap, second tap, and plug tap'],function(){var o=rc(40,70,120,100,ST,C.navy,{w:2})+rc(80,70,40,100,'#fff',C.navy,{w:1.4});for(var i=0;i<8;i++)o+=ln(80,80+i*11,86,84+i*11,C.navy,1.6)+ln(120,80+i*11,114,84+i*11,C.navy,1.6);
+ o+=tx(100,180,'internal thread (inside the hole)',{s:11.5,w:800,c:C.red})+rc(244,56,28,16,ST3,C.navy,{r:3,w:1.4})+rc(252,72,12,80,ST2,C.navy,{w:1.5})+pg('252,152 264,152 264,168 252,168',ST2,C.navy,1.4);for(var j=0;j<6;j++)o+=ln(252,100+j*9,264,104+j*9,C.navy,1.4);
+ o+=tx(258,180,'tap = cuts the thread',{s:11.5,w:800,c:C.blue});
+ return F('TAP',o,'Tap = a tool that cuts a screw thread INSIDE a hole','First drill the hole (tapping drill size), then tap it');});
+d(['Die','Die stock'],function(){var o=rc(50,92,160,36,ST,C.navy,{w:2});for(var i=0;i<12;i++)o+=ln(60+i*12,92,66+i*12,128,C.navy,1.4);o+=tx(130,150,'external thread (outside the rod)',{s:11.5,w:800,c:C.red})+ci(300,108,34,ST3,C.navy,2)+ci(300,108,14,'#fff',C.navy,1.5)+tx(300,166,'die = cuts the thread',{s:11.5,w:800,c:C.blue})+tx(300,180,'on the outside',{s:11.5,w:800,c:C.blue});
+ return F('DIE',o,'Die = a tool that cuts a screw thread on the OUTSIDE of a rod','Not "to die" or a dice');});
+d(['Pilot hole'],function(){var o=rc(60,70,100,80,ST,C.navy,{w:2})+rc(104,70,12,80,'#fff',C.navy,{w:1.4})+tx(110,168,'1  small hole first',{s:12,w:800,c:C.blue})+rc(240,70,100,80,ST,C.navy,{w:2})+rc(270,70,40,80,'#fff',C.navy,{w:1.4})+tx(290,168,'2  big drill follows it',{s:12,w:800,c:C.blue})+ar(170,110,230,110,C.red,2.5);
+ return F('PILOT HOLE',o,'Pilot hole = a small first hole that guides a bigger drill','It makes drilling easier and more accurate');});
+d(['Reaming'],function(){var o=rc(50,70,120,80,ST,C.navy,{w:2})+rc(98,70,24,80,'#fff',C.navy,{w:1.2,d:'4 3'})+rc(94,70,32,80,'none',C.red,{w:1.8})+tx(110,168,'rough hole → bigger, smooth, exact',{s:11.5,w:800,c:C.red})+rc(250,70,120,80,ST,C.navy,{w:2})+rc(298,70,24,80,'#fff',C.navy,{w:1.4})+tx(310,168,'drilled hole',{s:11.5,w:700,c:C.slate});
+ return F('REAMING',o,'Reaming = making a drilled hole slightly bigger and very accurate','A reamer gives a smooth, exact hole');});
+d(['Deburring'],function(){var o=rc(50,90,130,50,ST,C.navy,{w:2})+pg('180,90 196,76 196,100 180,100',ST2,C.navy,1.4)+lab(210,74,'sharp burr',C.red,'start')+ar(206,80,190,90,C.red)+rc(250,90,130,50,ST,C.navy,{w:2})+lab(310,168,'smooth edge',C.green)+lab(115,168,'after cutting',C.slate,'middle',12);
+ return F('DEBURRING',o,'Deburring = removing the sharp edge left after cutting','A burr can cut your hand');});
+d(['Swarf'],function(){var o=rc(60,120,160,30,ST,C.navy,{w:2});for(var i=0;i<5;i++)o+='<path d="M'+(250+i*18)+' 150 q-12 -16 0 -26 q14 -8 6 -22" fill="none" stroke="'+ST3+'" stroke-width="4" stroke-linecap="round"/>';o+=lab(290,176,'swarf = sharp metal curls',C.red)+tx(140,110,'drilling / turning',{s:12,w:700,c:C.slate});
+ return F('SWARF',o,'Swarf = the sharp metal chips and curls made by cutting','Brush it away. Never use your hand');});
+d(['Cutting fluid (coolant)'],function(){var o=rc(150,60,24,70,ST3,C.navy,{w:1.5})+pg('150,130 174,130 162,150',ST2,C.navy,1.4)+rc(90,150,160,20,ST,C.navy,{w:2})+'<path d="M232 62 q10 20 0 36" fill="none" stroke="'+C.blue+'" stroke-width="5" stroke-linecap="round"/>'+ci(232,104,5,C.blue)+lab(300,86,'cutting fluid',C.blue,'start')+lab(300,102,'cools and reduces',C.slate,'start',12)+lab(300,116,'friction',C.slate,'start',12);
+ return F('CUTTING FLUID',o,'Cutting fluid = a liquid that cools the tool and reduces friction','It makes the tool last longer');});
+// ---------- RIVETS ----------
+d(['Snap-head rivet','Rivet'],function(){var o=rc(50,92,110,16,ST,C.navy,{w:2})+rc(50,108,110,16,ST2,C.navy,{w:2})+'<path d="M100 76 a14 14 0 0 1 28 0 z" fill="'+ST3+'" stroke="'+C.navy+'" stroke-width="1.5"/><rect x="104" y="76" width="20" height="68" fill="'+ST3+'" stroke="'+C.navy+'"/>'+tx(110,168,'1  rivet through both plates',{s:11.5,w:700,c:C.slate})+ar(176,110,214,110,C.red,2.5)+rc(230,92,110,16,ST,C.navy,{w:2})+rc(230,108,110,16,ST2,C.navy,{w:2})+'<path d="M272 76 a14 14 0 0 1 28 0 z" fill="'+ST3+'" stroke="'+C.navy+'"/><rect x="276" y="76" width="20" height="52" fill="'+ST3+'" stroke="'+C.navy+'"/><path d="M270 138 a16 12 0 0 0 32 0 z" fill="'+ST3+'" stroke="'+C.navy+'" stroke-width="1.5"/><rect x="276" y="126" width="20" height="8" fill="'+ST3+'"/>'+tx(285,168,'2  hammer the tail into a dome',{s:11.5,w:700,c:C.slate});
+ return F('SNAP-HEAD RIVET',o,'Rivet = a metal pin that joins parts permanently','The tail is hammered into a second dome head');});
+d(['Blind rivet','Mandrel','Pop-rivet gun'],function(){var o=rc(40,100,140,14,ST,C.navy,{w:2})+rc(40,114,140,14,ST2,C.navy,{w:2})+rc(96,90,26,50,ST3,C.navy,{w:1.5})+rc(106,58,6,52,C.red,null)+tx(76,70,'mandrel',{a:'end',s:13,w:800,c:C.red})+ar(80,72,104,84,C.red)+tx(110,168,'1  pulled by the gun',{s:11.5,w:700,c:C.slate})+rc(230,100,140,14,ST,C.navy,{w:2})+rc(230,114,140,14,ST2,C.navy,{w:2})+rc(276,90,26,16,ST3,C.navy,{w:1.5})+rc(268,128,42,14,ST3,C.navy,{r:4,w:1.5})+tx(300,168,'2  mandrel snaps off',{s:11.5,w:700,c:C.slate});
+ return F('BLIND RIVET',o,'Blind rivet = fitted from one side only, using a pull-through mandrel','It is also called a pop rivet');});
+// ---------- JOINING ----------
+function join3(hi){var names=['SOLDERING','BRAZING','WELDING'],o='';
+ for(var i=0;i<3;i++){var x=24+i*124,on=names[i]==hi;o+=rc(x,56,112,112,on?C.pam:'#f8fafc',on?C.amber:C.line,{r:8,w:on?2:1})+tx(x+56,76,names[i],{s:13,w:900,c:on?C.amber:C.slate})+rc(x+14,112,36,20,ST,C.navy,{w:1.6})+rc(x+62,112,36,20,ST,C.navy,{w:1.6});
+  if(i<2)o+=rc(x+50,114,12,16,i==0?'#a3a3a3':'#d4a017',null)+tx(x+56,152,i==0?'filler melts only':'filler melts only',{s:11,w:700,c:C.slate});
+  else o+=pg((x+50)+',112 '+(x+62)+',112 '+(x+62)+',132 '+(x+50)+',132','#f97316','none',0)+tx(x+56,152,'parent metal melts',{s:11,w:700,c:C.slate});
+  o+=tx(x+56,100,i==0?'low heat':i==1?'medium heat':'highest heat',{s:11,w:700,c:i==2?C.red:C.blue});}
+ return o;}
+d(['Soldering','Soft soldering'],function(){return F('SOLDERING',join3('SOLDERING'),'Soldering = joining with a melted filler metal that flows in','The parent metal does not melt');});
+d(['Brazing','Silver soldering'],function(){return F('BRAZING',join3('BRAZING'),'Brazing = joining with a melted brass filler (spelter)','The parent metal does not melt');});
+d(['Welding','Parent metal','Filler metal'],function(){return F('WELDING',join3('WELDING'),'Welding = the parent metals melt and fuse together','A filler metal is often added');});
+d(['Capillary action (brazing & soldering)'],function(){var o=rc(50,70,120,30,ST,C.navy,{w:2})+rc(50,114,120,30,ST,C.navy,{w:2})+rc(50,100,120,14,'#fff',null)+'<rect x="50" y="100" width="70" height="14" fill="#f4c542"/>'+ar(190,107,126,107,C.red,2.5)+tx(260,100,'melted filler is drawn',{s:12,w:800,c:C.red})+tx(260,116,'into the narrow gap',{s:12,w:800,c:C.red})+tx(110,168,'a thin, clean gap is needed',{s:12,w:700,c:C.slate});
+ return F('CAPILLARY ACTION',o,'Capillary action = melted filler is drawn into a narrow joint gap','It works even against gravity');});
+d(['Flux'],function(){var o=rc(60,110,280,24,ST,C.navy,{w:2})+rc(60,106,280,6,'#bbf7d0',null)+ci(100,104,4,'#a16207')+ci(170,104,4,'#a16207')+ci(240,104,4,'#a16207')+tx(200,84,'oxide (dirt)',{s:12,w:700,c:'#a16207'})+tx(200,152,'flux dissolves oxide and keeps the metal clean when hot',{s:11.5,w:800,c:C.red});
+ return F('FLUX',o,'Flux = a paste that cleans the joint and helps the filler flow','Not "flux" as in change');});
+d(['Tinning'],function(){var o=pg('130,66 270,86 262,108 122,90',ST3,C.navy,1.5)+pg('262,108 298,100 292,114',ST3,C.navy,1.5)+pg('262,108 300,102 296,92 270,86','#d4d4d8',C.navy,1.5)+tx(200,150,'thin bright layer of solder on the tip',{s:12,w:800,c:C.red});
+ return F('TINNING',o,'Tinning = covering the iron or the joint with a thin layer of solder','Not putting food in a tin');});
+d(['MIG welding','TIG welding','MMA welding'],function(){var o='';var t=[['MIG','wire fed','+ shielding gas'],['TIG','tungsten rod','(does not melt)'],['MMA','coated stick','makes slag']];
+ for(var i=0;i<3;i++){var x=24+i*124;o+=rc(x,60,112,108,'#f8fafc',C.line,{r:8,w:1})+tx(x+56,80,t[i][0],{s:15,w:900,c:C.blue})+rc(x+14,138,84,12,ST,C.navy,{w:1.5})+ln(x+56,96,x+56,134,i==1?'#a16207':C.navy,i==2?7:3)+(i==0?'<path d="M'+(x+34)+' 100 Q'+(x+56)+' 112 '+(x+78)+' 100" fill="none" stroke="'+C.blue+'" stroke-width="2" stroke-dasharray="3 3"/>':'')+tx(x+56,160,t[i][1],{s:11,w:700,c:C.slate});}
+ return F('ARC WELDING TYPES',o,'MIG = wire + gas. TIG = tungsten rod. MMA = coated stick','Each makes an electric arc to melt the metal');});
+d(['Weld bead','Weld penetration','Heat-affected zone','Tack weld'],function(){var o=rc(60,96,120,40,ST,C.navy,{w:2})+rc(220,96,120,40,ST,C.navy,{w:2})+'<path d="M180 96 Q200 74 220 96 L220 118 Q200 128 180 118 Z" fill="#f4c542" stroke="'+C.navy+'" stroke-width="1.8"/>'+'<path d="M150 96 H250 V136 H150 Z" fill="rgba(249,115,22,0.18)" stroke="none"/>'+lab(200,70,'weld bead',C.red)+ar(200,76,200,92,C.red)+dar(250,96,250,120,C.blue,2)+tx(262,114,'penetration',{a:'start',s:12,w:800,c:C.blue})+tx(110,160,'orange area = heat-affected zone',{s:12,w:800,c:'#c2410c'})+tx(110,176,'(metal changed by heat, not melted)',{s:11,w:700,c:C.slate});
+ return F('WELD ANATOMY',o,'Weld bead = the line of metal made by welding','Penetration = how deep the weld goes into the metal');});
+d(['Slag'],function(){var o=rc(60,110,280,26,ST,C.navy,{w:2})+'<path d="M90 110 Q200 70 310 110 Z" fill="#f4c542" stroke="'+C.navy+'" stroke-width="1.8"/>'+'<path d="M96 108 Q200 62 304 108 Q200 86 96 108 Z" fill="#78716c" stroke="'+C.navy+'" stroke-width="1.5"/>'+lab(200,62,'slag = glassy crust',C.red)+tx(200,160,'chip it off after MMA welding',{s:12,w:700,c:C.slate});
+ return F('SLAG',o,'Slag = a glassy crust that forms on top of an MMA weld','Remove it with a chipping hammer');});
+d(['Weld distortion'],function(){var o=pg('60,110 200,110 200,124 60,124',ST,C.navy,2)+tx(130,150,'flat before welding',{s:12,w:700,c:C.slate})+'<path d="M230 100 Q300 130 370 100 L370 114 Q300 144 230 114 Z" fill="'+ST+'" stroke="'+C.navy+'" stroke-width="2"/>'+tx(300,166,'bent by uneven heating',{s:12,w:800,c:C.red});
+ return F('WELD DISTORTION',o,'Weld distortion = unwanted change of shape caused by welding heat','Tack welds help to stop it');});
+// ---------- HEAT TREATMENT ----------
+function graph(path,labels,hi){var o=ln(50,60,50,170,C.navy,2)+ln(50,170,370,170,C.navy,2)+tx(40,66,'hot',{a:'end',s:12,w:700,c:C.slate})+tx(40,168,'cold',{a:'end',s:12,w:700,c:C.slate})+tx(370,186,'time →',{a:'end',s:12,w:700,c:C.slate})+'<path d="'+path+'" fill="none" stroke="'+(hi||C.red)+'" stroke-width="3.5" stroke-linecap="round"/>';labels.forEach(function(l){o+=tx(l[0],l[1],l[2],{s:12,w:800,c:l[3]||C.slate});});return o;}
+d(['Annealing'],function(){return F('ANNEALING',graph('M50 168 L110 80 L170 80 C240 90 300 140 360 166',[[140,68,'heat','#c2410c'],[262,150,'cool SLOWLY (in the furnace)',C.blue]]),'Annealing = heat the metal, then cool it very slowly to soften it','It makes the metal soft and easy to work');});
+d(['Hardening','Quenching'],function(){return F('HARDENING',graph('M50 168 L110 80 L190 80 L206 166 L360 166',[[150,68,'heat','#c2410c'],[290,148,'QUENCH: cool quickly',C.blue],[290,114,'in water or oil',C.blue]]),'Hardening = heat steel, then cool it very quickly (quench)','It makes steel hard but brittle');});
+d(['Tempering'],function(){return F('TEMPERING',graph('M50 168 L110 80 L190 80 L206 166 L240 166 L270 118 L320 118 L350 166',[[150,68,'harden','#c2410c'],[296,106,'reheat gently',C.red],[330,180,'',C.slate]]),'Tempering = gently reheat hardened steel to reduce brittleness','It makes the steel tougher');});
+d(['Normalising'],function(){return F('NORMALISING',graph('M50 168 L110 80 L170 80 C220 84 250 120 280 166 L360 166',[[140,68,'heat','#c2410c'],[300,140,'cool in AIR',C.blue]]),'Normalising = heat steel, then let it cool in the air','It makes the structure even and removes stress');});
+d(['Case hardening'],function(){var o=rc(120,60,160,110,'#cbd5e1',C.navy,{w:2})+rc(146,86,108,58,'#94a3b8',null)+rc(120,60,160,110,'none','#1e293b',{w:7})+tx(200,120,'tough core',{s:13,w:800,c:C.navy})+ar(310,70,282,76,C.red)+tx(314,72,'hard outer',{a:'start',s:13,w:800,c:C.red})+tx(314,88,'skin',{a:'start',s:13,w:800,c:C.red});
+ return F('CASE HARDENING',o,'Case hardening = a hard outer surface with a tough, softer core','Good for gears and pins that wear');});
+// ---------- MARKING OUT ----------
+d(['Scriber'],function(){var o=rc(40,110,320,46,ST,C.navy,{w:2})+pg('140,60 150,64 120,112 116,108','#475569',C.navy,1.4)+ln(60,112,340,112,C.red,2.2)+tx(230,92,'scratches a fine line',{s:13,w:800,c:C.red})+tx(200,176,'steel tool with a hard, sharp point',{s:12,w:700,c:C.slate});
+ return F('SCRIBER',o,'Scriber = a pointed tool that scratches fine lines on metal','');});
+d(['Centre punch'],function(){var o=rc(40,128,320,34,ST,C.navy,{w:2})+rc(190,70,16,44,'#475569',C.navy,{w:1.5})+pg('190,114 206,114 198,130',ST3,C.navy,1.4)+rc(180,48,36,22,ST3,C.navy,{w:1.4})+tx(198,176,'',{})+ci(280,128,5,C.red)+ar(268,92,280,122,C.red)+tx(284,88,'small dent to',{a:'start',s:13,w:800,c:C.red})+tx(284,104,'guide the drill',{a:'start',s:13,w:800,c:C.red});
+ return F('CENTRE PUNCH',o,'Centre punch = makes a small dent to guide a drill','You hit it with a hammer');});
+d(['Dot punch'],function(){var o=rc(40,100,320,50,ST,C.navy,{w:2})+ln(50,124,350,124,C.red,2);for(var i=0;i<9;i++)o+=ci(60+i*33,124,3.5,C.navy);o+=tx(200,92,'dots along the scribed line',{s:13,w:800,c:C.red})+tx(200,172,'so the line stays visible when you cut',{s:12,w:700,c:C.slate});
+ return F('DOT PUNCH',o,'Dot punch = makes small dots along a scribed line so it stays visible','');});
+d(['Dividers'],function(){var o=ci(250,112,46,'none',C.red,2.5)+ln(250,66,250,66)+pg('240,60 260,60 250,112','#475569',C.navy,1.6)+pg('250,112 262,66 250,112','#475569',C.navy,1)+ln(250,60,296,112,ST3,5)+tx(250,52,'pivot',{s:12,w:700,c:C.slate})+ci(250,112,3,C.navy)+tx(120,112,'two sharp points',{s:13,w:800,c:C.slate})+tx(120,130,'draw circles and arcs',{s:13,w:800,c:C.red});
+ o=ci(260,116,44,'none',C.red,2.5)+ln(260,56,260,116,ST3,6)+ln(260,56,304,116,ST3,6)+ci(260,56,6,'#475569',C.navy,1.5)+ci(260,116,3,C.navy)+tx(110,110,'two sharp points:',{s:13,w:800,c:C.slate})+tx(110,128,'scribe circles and arcs',{s:13,w:800,c:C.red});
+ return F('DIVIDERS',o,'Dividers = a two-point tool to scribe circles and copy distances','Not "dividers" that separate a room');});
+d(['Odd-leg calipers'],function(){var o=rc(40,110,320,46,ST,C.navy,{w:2})+ln(70,76,70,110,ST3,6)+pg('70,76 86,76 86,86 70,86','#475569',C.navy,1.2)+ln(70,86,40,110,'none')+ln(80,108,330,108,C.red,2.2)+tx(210,96,'scribes a line parallel to the edge',{s:12,w:800,c:C.red})+tx(200,176,'one bent leg runs along the edge',{s:12,w:700,c:C.slate});
+ return F('ODD-LEG CALIPERS',o,'Odd-leg calipers = scribe a line parallel to an edge','One bent leg rides along the edge');});
+d(['Engineer\'s square'],function(){var o=rc(60,120,280,40,ST,C.navy,{w:2})+rc(70,70,16,92,'#475569',C.navy,{w:1.5})+rc(86,70,6,90,'#fff',null)+ln(92,74,92,140,C.red,2)+tx(250,96,'90°',{s:18,w:900,c:C.red})+tx(250,176,'accurate right angle',{s:12,w:700,c:C.slate});
+ return F('ENGINEER\'S SQUARE',o,'Engineer\'s square = checks and marks an accurate 90° on metal','');});
+d(['Steel rule'],function(){var o=rc(50,92,300,36,'#e5e7eb',C.navy,{w:2});for(var i=0;i<=30;i++)o+=ln(60+i*9.6,92,60+i*9.6,92+(i%5==0?16:9),C.navy,1);o+=tx(60,152,'0',{s:12,w:700})+tx(348,152,'30 cm',{a:'end',s:12,w:700,c:C.slate})+tx(200,76,'a metal ruler: measures in mm',{s:13,w:800,c:C.slate});
+ return F('STEEL RULE',o,'Steel rule = a metal ruler for measuring and marking straight lines','');});
+d(['Engineer\'s blue (marking-out fluid)'],function(){var o=rc(60,112,280,38,ST,C.navy,{w:2})+rc(60,112,280,38,'rgba(37,99,235,0.45)',null)+ln(80,132,320,132,'#fff',2.4)+tx(200,98,'blue dye on the metal',{s:13,w:800,c:C.blue})+tx(200,172,'scribed lines show up clearly',{s:12,w:800,c:C.slate});
+ return F('ENGINEER\'S BLUE',o,'Engineer\'s blue = blue dye so scribed lines are easy to see','');});
+d(['Surface plate'],function(){var o=pg('50,120 330,120 360,140 80,140',ST2,C.navy,1.8)+rc(50,140,280,14,ST3,C.navy,{w:1.8})+rc(150,92,70,28,ST,C.navy,{w:1.8})+tx(185,86,'workpiece',{s:12,w:700,c:C.slate})+tx(200,176,'very flat block = the reference for marking out',{s:12,w:800,c:C.red});
+ return F('SURFACE PLATE',o,'Surface plate = a very flat block used as a reference surface','Not a plate for food');});
+d(['Vee block (V-block)'],function(){var o=pg('120,100 280,100 280,150 120,150',ST2,C.navy,2)+pg('170,100 230,100 200,130','#fff',C.navy,1.6)+ci(200,108,18,ST,C.navy,2)+tx(200,172,'V-groove holds round bar still',{s:13,w:800,c:C.red})+tx(200,86,'round bar',{s:12,w:700,c:C.slate});
+ return F('V-BLOCK',o,'V-block = a steel block with a V groove that holds round bar','');});
+d(['Vernier height gauge'],function(){var o=rc(80,150,100,18,ST3,C.navy,{w:1.8})+rc(124,62,12,88,ST2,C.navy,{w:1.5})+rc(114,92,32,22,ST,C.navy,{w:1.5})+ln(146,100,230,100,C.red,2.5)+tx(268,104,'scribes at',{a:'start',s:12,w:800,c:C.red})+tx(268,120,'a set height',{a:'start',s:12,w:800,c:C.red})+tx(130,184,'heavy base',{s:12,w:700,c:C.slate});
+ return F('VERNIER HEIGHT GAUGE',o,'Vernier height gauge = scribes accurate lines at a set height','Used on a surface plate');});
+d(['Datum','Datum edge'],function(){var o=rc(80,70,240,90,ST,C.navy,{w:2})+ln(80,70,80,160,C.red,5)+tx(200,52,'',{});[[140,'30'],[200,'60'],[270,'90']].forEach(function(p){o+=ln(p[0],100,p[0],118,C.navy,2)+dar(80,128,p[0],128,C.blue,1.6)+tx((80+p[0])/2+0,148,p[1],{s:12,w:800,c:C.blue});});o+=tx(60,116,'datum',{a:'end',s:13,w:800,c:C.red})+tx(60,132,'edge',{a:'end',s:13,w:800,c:C.red});
+ return F('DATUM EDGE',o,'Datum = the starting edge that all measurements are taken from','');});
+// ---------- MEASURING ----------
+d(['Vernier calipers'],function(){var o=rc(40,96,320,16,ST,C.navy,{w:1.8})+rc(40,60,18,52,ST,C.navy,{w:1.8})+rc(150,66,18,70,ST2,C.navy,{w:1.8})+rc(150,96,70,26,ST2,C.navy,{w:1.8})+tx(50,52,'fixed jaw',{a:'start',s:12,w:800,c:C.blue})+ar(112,52,160,70,C.red)+tx(118,48,'sliding jaw',{a:'start',s:12,w:800,c:C.red})+tx(80,134,'main scale',{s:12,w:800,c:C.blue})+tx(190,144,'vernier scale',{s:12,w:800,c:C.red})+tx(200,170,'measures outside, inside and depth very accurately',{s:11.5,w:700,c:C.slate});
+ return F('VERNIER CALIPERS',o,'Vernier calipers = measure outside, inside and depth accurately','Read the main scale, then the vernier scale');});
+d(['Micrometer'],function(){var o='<path d="M120 70 H200 V120 H120" fill="none" stroke="'+ST3+'" stroke-width="12" stroke-linejoin="round"/>'+rc(112,78,10,28,ST,C.navy,{w:1.4})+rc(122,86,70,12,ST2,C.navy,{w:1.4})+rc(192,80,50,24,ST,C.navy,{w:1.5})+rc(242,82,16,20,ST3,C.navy,{w:1.4})+tx(120,56,'anvil',{s:12,w:800,c:C.blue})+tx(168,62,'frame',{s:12,w:700,c:C.slate})+tx(230,66,'thimble',{s:12,w:800,c:C.red})+tx(258,128,'ratchet',{s:12,w:800,c:C.slate})+tx(200,164,'turn the screw until the jaws touch',{s:12,w:700,c:C.slate});
+ return F('MICROMETER',o,'Micrometer = a precise tool that measures small sizes with a screw','It reads to 0.01 mm');});
+// ---------- FILING, CUTTING, BENDING ----------
+d(['Cross filing','Draw filing','Filing','File'],function(){var o=rc(60,92,130,50,ST,C.navy,{w:2})+rc(66,76,90,12,ST3,C.navy,{w:1.4})+ar(96,128,150,108,C.red,2.2)+tx(130,166,'CROSS FILING',{s:12,w:800,c:C.blue})+tx(130,186,'diagonal strokes',{s:11,w:700,c:C.slate})+rc(232,92,130,50,ST,C.navy,{w:2})+rc(236,64,110,12,ST3,C.navy,{w:1.4})+dar(240,58,350,58,C.red,2.2)+tx(300,166,'DRAW FILING',{s:12,w:800,c:C.blue})+tx(300,172,'',{});
+ return F('FILING',o,'Cross filing removes metal. Draw filing gives a smooth finish','Draw filing: file held across, pulled along the work');});
+d(['Pinning (file pinning)','File card'],function(){var o=rc(60,96,280,18,ST3,C.navy,{w:1.6});for(var i=0;i<14;i++)o+=pg((62+i*20)+',96 '+(70+i*20)+',86 '+(76+i*20)+',96',ST2,C.navy,1);[3,7,10].forEach(function(i){o+=ci(70+i*20,90,4,'#475569');});o+=ar(236,70,226,86,C.red)+tx(238,64,'pinning: metal bits stuck',{a:'start',s:12,w:800,c:C.red})+tx(200,150,'a file card (wire brush) cleans the teeth',{s:12,w:800,c:C.blue});
+ return F('FILE PINNING',o,'Pinning = small metal bits stuck in the file teeth','They scratch the work. Clean with a file card');});
+d(['Hacksaw','Junior hacksaw'],function(){var o=rc(70,70,260,10,ST3,C.navy,{w:1.4})+rc(40,70,32,50,'#6b4423',C.navy,{w:1.5})+ln(330,70,330,120,ST3,8)+ln(72,118,330,118,ST,3)+tx(200,100,'fine-toothed blade in a frame',{s:12,w:700,c:C.slate})+ar(260,140,214,140,C.red,2.2)+tx(266,144,'cuts on the push',{a:'start',s:12,w:800,c:C.red})+tx(200,176,'teeth point away from the handle',{s:12,w:700,c:C.slate});
+ return F('HACKSAW',o,'Hacksaw = a hand saw with a thin blade for cutting metal','');});
+d(['Tin snips','Guillotine'],function(){var o=rc(60,124,290,10,ST,C.navy,{w:2})+pg('120,60 220,100 214,112 118,76','#475569',C.navy,1.5)+pg('120,148 220,114 214,104 118,136','#475569',C.navy,1.5)+tx(260,86,'thin sheet metal',{s:12,w:700,c:C.slate})+tx(200,176,'shearing cut: no metal is removed',{s:12,w:800,c:C.red});
+ return F('TIN SNIPS',o,'Tin snips = hand shears for cutting thin sheet metal','');});
+d(['Folding','Bending bars'],function(){var o=pg('50,130 170,130 170,140 50,140',ST,C.navy,1.8)+pg('230,140 330,140 350,92 340,88 320,128 230,128',ST,C.navy,1.8)+ar(190,134,222,134,C.red,2.5)+tx(110,162,'flat sheet',{s:12,w:700,c:C.slate})+tx(290,162,'folded along a straight line',{s:12,w:800,c:C.red});
+ return F('FOLDING',o,'Folding = bending sheet metal along a straight line','It makes an angle or a flange');});
+d(['Bending allowance','Allowance'],function(){var o=pg('50,110 200,110 200,124 50,124',ST,C.navy,1.8)+dar(50,138,200,138,C.red,2)+tx(125,158,'flat length',{s:12,w:800,c:C.red})+pg('250,60 250,124 330,124 330,110 264,110 264,60',ST,C.navy,1.8)+tx(290,150,'bent shape',{s:12,w:800,c:C.blue})+tx(200,176,'a bend uses a little extra metal',{s:12,w:800,c:C.slate});
+ return F('BENDING ALLOWANCE',o,'Bending allowance = extra metal length added for the bend','It is added when you work out the flat size');});
+d(['Planishing'],function(){var o='<path d="M60 150 Q200 100 340 150" fill="none" stroke="'+ST2+'" stroke-width="16" stroke-linecap="round"/>'+rc(176,60,40,22,ST3,C.navy,{w:1.5})+rc(190,82,12,26,'#6b4423',C.navy,{w:1.4})+ln(198,52,198,58,C.red,2)+tx(200,176,'light hammering over a smooth stake',{s:12,w:800,c:C.red})+tx(300,90,'removes hammer marks',{s:12,w:700,c:C.slate});
+ return F('PLANISHING',o,'Planishing = lightly hammering sheet metal to smooth it','');});
+d(['Ball-pein hammer','Cross-pein hammer'],function(){var o=rc(60,80,160,12,'#6b4423',C.navy,{w:1.4})+rc(220,66,50,40,ST3,C.navy,{r:4,w:1.8})+ci(290,86,12,ST3,C.navy,1.8)+rc(34,84,28,4,ST,null)+tx(255,126,'flat face',{s:12,w:800,c:C.slate})+tx(312,118,'round pein',{s:12,w:800,c:C.blue})+tx(60,126,'wooden handle',{s:12,w:700,c:C.slate})+tx(200,170,'ball-pein: flat face + rounded end',{s:12,w:800,c:C.red});
+ return F('BALL-PEIN HAMMER',o,'Ball-pein hammer = a flat face on one side and a round end on the other','Cross-pein has a wedge-shaped end');});
+d(['Cold chisel'],function(){var o=rc(40,120,320,30,ST,C.navy,{w:2})+pg('190,64 210,64 210,112 200,122 190,112',ST3,C.navy,1.6)+rc(184,44,32,20,ST2,C.navy,{w:1.4})+tx(200,176,'hit with a ball-pein hammer to cut cold metal',{s:12,w:800,c:C.red});
+ return F('COLD CHISEL',o,'Cold chisel = a hard steel chisel for cutting cold metal','You hit it with a ball-pein hammer');});
+d(['Emery cloth'],function(){var o=rc(60,112,280,16,ST,C.navy,{w:2})+rc(110,96,180,16,'#a16207',C.navy,{w:1.4});for(var i=0;i<30;i++)o+=ci(116+i*5.6,96,1.4,'#451a03');o+=tx(200,84,'rough grit on the cloth',{s:12,w:800,c:C.red})+tx(200,152,'rub to smooth and clean the metal',{s:12,w:700,c:C.slate});
+ return F('ABRASIVE CLOTH',o,'Emery cloth = cloth with rough grit for smoothing metal','');});
+})();
+
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,sd=X.sdef,S='Engineering Science';
+var ST='#cbd5e1',ST2='#94a3b8',ST3='#64748b';
+function d(n,f){sd(S,n,f);}
+function lab(x,y,s,c,a,sz){return tx(x,y,s,{a:a||'middle',s:sz||13,w:800,c:c||C.red});}
+function rot(cx,cy,r,cw,col){col=col||C.red;var a0=-200*Math.PI/180,a1=40*Math.PI/180;function P(a){return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+ var s=cw?P(a0):P(a1),e=cw?P(a1):P(a0),ea=cw?a1:a0,t=cw?[-Math.sin(ea),Math.cos(ea)]:[Math.sin(ea),-Math.cos(ea)];
+ var h=8,bx=e[0]-t[0]*h,by=e[1]-t[1]*h,nx=-t[1]*5,ny=t[0]*5;
+ return '<path d="M'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' A'+r+' '+r+' 0 1 '+(cw?1:0)+' '+bx.toFixed(1)+' '+by.toFixed(1)+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linecap="round"/>'+pg(e[0].toFixed(1)+','+e[1].toFixed(1)+' '+(bx+nx).toFixed(1)+','+(by+ny).toFixed(1)+' '+(bx-nx).toFixed(1)+','+(by-ny).toFixed(1),col,col,1);}
+function gear(cx,cy,r,n,fill,off){var c=2*Math.PI*r,s=(c/(2*n)).toFixed(2);return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#475569" stroke-width="8" stroke-dasharray="'+s+' '+s+'" stroke-dashoffset="'+(off||0)+'"/>'+ci(cx,cy,r-4,fill||ST,C.navy,1.5)+ci(cx,cy,4,C.navy);}
+function vtx(x,y,s,c){return '<text transform="rotate(-90 '+x+' '+y+')" x="'+x+'" y="'+y+'" text-anchor="middle" font-size="13" font-weight="700" fill="'+(c||C.slate)+'">'+s+'</text>';}
+window.V2.es={rot:rot,gear:gear,lab:lab,vtx:vtx};
+// ---- moment / torque ----
+d(['Moment'],function(){var o=ci(80,110,26,ST,C.navy,2)+pg('80,95 93,102 93,118 80,125 67,118 67,102',ST3,C.navy,1.5)+rc(100,102,228,16,ST,C.navy,{r:6,w:2})+ar(318,58,318,98,C.red,3)+tx(326,72,'force\n(N)',{a:'start',s:13,w:800,c:C.red})+dar(80,140,318,140,C.blue,2)+lab(200,162,'distance from the pivot (m)',C.blue)+tx(80,80,'pivot',{s:13,w:700,c:C.slate})+lab(200,188,'moment = force × distance',C.navy,'middle',15);
+ return F('MOMENT',o,'Moment = the turning effect of a force: force × distance from the pivot','The unit is the newton-metre (N m)');});
+d(['Torque'],function(){var o=ci(190,112,48,ST,C.navy,2.5)+ci(190,112,8,ST3,C.navy,1.5)+rot(190,112,28,true,C.slate)+ar(238,56,238,108,C.red,3)+tx(250,72,'force\n(N)',{a:'start',s:13,w:800,c:C.red})+ln(190,112,238,112,C.blue,3)+tx(214,104,'r',{s:15,w:900,c:C.blue})+tx(110,112,'shaft turns',{a:'middle',s:12,w:700,c:C.slate})+lab(190,188,'torque = force × radius (r)',C.navy,'middle',15);
+ return F('TORQUE',o,'Torque = the twisting effect that makes a shaft or wheel turn','r = radius (distance from the centre)');});
+// ---- tension / compression ----
+d(['Tension'],function(){var o=rc(104,98,192,28,'none',C.slate,{d:'5 4',w:1.5})+rc(120,102,160,20,ST,C.navy,{w:2})+ar(118,112,52,112,C.red,3.5)+ar(282,112,348,112,C.red,3.5)+lab(200,78,'pulled apart',C.red,'middle',14)+lab(200,156,'the bar gets LONGER',C.navy,'middle',14)+tx(200,176,'(dashed line = its longer shape)',{s:12,w:600,c:C.slate});
+ return F('TENSION',o,'Tension = a pulling force that tries to stretch (lengthen) something','Example: a rope or a cable holding a weight');});
+d(['Compression'],function(){var o=rc(104,98,192,28,'none',C.slate,{d:'5 4',w:1.5})+rc(130,94,140,36,ST,C.navy,{w:2})+ar(50,112,128,112,C.blue,3.5)+ar(350,112,272,112,C.blue,3.5)+lab(200,78,'pushed together',C.blue,'middle',14)+lab(200,156,'the bar gets SHORTER',C.navy,'middle',14)+tx(200,176,'(dashed line = its longer shape before)',{s:12,w:600,c:C.slate});
+ return F('COMPRESSION',o,'Compression = a pushing force that tries to squash (shorten) something','Example: a table leg or a column holding a weight');});
+function truss(title,course,not){return function(){var o=ar(200,52,200,82,C.navy,3)+tx(212,66,'load',{a:'start',s:13,w:800})+ln(200,88,112,162,C.blue,6)+ln(200,88,288,162,C.blue,6)+ln(112,162,288,162,C.red,6)+ci(200,88,6,'#fff',C.navy,2)+ci(112,162,6,'#fff',C.navy,2)+ci(288,162,6,'#fff',C.navy,2)+pg('112,168 100,184 124,184',ST3,C.navy,1.5)+pg('288,168 276,184 300,184',ST3,C.navy,1.5)+tx(138,104,'compression\n(pushed)',{a:'end',s:13,w:800,c:C.blue})+tx(262,104,'compression\n(pushed)',{a:'start',s:13,w:800,c:C.blue})+tx(200,150,'tension (pulled)',{s:13,w:800,c:C.red});
+ return F(title,o,course,not);};}
+d(['Tensile member'],truss('TENSILE MEMBER','Tensile member = a part of a frame that is pulled (in tension)','The bottom bar is the tensile member'));
+d(['Compressive member'],truss('COMPRESSIVE MEMBER','Compressive member = a part of a frame that is pushed (in compression)','The two sloping bars are compressive'));
+d(['Pin-jointed framework'],truss('PIN-JOINTED FRAMEWORK','Pin-jointed framework = bars joined by pins at their ends','Each bar is only pushed or pulled'));
+// ---- shear ----
+function shearFn(title,course,not){return function(){var o=rc(90,88,160,20,ST,C.navy,{w:2})+rc(150,108,160,20,ST2,C.navy,{w:2})+rc(190,76,22,64,ST3,C.navy,{w:2})+ln(176,108,226,108,C.red,2.5,'5 3')+ar(88,98,36,98,C.red,3.5)+ar(312,118,364,118,C.red,3.5)+ar(282,154,216,112,C.red,2)+tx(262,170,'shear plane:\nbolt is cut here',{a:'start',s:13,w:800,c:C.red});
+ return F(title,o,course,not);};}
+d(['Shear force'],shearFn('SHEAR FORCE','Shear force = opposite forces that try to slice through a material','Like the blades of scissors'));
+d(['Shear stress'],shearFn('SHEAR STRESS','Shear stress = shear force ÷ the area being sliced (N/mm²)','Like the blades of scissors'));
+// ---- stress / strain ----
+d(['Stress'],function(){var o=rc(150,152,100,10,ST3,C.navy,{w:1.5})+rc(180,80,40,72,ST,C.navy,{w:2})+ar(200,52,200,78,C.red,3.5)+tx(212,62,'force F (N)',{a:'start',s:13,w:800,c:C.red})+ln(166,116,234,116,C.blue,2.5,'5 3')+tx(160,112,'area A\n(mm²)',{a:'end',s:13,w:800,c:C.blue})+lab(200,184,'stress = force ÷ area',C.navy,'middle',15);
+ return F('STRESS',o,'Stress = how much force acts on each square millimetre of a material','Unit: newtons per square mm (N/mm²)');});
+d(['Strain'],function(){var o=rc(100,64,160,20,ST,C.navy,{w:2})+dar(100,96,260,96,C.blue,2)+tx(180,114,'original length L',{s:13,w:800,c:C.blue})+rc(100,134,160,20,ST,C.navy,{w:2})+rc(260,134,32,20,'#fecaca',C.red,{w:2})+dar(260,168,292,168,C.red,2)+tx(276,186,'extension e',{s:13,w:800,c:C.red})+tx(316,78,'before',{s:13,w:700,c:C.slate})+tx(332,148,'after\n(pulled)',{s:13,w:700,c:C.slate});
+ return F('STRAIN',o,'Strain = how much a material stretches: extension ÷ original length','Strain is a ratio, so it has no units');});
+function ss(hl){return function(){var o=ar(70,172,70,52,C.slate,2)+ar(70,172,362,172,C.slate,2)+vtx(54,112,'stress')+tx(220,190,'strain (stretch)',{s:13,w:700,c:C.slate})+'<path d="M70 172 L132 98 L150 101 Q176 102 210 84 Q250 62 275 62 Q305 66 325 98" fill="none" stroke="'+C.navy+'" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'+tx(335,112,'breaks',{a:'start',s:12,w:700,c:C.slate});
+ var b=325,by=98;o+='<path d="M319 92 l12 12 M331 92 l-12 12" stroke="'+C.slate+'" stroke-width="2.4" stroke-linecap="round"/>';
+ if(hl==='y')o+=ci(132,98,7,C.red,'#fff',2)+tx(170,130,'yield point:\nit stays stretched\nafter this',{a:'start',s:13,w:800,c:C.red})+ar(168,122,138,104,C.red,2)+tx(128,86,'',{});else o+=ci(132,98,4,ST3);
+ if(hl==='u')o+=ci(275,62,7,C.red,'#fff',2)+tx(275,53,'highest point: UTS',{s:13,w:800,c:C.red}).replace('y="53"','y="54"');
+ if(hl==='e')o=o.replace('M70 172 L132 98','M70 172 L132 98')+ln(70,172,132,98,C.red,5)+tx(150,150,'steepness (slope)\n= Young\'s modulus',{a:'start',s:13,w:800,c:C.red})+ar(148,140,108,124,C.red,2);
+ return o;};}
+d(['Yield stress'],function(){return F('YIELD STRESS',ss('y')(),'Yield stress = the stress where a material starts to stretch permanently','Below this point it springs back to its shape');});
+d(['Ultimate tensile strength (UTS)'],function(){return F('UTS',ss('u')(),'Ultimate tensile strength (UTS) = the highest stress a material can take when pulled','After this point the material starts to fail');});
+d(["Young's modulus"],function(){return F("YOUNG'S MODULUS",ss('e')(),"Young's modulus = how stiff a material is: stress ÷ strain","A high value = stiff. A low value = flexible");});
+// ---- lever: MA / VR ----
+function lever(vr){var o=rc(60,100,290,10,ST,C.navy,{r:3,w:2})+pg('250,112 232,142 268,142',ST3,C.navy,1.5)+rc(212,142,76,8,ST3,C.navy,{w:1})+tx(250,166,'pivot',{s:12,w:700,c:C.slate});
+ if(!vr){o+=ar(90,56,90,98,C.blue,3.5)+tx(100,66,'effort 10 N',{a:'start',s:13,w:800,c:C.blue})+rc(292,112,36,30,ST3,C.navy,{w:2})+tx(310,132,'40 N',{s:12,w:800,c:'#fff'})+tx(310,160,'load',{s:13,w:800,c:C.navy})}
+ else{o+=ar(90,56,90,98,C.blue,3.5)+tx(80,70,'moves\n40 cm',{a:'end',s:13,w:800,c:C.blue})+rc(292,112,36,30,ST3,C.navy,{w:2})+ar(342,150,342,124,C.green,3.5)+tx(342,166,'moves\n10 cm',{s:13,w:800,c:C.green});}
+ return o;}
+d(['Mechanical advantage'],function(){return F('MECHANICAL ADVANTAGE',lever(false)+lab(200,196,'MA = load ÷ effort = 40 ÷ 10 = 4',C.navy,'middle',14).replace('y="196"','y="192"'),'Mechanical advantage = load ÷ effort: how many times a machine multiplies your force','MA 4 means a 10 N push lifts 40 N');});
+d(['Velocity ratio'],function(){return F('VELOCITY RATIO',lever(true)+lab(200,194,'VR = 40 ÷ 10 = 4',C.navy,'middle',15),'Velocity ratio = distance moved by the effort ÷ distance moved by the load','VR 4 means you move 4 cm to move the load 1 cm');});
+// ---- gears ----
+d(['Gear ratio'],function(){var o=gear(112,100,25,20,'#bfdbfe',0)+gear(187,100,50,40,'#fde68a',2)+rot(112,100,12,true,C.blue)+rot(187,100,28,false,C.amber)+tx(50,96,'DRIVER\n20 teeth',{s:13,w:800,c:C.blue})+tx(300,96,'DRIVEN\n40 teeth',{s:13,w:800,c:C.amber})+lab(200,178,'gear ratio = 40 ÷ 20 = 2 : 1',C.navy,'middle',15);
+ return F('GEAR RATIO',o,'Gear ratio = teeth on the driven gear ÷ teeth on the driver gear','2 : 1 means the driver turns twice for one turn of the driven gear');});
+d(['Idler gear'],function(){var o=gear(122,100,25,20,'#bfdbfe',0)+gear(177,100,20,16,'#e2e8f0',3)+gear(232,100,25,20,'#fde68a',0)+rot(122,100,12,true,C.blue)+rot(177,100,9,false,C.slate)+rot(232,100,12,true,C.amber)+tx(122,148,'driver',{s:13,w:800,c:C.blue})+tx(177,148,'idler',{s:13,w:800,c:C.slate})+tx(232,148,'driven',{s:13,w:800,c:C.amber})+lab(200,178,'driver and driven turn the SAME way',C.navy,'middle',14);
+ return F('IDLER GEAR',o,'Idler gear = a gear placed between two gears so they turn the same way','It does not change the gear ratio');});
+d(['Compound gear train'],function(){var dy=22;function g(x,cy,r,f,l){return rc(x-9,cy-r,18,2*r,f,C.navy,{w:1.8})+tx(x,cy+5,l,{s:13,w:900});}
+ var b=ln(52,70,122,70,ST3,5)+ln(100,120,190,120,ST3,5)+ln(150,70,248,70,ST3,5)+g(100,70,14,'#bfdbfe','A')+g(100,120,36,'#fde68a','B')+g(150,120,14,'#fde68a','C')+g(150,70,36,'#bbf7d0','D')
+ +ar(26,70,50,70,C.blue,2.5)+tx(36,56,'in',{s:13,w:800,c:C.blue})+ar(250,70,292,70,C.green,2.5)+tx(272,56,'out',{s:13,w:800,c:C.green})+tx(206,112,'B and C are\nfixed on the\nsame shaft',{a:'start',s:13,w:800,c:C.amber});
+ var o='<g transform="translate(0,'+dy+')">'+b+'</g>'+lab(200,196,'ratio = (B ÷ A) × (D ÷ C)',C.navy,'middle',14);
+ return F('COMPOUND GEAR TRAIN',o,'Compound gear train = gears on shared shafts: a big change of speed','Overall ratio = ratio 1 × ratio 2');});
+// ---- belt / chain ----
+function belt(chain){var c1=[110,108,24],c2=[268,108,42],o='',nx=-0.1125,ny=0.9937;
+ var t1=[c1[0]+c1[2]*nx,c1[1]-c1[2]*ny],t2=[c2[0]+c2[2]*nx,c2[1]-c2[2]*ny],b1=[c1[0]+c1[2]*nx,c1[1]+c1[2]*ny],b2=[c2[0]+c2[2]*nx,c2[1]+c2[2]*ny];
+ function f(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}
+ var path='M'+f(t1)+' L'+f(t2)+' A'+c2[2]+' '+c2[2]+' 0 1 1 '+f(b2)+' L'+f(b1)+' A'+c1[2]+' '+c1[2]+' 0 0 1 '+f(t1)+' Z';
+ if(chain){o+='<path d="'+path+'" fill="none" stroke="'+C.navy+'" stroke-width="7" stroke-dasharray="6 3" stroke-linejoin="round"/>'+gear(c1[0],c1[1],c1[2]-4,12,'#bfdbfe')+gear(c2[0],c2[1],c2[2]-4,22,'#fde68a');}
+ else{o+='<path d="'+path+'" fill="none" stroke="'+C.navy+'" stroke-width="6" stroke-linejoin="round"/>'+ci(c1[0],c1[1],c1[2]-3,'#bfdbfe',C.navy,2)+ci(c2[0],c2[1],c2[2]-3,'#fde68a',C.navy,2)+ci(c1[0],c1[1],4,C.navy)+ci(c2[0],c2[1],4,C.navy);}
+ o+=rot(c1[0],c1[1],12,true,C.blue)+rot(c2[0],c2[1],24,true,C.amber)+tx(110,162,'driver\n(small)',{s:13,w:800,c:C.blue})+tx(268,168,'driven (big)\nturns slower',{s:13,w:800,c:C.amber});return o;}
+d(['Belt drive'],function(){return F('BELT DRIVE',belt(false),'Belt drive = a belt around two pulleys carries turning motion','Both pulleys turn the same way');});
+d(['Chain drive'],function(){return F('CHAIN DRIVE',belt(true),'Chain drive = a chain around two toothed wheels (sprockets)','Both wheels turn the same way');});
+// ---- mechanisms ----
+d(['Rack and pinion'],function(){var o=rc(70,118,280,22,ST,C.navy,{w:2});for(var x=74;x<340;x+=16)o+=rc(x,110,8,8,ST,C.navy,{w:1.2});o+=gear(200,84,26,16,'#bfdbfe',0)+rot(200,84,12,true,C.blue)+tx(262,78,'pinion\n(gear)',{a:'start',s:13,w:800,c:C.blue})+tx(110,134,'rack',{s:13,w:800,c:C.navy})+ar(310,160,120,160,C.red,3)+lab(215,182,'moves in a straight line',C.red);
+ return F('RACK AND PINION',o,'Rack and pinion = a gear and a toothed bar that change turning into straight-line motion','It can also work the other way round');});
+d(['Cam and follower'],function(){var o=rc(178,50,44,24,'none',C.slate,{w:1.5,d:'4 3'})+rc(192,56,16,32,ST2,C.navy,{w:1.8})+rc(176,88,48,7,ST3,C.navy,{w:1.5})+ci(200,132,36,ST,C.navy,2.5)+ci(200,143,4,C.navy)+rot(200,143,16,true,C.red)+dar(250,58,250,92,C.blue,2.4)+tx(262,70,'up and\ndown',{a:'start',s:13,w:800,c:C.blue})+tx(172,66,'follower',{a:'end',s:13,w:800,c:C.navy})+tx(200,188,'cam: turns on an off-centre pivot',{s:13,w:800,c:C.red});
+ return F('CAM AND FOLLOWER',o,'Cam and follower = a turning off-centre shape pushes a follower up and down','Turning motion becomes up-and-down motion');});
+d(['Crank and slider'],function(){var o=ln(190,98,350,98,ST3,3)+ln(190,142,350,142,ST3,3)+ci(110,120,36,ST,C.navy,2.5)+ln(110,120,136,98,C.navy,5)+ci(136,98,5,C.red)+ln(136,98,270,120,C.slate,6)+rc(252,104,46,32,'#fde68a',C.navy,{w:2})+ci(110,120,4,C.navy)+rot(110,120,16,true,C.red)+dar(210,166,340,166,C.blue,2.4)+tx(110,172,'crank',{s:13,w:800,c:C.navy})+tx(275,186,'slider moves back and forth',{s:13,w:800,c:C.blue})+tx(322,92,'',{});
+ return F('CRANK AND SLIDER',o,'Crank and slider = a turning crank pushes and pulls a slider back and forth','Turning motion becomes straight-line motion');});
+d(['Pawl and ratchet'],function(){var cx=160,cy=118,P=function(r,a){a=a*Math.PI/180;return (cx+r*Math.cos(a)).toFixed(1)+' '+(cy+r*Math.sin(a)).toFixed(1);},p='M'+P(40,0);
+ for(var i=0;i<12;i++){p+=' L'+P(50,i*30)+' L'+P(40,(i+1)*30);}
+ var o='<path d="'+p+' Z" fill="'+ST+'" stroke="'+C.navy+'" stroke-width="2" stroke-linejoin="round"/>'+ci(cx,cy,8,ST3,C.navy,1.5)+ln(250,66,166,72,C.navy,7)+ci(250,66,6,'#fff',C.navy,2)+rot(cx,cy,18,true,C.green)+rot(cx,cy,30,false,C.red)+tx(264,100,'green: turns freely',{a:'start',s:13,w:800,c:C.green}).replace('x="264"','x="252"')+tx(252,126,'red: BLOCKED',{a:'start',s:13,w:800,c:C.red})+tx(262,74,'pawl',{a:'start',s:13,w:800,c:C.navy})+tx(62,130,'ratchet\nwheel',{s:13,w:800,c:C.slate});
+ o='<g transform="translate(0,16)">'+o+'</g>';return F('PAWL AND RATCHET',o,'Pawl and ratchet = a toothed wheel that can only turn one way','The pawl catches the teeth');});
+d(['Worm and wheel'],function(){var o=rc(104,64,132,26,ST2,C.navy,{r:6,w:2});for(var x=116;x<232;x+=14)o+=ln(x,64,x+8,90,C.navy,1.8);o+=gear(170,134,42,34,'#fde68a',0)+rot(170,134,20,true,C.amber)+tx(252,78,'worm\n(a screw)',{a:'start',s:13,w:800,c:C.navy})+tx(236,152,'wheel',{a:'start',s:13,w:800,c:C.amber})+ar(78,77,104,77,C.blue,2.4)+tx(56,60,'turns',{s:13,w:800,c:C.blue}).replace('x="56"','x="76"');
+ return F('WORM AND WHEEL',o,'Worm and wheel = a screw (worm) turns a toothed wheel at 90° to it','One turn of the worm moves the wheel one tooth');});
+d(['Worm and nut'],function(){var o=rc(74,100,250,20,ST2,C.navy,{r:4,w:2});for(var x=84;x<316;x+=12)o+=ln(x,100,x+6,120,C.navy,1.6);o+=rc(150,90,54,40,ST3,C.navy,{r:4,w:2})+tx(177,115,'nut',{s:13,w:800,c:'#fff'})+ci(56,110,16,ST,C.navy,2)+rot(56,110,9,true,C.red)+tx(56,146,'screw\nturns',{s:12,w:800,c:C.red})+dar(150,160,270,160,C.blue,2.4)+tx(210,180,'nut moves along the screw',{s:13,w:800,c:C.blue});
+ return F('WORM AND NUT',o,'Worm and nut = a turning screw (worm) moves a nut along its length','Turning motion becomes straight-line motion');});
+// ---- pneumatics ----
+function cyl(double){var o=rc(80,90,170,50,'#e2e8f0',C.navy,{w:2.2})+rc(140,92,10,46,ST3,C.navy,{w:1.5})+rc(150,110,152,10,ST2,C.navy,{w:1.5})+tx(302,98,'piston rod',{s:13,w:800,c:C.navy}).replace('x="302"','x="296"');
+ if(!double){var p='M150 115';for(var i=0;i<12;i++)p+=' L'+(158+i*8)+' '+(i%2?100:130);p+=' L250 115';o+='<path d="'+p+'" fill="none" stroke="'+C.amber+'" stroke-width="2.2" stroke-linejoin="round"/>'+rc(60,110,20,10,ST,C.navy,{w:1.5})+ar(30,115,62,115,C.blue,3)+tx(22,98,'air in',{a:'start',s:13,w:800,c:C.blue})+tx(200,160,'spring: pushes the piston back',{s:13,w:800,c:C.amber});}
+ else{o+=rc(100,72,16,18,ST,C.navy,{w:1.5})+rc(214,72,16,18,ST,C.navy,{w:1.5})+tx(108,66,'A',{s:15,w:900,c:C.blue})+tx(222,66,'B',{s:15,w:900,c:C.blue})+tx(190,160,'no spring: air pushes both ways',{s:13,w:800,c:C.blue});}
+ return o;}
+d(['Single-acting cylinder'],function(){return F('SINGLE-ACTING CYLINDER',cyl(false),'Single-acting cylinder = air pushes the piston out; a spring pushes it back','It has only one air port');});
+d(['Double-acting cylinder'],function(){return F('DOUBLE-ACTING CYLINDER',cyl(true),'Double-acting cylinder = air pushes the piston out and also back','Air into A pushes out; air into B pulls back');});
+function valve(five){var o='',L=100,M=200,R=300;o+=rc(L,76,100,64,'#f1f5f9',C.navy,{w:2.2})+rc(M,76,100,64,'#fff',C.navy,{w:2.2});
+ function stub(x,top,n){return ln(x,top?60:140,x,top?76:156,C.navy,2.2)+tx(x,top?54:172,n,{s:14,w:900,c:C.blue});}
+ if(!five){o+=ar(150,136,150,82,C.green,2.4)+ar(250,82,274,134,C.red,2.4)+ln(218,136,238,136,C.navy,3)+ln(228,128,228,140,C.navy,2.4)+stub(250,true,'2')+stub(222,false,'1')+stub(278,false,'3');}
+ else{o+=ar(150,136,132,82,C.green,2.2)+ar(168,82,184,136,C.green,2.2)+ar(250,136,268,82,C.red,2.2)+ar(232,82,216,136,C.red,2.2)+stub(232,true,'4')+stub(268,true,'2')+stub(216,false,'5')+stub(250,false,'1')+stub(284,false,'3');}
+ o+=rc(80,96,20,24,ST,C.navy,{w:1.5})+tx(90,132,'',{})+tx(60,112,'push',{s:12,w:700,c:C.slate});var sp='M300 108';for(var i=0;i<6;i++)sp+=' L'+(306+i*3.4)+' '+(i%2?98:118);o+='<path d="M300 108 l4 -8 l8 16 l8 -16 l8 16 l4 -8" fill="none" stroke="'+C.amber+'" stroke-width="2.2" stroke-linejoin="round"/>'+tx(320,136,'spring',{s:12,w:700,c:C.amber});
+ return o;}
+d(['3/2 valve'],function(){return F('3/2 VALVE',valve(false)+tx(200,190,'3 ports, 2 positions',{s:14,w:900,c:C.navy})+'','3/2 valve = 3 ports, 2 positions. It switches air to a cylinder on and off','Ports: 1 supply, 2 to cylinder, 3 exhaust');});
+d(['5/2 valve'],function(){return F('5/2 VALVE',valve(true)+tx(200,192,'5 ports, 2 positions',{s:14,w:900,c:C.navy}),'5/2 valve = 5 ports, 2 positions. It controls a double-acting cylinder','1 supply, 2 and 4 to cylinder, 3 and 5 exhaust');});
+function sysChain(names,cols,note,oil){var o='',w=76,x0=14,gap=14;names.forEach(function(n,i){var x=x0+i*(w+gap);o+=rc(x,86,w,56,cols[i],C.navy,{r:8,w:2})+tx(x+w/2,110,n[0],{s:13,w:800})+tx(x+w/2,126,n[1]||'',{s:12,w:700,c:C.slate});if(i<names.length-1)o+=ar(x+w+1,114,x+w+gap-1,114,C.blue,2.2);});return o;}
+d(['Pneumatic system'],function(){var o=sysChain([['compressor','makes air'],['air tank','stores air'],['valve','controls it'],['cylinder','does work']],['#bfdbfe','#e0f2fe','#fde68a','#bbf7d0']);o+=lab(200,172,'works using compressed AIR',C.blue,'middle',14);
+ return F('PNEUMATIC SYSTEM',o,'Pneumatic system = a system that uses compressed air to make things move','Air can be squashed, so it is a bit springy');});
+d(['Hydraulic system'],function(){var o=sysChain([['pump','pushes oil'],['oil tank','stores oil'],['valve','controls it'],['cylinder','does work']],['#fed7aa','#ffedd5','#fde68a','#bbf7d0']);o+=lab(200,172,'works using liquid OIL',C.amber,'middle',14);
+ return F('HYDRAULIC SYSTEM',o,'Hydraulic system = a system that uses pressurised oil to make things move','Oil cannot be squashed: very strong force');});
+})();
+
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,sd=X.sdef,S='Engineering Science',E=X.es;
+var ST='#cbd5e1',ST2='#94a3b8',ST3='#64748b',rot=E.rot,lab=E.lab;
+function d(n,f){sd(S,n,f);}
+function W(p,c,w,dsh){return '<path d="'+p+'" fill="none" stroke="'+(c||C.navy)+'" stroke-width="'+(w||2.5)+'" stroke-linejoin="round" stroke-linecap="round"'+(dsh?' stroke-dasharray="'+dsh+'"':'')+'/>';}
+function res(x,y,w,l,c){return rc(x,y,w||40,16,'#fff',c||C.navy,{w:2.2})+(l?tx(x+(w||40)/2,y+(l.dy||-6),l.t,{s:13,w:800,c:C.blue}):'');}
+function resV(x,y,h,l){return rc(x-8,y,16,h||36,'#fff',C.navy,{w:2.2})+(l?tx(x+22,y+(h||36)/2+5,l,{a:'start',s:14,w:800,c:C.blue}):'');}
+function bat(x,y){return ln(x-14,y,x+14,y,C.navy,3.5)+ln(x-8,y+10,x+8,y+10,C.navy,3.5)+tx(x+22,y+2,'+',{a:'start',s:14,w:900,c:C.red})+tx(x+22,y+16,'−',{a:'start',s:14,w:900,c:C.slate});}
+function meter(cx,cy,l,c){return ci(cx,cy,15,'#fff',c||C.navy,2.4)+tx(cx,cy+5,l,{s:15,w:900,c:c||C.navy});}
+function lamp(cx,cy){return ci(cx,cy,16,'#fef3c7',C.navy,2.4)+ln(cx-11,cy-11,cx+11,cy+11,C.navy,2)+ln(cx+11,cy-11,cx-11,cy+11,C.navy,2);}
+// ---- basic electricity ----
+d(['Current'],function(){var o=W('M80 108 V70 H178 M222 70 H320 V99 M320 131 V160 H80 V118')+bat(80,108)+lamp(320,115)+meter(200,70,'A',C.blue)+ar(112,70,142,70,C.blue,3)+ar(320,140,320,150,C.blue,3)+ar(260,160,230,160,C.blue,3)+tx(200,118,'current I',{s:14,w:800,c:C.blue})+tx(200,136,'(amps, A)',{s:13,w:700,c:C.blue});
+ return F('CURRENT',o,'Current = the flow of electric charge round a circuit','Measured in amperes (A) with an ammeter');});
+d(['Voltage'],function(){var o=W('M80 108 V70 H320 V99 M320 131 V160 H80 V118')+W('M268 70 V100 M268 130 V160')+ci(268,70,3.5,C.navy)+ci(268,160,3.5,C.navy)+bat(80,108)+lamp(320,115)+meter(268,115,'V',C.amber)+tx(176,112,'voltage V',{s:14,w:800,c:C.amber})+tx(176,130,'(volts, V)',{s:13,w:700,c:C.amber});
+ return F('VOLTAGE',o,'Voltage = the electrical push (energy for each charge) that drives current round a circuit','A voltmeter is connected across the part');});
+d(['Resistance'],function(){var o=W('M80 108 V70 H160 M240 70 H320 V160 H80 V118')+bat(80,108)+rc(160,62,80,16,'#fff',C.navy,{w:2.4})+tx(200,54,'resistor',{s:13,w:800,c:C.blue})+ar(120,70,150,70,C.blue,2.6)+ar(262,70,292,70,C.blue,2.6)+tx(200,112,'R = V ÷ I',{s:16,w:900,c:C.navy})+tx(200,134,'resistance (ohms, Ω)',{s:13,w:700,c:C.slate});
+ return F('RESISTANCE',o,'Resistance = how much a part opposes (limits) the flow of current','Measured in ohms (Ω). More resistance = less current');});
+d(['Voltage divider'],function(){var o=W('M120 58 V68 M120 104 V118 M120 118 V126 M120 162 V172')+resV(120,68,36)+resV(120,126,36)+ci(120,115,4,C.navy)+W('M120 115 H196')+ci(200,115,5,'#fff',C.navy,2)+tx(210,120,'Vout',{a:'start',s:15,w:900,c:C.green})+tx(134,56,'Vin',{a:'start',s:15,w:900,c:C.red})+ln(100,174,140,174,C.navy,3)+ln(108,181,132,181,C.navy,2.5)+tx(160,92,'R1',{a:'start',s:14,w:800,c:C.blue})+tx(160,150,'R2',{a:'start',s:14,w:800,c:C.blue})+tx(240,154,'Vout = Vin ×\nR2 ÷ (R1 + R2)',{a:'start',s:14,w:800,c:C.navy});
+ return F('VOLTAGE DIVIDER',o,'Voltage divider = two resistors in series that share the supply voltage','The output is taken between the two resistors');});
+d(['Diode'],function(){var o=W('M90 118 H168 M212 118 H300')+pg('168,96 168,140 210,118',ST,C.navy,2.4)+ln(212,96,212,140,C.navy,3.5)+ar(120,76,280,76,C.green,3)+lab(200,66,'current CAN flow this way',C.green,'middle',13)+ar(280,168,120,168,C.red,3)+lab(200,188,'current is BLOCKED this way',C.red,'middle',13);
+ return F('DIODE',o,'Diode = a component that lets current flow in one direction only','Like a one-way valve for electricity');});
+d(['Light-emitting diode (LED)'],function(){var o=W('M60 120 H92 M132 120 H168 M212 120 H300')+res(92,112,40)+tx(112,102,'resistor',{s:12,w:800,c:C.blue})+pg('168,98 168,142 210,120',ST,C.navy,2.4)+ln(212,98,212,142,C.navy,3.5)+ar(196,92,222,66,C.amber,2.6)+ar(214,102,240,76,C.amber,2.6)+tx(250,70,'light',{a:'start',s:14,w:800,c:C.amber})+tx(190,166,'LED',{s:14,w:900,c:C.navy});
+ return F('LED',o,'Light-emitting diode (LED) = a diode that gives out light when current flows','Always use a resistor in series to protect it');});
+d(['Capacitor'],function(){var o=W('M80 110 H190 M210 110 H320')+ln(190,80,190,140,C.navy,4)+ln(210,80,210,140,C.navy,4)+tx(176,92,'+',{s:16,w:900,c:C.red})+tx(226,92,'−',{s:16,w:900,c:C.blue})+tx(200,64,'stores charge',{s:14,w:800,c:C.navy})+tx(200,168,'it charges up, then can release the charge',{s:13,w:800,c:C.slate});
+ return F('CAPACITOR',o,'Capacitor = a component that stores electric charge and releases it later','Measured in farads (F)');});
+function box3(x,w,h,l1,l2,f,y){return rc(x,y||84,w,h||52,f,C.navy,{r:8,w:2})+tx(x+w/2,(y||84)+22,l1,{s:13,w:800})+(l2?tx(x+w/2,(y||84)+38,l2,{s:12,w:700,c:C.slate}):'');}
+d(['Relay'],function(){var o=box3(30,92,52,'coil','(electromagnet)','#fde68a')+box3(158,92,52,'switch','(contacts)','#e2e8f0')+box3(290,92,52,'motor','or lamp','#bbf7d0')+ar(4,110,28,110,C.blue,2.4)+ar(124,110,156,110,C.amber,3)+ar(252,110,288,110,C.red,3.5)+tx(76,76,'small current',{s:13,w:800,c:C.blue})+tx(140,152,'magnet\ncloses it',{s:12,w:800,c:C.amber})+tx(270,152,'large current',{s:13,w:800,c:C.red});
+ return F('RELAY',o,'Relay = a switch that is turned on by a small current through a coil','A small current switches a larger current');});
+d(['Light-dependent resistor (LDR)'],function(){var o=W('M80 118 H170 M230 118 H320')+rc(170,106,60,24,'#fff',C.navy,{w:2.4})+ar(126,56,176,100,C.amber,2.6)+ar(150,52,200,98,C.amber,2.6)+tx(110,50,'light',{a:'end',s:14,w:800,c:C.amber})+tx(110,172,'BRIGHT light: resistance LOW',{a:'start',s:13,w:800,c:C.green}).replace('x="110"','x="50"')+tx(110,190,'DARK: resistance HIGH',{a:'start',s:13,w:800,c:C.blue}).replace('x="110"','x="50"');
+ return F('LDR',o,'Light-dependent resistor (LDR) = a resistor whose resistance changes with light','More light = less resistance');});
+d(['Thermistor'],function(){var o=W('M80 118 H170 M230 118 H320')+rc(170,106,60,24,'#fff',C.navy,{w:2.4})+ln(158,150,242,86,C.navy,2.4)+tx(250,84,'t°',{a:'start',s:14,w:900,c:C.red})+tx(200,64,'senses temperature',{s:14,w:800,c:C.navy})+tx(50,172,'HOT: resistance LOW',{a:'start',s:13,w:800,c:C.red})+tx(50,190,'COLD: resistance HIGH',{a:'start',s:13,w:800,c:C.blue});
+ return F('THERMISTOR',o,'Thermistor = a resistor whose resistance changes with temperature','Most types (NTC): hotter = less resistance');});
+d(['Variable resistor'],function(){var o=W('M80 118 H170 M230 118 H320')+rc(170,106,60,24,'#fff',C.navy,{w:2.4})+ar(160,152,236,98,C.blue,3)+tx(200,70,'turn the knob',{s:14,w:800,c:C.navy})+tx(200,170,'changes the resistance',{s:14,w:800,c:C.blue});
+ return F('VARIABLE RESISTOR',o,'Variable resistor = a resistor whose resistance you can change by hand','Used as a volume control or dimmer');});
+// ---- transistors ----
+function npn(mos){var o='';
+ if(!mos){o+=ci(210,112,42,'#fff',C.navy,2)+ln(190,88,190,136,C.navy,4)+W('M120 112 H190')+W('M190 102 L236 78 V52')+W('M190 122 L236 146 V172')+pg('236,146 224,146 230,136',C.navy,C.navy,1);}
+ else{o+=ln(176,84,176,140,C.navy,4)+W('M120 112 H176')+ln(190,82,190,94,C.navy,4)+ln(190,104,190,120,C.navy,4)+ln(190,130,190,142,C.navy,4)+W('M190 88 H236 V52')+W('M190 136 H236 V172')+W('M190 112 H236')+ar(236,112,194,112,C.navy,1.6);}
+ var t=mos?['gate','drain','source']:['base','collector','emitter'];
+ o+=tx(110,108,'B',{a:'end',s:1,w:1}).replace(/>B</,'><')+tx(112,104,mos?'G':'B',{a:'end',s:16,w:900,c:C.blue})+tx(250,56,mos?'D':'C',{a:'start',s:16,w:900,c:C.green})+tx(250,180,mos?'S':'E',{a:'start',s:16,w:900,c:C.red});
+ return o+tx(112,126,mos?'gate:\nsmall signal':'base:\nsmall signal',{a:'end',s:12,w:800,c:C.blue});}
+d(['Npn transistor','Bipolar junction transistor (BJT)'],function(){return F('NPN TRANSISTOR',npn(false)+tx(300,118,'large current\nflows C → E',{a:'start',s:13,w:800,c:C.green}),'Npn transistor = an electronic switch with 3 legs: base, collector, emitter','A small base current switches a large one');});
+d(['MOSFET','N-channel enhancement MOSFET'],function(){return F('MOSFET',npn(true)+tx(300,118,'large current\nflows D → S',{a:'start',s:13,w:800,c:C.green}),'MOSFET = an electronic switch with 3 legs: gate, drain, source','A small voltage at the gate switches it on');});
+// ---- op-amps ----
+function opamp(kind){var o=pg('170,60 170,160 290,110',ST,C.navy,2.4)+tx(182,88,'−',{a:'start',s:18,w:900,c:C.red})+tx(182,138,'+',{a:'start',s:18,w:900,c:C.green})+W('M290 110 H340');
+ if(kind==='inv'){o+=W('M96 88 H170')+rc(104,80,36,16,'#fff',C.navy,{w:2})+tx(122,72,'Rin',{s:12,w:800,c:C.blue})+W('M150 88 V56 H240 M270 56 H316 V110')+rc(200,48,36,16,'#fff',C.navy,{w:2}).replace('x="200"','x="196"')+tx(214,42,'Rf',{s:12,w:800,c:C.blue})+W('M170 132 H146 V150')+ln(136,150,156,150,C.navy,2.5)+ln(140,155,152,155,C.navy,2)+ci(150,88,3,C.navy)+ci(316,110,3,C.navy)+tx(80,92,'Vin',{a:'end',s:14,w:900,c:C.red})+tx(350,114,'Vout',{a:'start',s:14,w:900,c:C.green});}
+ else if(kind==='non'){o+=W('M96 132 H170')+tx(80,136,'Vin',{a:'end',s:14,w:900,c:C.red})+W('M170 88 H150 V56 H316 V110')+rc(200,48,36,16,'#fff',C.navy,{w:2}).replace('x="200"','x="196"')+tx(214,42,'Rf',{s:12,w:800,c:C.blue})+W('M150 88 V150')+rc(142,100,16,30,'#fff',C.navy,{w:2}).replace('y="100"','y="106"')+tx(120,126,'R1',{a:'end',s:12,w:800,c:C.blue})+ln(136,152,164,152,C.navy,2.5)+ln(141,158,159,158,C.navy,2)+ci(316,110,3,C.navy)+ci(150,88,3,C.navy)+tx(350,114,'Vout',{a:'start',s:14,w:900,c:C.green});}
+ else if(kind==='fol'){o+=W('M96 132 H170')+tx(80,136,'Vin',{a:'end',s:14,w:900,c:C.red})+W('M170 88 H150 V176 H316 V110')+ci(316,110,3,C.navy)+tx(350,114,'Vout',{a:'start',s:14,w:900,c:C.green});}
+ else{o+=W('M120 88 H170 M120 132 H170')+tx(110,92,'V−',{a:'end',s:14,w:900,c:C.red})+tx(110,136,'V+',{a:'end',s:14,w:900,c:C.green})+tx(350,114,'out',{a:'start',s:14,w:900,c:C.navy});}
+ return '<g transform="translate(0,10)">'+o+'</g>';}
+d(['Operational amplifier'],function(){return F('OPERATIONAL AMPLIFIER',opamp('')+tx(200,188,'output = gain × (V+  minus  V−)',{s:13,w:800,c:C.navy}),'Operational amplifier (op-amp) = an amplifier with two inputs (+ and −) and one output','It amplifies the difference between inputs');});
+d(['Inverting amplifier'],function(){return F('INVERTING AMPLIFIER',opamp('inv')+tx(250,188,'gain = −Rf ÷ Rin',{s:14,w:900,c:C.navy}),'Inverting amplifier = an op-amp circuit whose output is the input turned upside down','The minus sign means the output is inverted');});
+d(['Non-inverting amplifier'],function(){return F('NON-INVERTING AMPLIFIER',opamp('non')+tx(250,188,'gain = 1 + Rf ÷ R1',{s:14,w:900,c:C.navy}),'Non-inverting amplifier = an op-amp circuit whose output goes the same way as the input','The output is never smaller than the input');});
+d(['Voltage follower'],function(){return F('VOLTAGE FOLLOWER',opamp('fol')+tx(250,196,'gain = 1',{s:14,w:900,c:C.navy}),'Voltage follower = an op-amp whose output copies the input voltage (gain 1)','Used to stop one circuit loading another');});
+d(['Comparator'],function(){return F('COMPARATOR',opamp('')+tx(200,176,'V+ bigger than V−  →  output HIGH',{s:13,w:800,c:C.green})+tx(200,194,'V+ smaller than V−  →  output LOW',{s:13,w:800,c:C.red}),'Comparator = a circuit that compares two voltages and gives a HIGH or LOW output','Op-amps are often used as comparators');});
+// ---- logic gates ----
+function table(x,y,rows,hdr){var o=rc(x,y,130,18*(rows.length+1)+4,'#f8fafc',C.line,{r:6,w:1.2}),cw=130/hdr.length;hdr.forEach(function(h,i){o+=tx(x+cw*(i+0.5),y+15,h,{s:13,w:900,c:C.blue});});o+=ln(x+4,y+21,x+126,y+21,C.line,1.2);rows.forEach(function(r,j){r.forEach(function(v,i){o+=tx(x+cw*(i+0.5),y+39+j*18,v,{s:14,w:i===hdr.length-1?900:700,c:i===hdr.length-1?(v==='1'?C.green:C.red):C.navy});});});return o;}
+function gate(kind){var o='',s=kind==='and'||kind==='nand'?'M110 76 H140 A32 32 0 0 1 140 140 H110 Z':kind==='or'||kind==='xor'?'M110 76 Q150 76 178 108 Q150 140 110 140 Q128 108 110 76 Z':'M118 76 L118 140 L176 108 Z';
+ o+='<path d="'+s+'" fill="#e0f2fe" stroke="'+C.navy+'" stroke-width="2.4" stroke-linejoin="round"/>';var ox=kind==='and'?172:kind==='or'||kind==='xor'?178:kind==='not'?176:172;
+ if(kind==='xor')o+=W('M100 76 Q118 108 100 140',C.navy,2.4);
+ if(kind==='nand'||kind==='not'){o+=ci(ox+5,108,5,'#fff',C.navy,2.2);ox+=10;}
+ if(kind==='not')o+=W('M80 108 H118');else{var ix=kind==='xor'?112:kind==='or'?118:110;o+=W('M80 92 H'+(kind==='xor'?106:ix+4)+' M80 124 H'+(kind==='xor'?106:ix+4));}
+ o+=W('M'+ox+' 108 H232');o+=tx(70,96,'A',{a:'end',s:15,w:900,c:C.blue});if(kind!=='not')o+=tx(70,128,'B',{a:'end',s:15,w:900,c:C.blue});o+=tx(244,114,'Q',{a:'start',s:15,w:900,c:C.green});return o;}
+var T2=[['0','0'],['0','1'],['1','0'],['1','1']];
+function tt(f){return T2.map(function(r){return [r[0],r[1],String(f(+r[0],+r[1]))];});}
+function gfig(kind,f,title,course,not){return function(){var o=gate(kind).replace(/ translate/g,' translate');o='<g transform="translate(-6,0)">'+o+'</g>'+table(262,66,tt(f),['A','B','Q']);return F(title,o,course,not);};}
+d(['Logic gate'],gfig('and',function(a,b){return a&b;},'LOGIC GATE','Logic gate = a circuit that decides its output (1 or 0) from its inputs. This is an AND gate','AND: Q is 1 only when A and B are both 1'));
+d(['NAND gate','NAND equivalent'],gfig('nand',function(a,b){return +!(a&b);},'NAND GATE','NAND gate = an AND gate followed by NOT. The small circle means NOT','Q is 0 only when A and B are both 1'));
+d(['EOR gate','Exclusive OR (XOR)'],gfig('xor',function(a,b){return a^b;},'EOR / XOR GATE','Exclusive OR (EOR or XOR) = output is 1 when the inputs are different','Q is 0 when A and B are the same'));
+d(['Truth table'],function(){var o=table(80,62,tt(function(a,b){return a|b;}),['A','B','Q'])+tx(232,100,'every possible',{a:'start',s:13,w:800,c:C.slate})+tx(232,116,'input combination',{a:'start',s:13,w:800,c:C.slate})+tx(232,132,'is one row',{a:'start',s:13,w:800,c:C.slate});return F('TRUTH TABLE',o,'Truth table = a table listing every possible input and the output for each','This one is for an OR gate');});
+// ---- control ----
+function ipo(hl){var o='',bx=[['INPUT','switch or sensor','#bfdbfe'],['PROCESS','controller decides','#fde68a'],['OUTPUT','lamp or motor','#bbf7d0']];bx.forEach(function(b,i){var x=24+i*124,on=(hl===i);o+=rc(x,84,100,60,b[2],on?C.red:C.navy,{r:10,w:on?4:2})+tx(x+50,108,b[0],{s:15,w:900})+tx(x+50,128,b[1],{s:12,w:700,c:C.slate});if(i<2)o+=ar(x+102,114,x+122,114,C.blue,3);});
+ return o+tx(200,176,'information goes in, is processed, and comes out',{s:13,w:800,c:C.slate});}
+d(['Input'],function(){return F('INPUT',ipo(0),'Input = the signal or information that goes into a system','Examples: a switch, a light sensor');});
+d(['Process'],function(){return F('PROCESS',ipo(1),'Process = the part of a system that decides what to do with the input','Examples: a microcontroller, a logic gate');});
+d(['Output'],function(){return F('OUTPUT',ipo(2),'Output = what a system does or gives out after processing','Examples: an LED, a buzzer, a motor');});
+d(['Input-process-output','System'],function(){return F('INPUT-PROCESS-OUTPUT',ipo(-1),'Input-process-output = the three parts of every control system','Input → Process → Output');});
+function loop(hl){var o='';
+ o+=ar(10,110,46,110,C.slate,2.6)+tx(28,98,'target',{s:12,w:800,c:C.slate});
+ o+=ci(62,110,14,'#fff',hl==='err'?C.red:C.navy,hl==='err'?4:2.4)+tx(46,102,'+',{s:16,w:900,c:C.green})+tx(78,134,'−',{s:18,w:900,c:C.red});
+ o+=ar(77,110,100,110,C.slate,2.6)+rc(102,88,74,44,'#fde68a',C.navy,{r:8,w:2})+tx(139,108,'controller',{s:13,w:800})+tx(139,124,'(decides)',{s:12,w:700,c:C.slate})+ar(178,110,202,110,C.slate,2.6)+rc(204,88,74,44,'#bbf7d0',C.navy,{r:8,w:2})+tx(241,108,'process',{s:13,w:800})+tx(241,124,'(does it)',{s:12,w:700,c:C.slate})+ar(280,110,372,110,C.slate,2.6)+tx(336,98,'output',{s:12,w:800,c:C.slate})+ci(318,110,3.5,C.navy);
+ var fc=hl==='fb'||hl==='neg'?C.red:C.blue;o+=W('M318 110 V166 H62 V126',fc,hl==='fb'||hl==='neg'?4:2.6)+rc(150,152,92,28,'#e0f2fe',fc,{r:8,w:2})+tx(196,171,'sensor',{s:13,w:800,c:C.navy});
+ o+=pg('62,126 56,138 68,138',fc,fc,1)+tx(214,148,'feedback',{s:12,w:800,c:fc}).replace('x="214"','x="290"').replace('y="148"','y="154"');
+ if(hl==='err')o+=tx(62,70,'error signal =',{s:13,w:800,c:C.red})+tx(62,86,'target − actual',{s:13,w:800,c:C.red});
+ return o;}
+d(['Closed-loop control','Control diagram'],function(){return F('CLOSED-LOOP CONTROL',loop(''),'Closed-loop control = a system that checks its output and corrects itself','Example: a heating system with a thermostat');});
+d(['Feedback'],function(){return F('FEEDBACK',loop('fb'),'Feedback = sending information about the output back to the input','The sensor measures the output and feeds it back');});
+d(['Negative feedback'],function(){return F('NEGATIVE FEEDBACK',loop('neg'),'Negative feedback = the output is subtracted from the target to reduce the error','It keeps the output steady (the − sign)');});
+d(['Error signal'],function(){return F('ERROR SIGNAL',loop('err'),'Error signal = the difference between the target value and the actual value','Error = target minus actual');});
+d(['Open-loop control'],function(){var o=ar(10,112,46,112,C.slate,2.6)+tx(28,98,'input',{s:12,w:800,c:C.slate})+rc(48,86,100,52,'#fde68a',C.navy,{r:8,w:2})+tx(98,108,'controller',{s:13,w:800})+tx(98,126,'(timer)',{s:12,w:700,c:C.slate})+ar(150,112,176,112,C.slate,2.6)+rc(178,86,100,52,'#bbf7d0',C.navy,{r:8,w:2})+tx(228,108,'process',{s:13,w:800})+tx(228,126,'(toaster)',{s:12,w:700,c:C.slate})+ar(280,112,372,112,C.slate,2.6)+tx(332,98,'output',{s:12,w:800,c:C.slate})+tx(200,168,'NO feedback: it never checks the result',{s:14,w:900,c:C.red});
+ return F('OPEN-LOOP CONTROL',o,'Open-loop control = a system with no feedback: it does not check its output','Example: a toaster that runs for a set time');});
+// ---- Sankey ----
+function sankey(hl){var o='<path d="M40 70 H140 V150 H40 Z" fill="#bfdbfe" stroke="'+(hl==='in'?C.red:C.blue)+'" stroke-width="'+(hl==='in'?4:1.5)+'"/>'
+ +'<path d="M140 70 H330 V126 H140 Z" fill="#bbf7d0" stroke="'+(hl==='out'?C.red:C.green)+'" stroke-width="'+(hl==='out'?4:1.5)+'"/>'
+ +'<path d="M140 126 H170 Q200 126 200 156 V176 H176 V156 Q176 150 170 150 H140 Z" fill="#fed7aa" stroke="'+(hl==='loss'?C.red:C.amber)+'" stroke-width="'+(hl==='loss'?4:1.5)+'"/>'
+ +tx(90,104,'energy in',{s:13,w:800,c:C.blue})+tx(90,122,'100 J',{s:15,w:900,c:C.blue})+tx(235,94,'useful energy out',{s:13,w:800,c:'#166534'})+tx(235,112,'70 J',{s:15,w:900,c:'#166534'})+tx(210,166,'wasted energy (loss)',{a:'start',s:13,w:800,c:'#b45309'})+tx(210,182,'30 J (heat, sound)',{a:'start',s:13,w:700,c:'#b45309'});return o;}
+d(['Sankey diagram'],function(){return F('SANKEY DIAGRAM',sankey(''),'Sankey diagram = a diagram where the width of each arrow shows an amount of energy','Wide arrow = lots of energy');});
+d(['Energy input'],function(){return F('ENERGY INPUT',sankey('in'),'Energy input = the total energy put into a device','Example: electrical energy going into a lamp');});
+d(['Useful energy output'],function(){return F('USEFUL ENERGY OUTPUT',sankey('out'),'Useful energy output = the energy that does the job you wanted','Example: the light given out by a lamp');});
+d(['Energy loss'],function(){return F('ENERGY LOSS',sankey('loss'),'Energy loss = energy wasted, often as heat or sound','Energy is never destroyed; it is wasted');});
+d(['Efficiency'],function(){return F('EFFICIENCY',sankey('')+'','Efficiency = (useful energy out ÷ energy in) × 100%','Here: 70 ÷ 100 × 100 = 70% efficient');});
+// ---- energy ----
+d(['Gravitational potential energy'],function(){var o=rc(40,160,320,10,ST3,C.navy,{w:1})+rc(230,100,110,10,ST,C.navy,{w:2})+ci(285,86,14,'#fca5a5',C.red,2.5)+dar(190,102,190,160,C.blue,2.4)+tx(178,136,'height h',{a:'end',s:13,w:800,c:C.blue})+tx(285,64,'mass m',{s:13,w:800,c:C.red})+ar(285,114,285,150,C.slate,2)+tx(300,140,'gravity',{a:'start',s:13,w:700,c:C.slate});
+ return F('GRAVITATIONAL POTENTIAL ENERGY',o,'Gravitational potential energy = the energy stored because something is high up','GPE = mass × gravity × height (m g h)');});
+d(['Kinetic energy'],function(){var o=ln(30,116,100,116,C.mut,2.5)+ln(40,130,100,130,C.mut,2.5)+ln(50,144,100,144,C.mut,2.5)+rc(112,106,120,36,'#93c5fd',C.navy,{r:8,w:2})+rc(136,84,64,26,'#bfdbfe',C.navy,{r:6,w:2})+ci(140,146,14,ST3,C.navy,2)+ci(208,146,14,ST3,C.navy,2)+ar(250,122,340,122,C.red,3.5)+tx(296,106,'speed v',{s:14,w:800,c:C.red})+tx(172,126,'mass m',{s:13,w:800,c:C.navy});
+ return F('KINETIC ENERGY',o,'Kinetic energy = the energy something has because it is moving','Ek = ½ × mass × speed² (½ m v²)');});
+d(['Work done'],function(){var o=rc(40,160,320,8,ST3,C.navy,{w:1})+rc(320,110,50,50,'none',C.mut,{w:1.6,d:'5 4'})+rc(170,110,50,50,ST2,C.navy,{r:4,w:2})+ar(80,135,166,135,C.red,3.5)+tx(110,124,'force F',{s:14,w:800,c:C.red})+dar(170,188,320,188,C.blue,2.4)+tx(245,180,'distance d',{s:13,w:800,c:C.blue});
+ return F('WORK DONE',o.replace('y="182"','y="182"'),'Work done = the energy transferred when a force moves something','Work done = force × distance (joules)');});
+d(['Power'],function(){var o=ci(200,96,30,'#fef08a',C.amber,2.5)+W('M188 116 L194 96 L200 108 L206 96 L212 116',C.amber,2)+rc(186,126,28,16,ST,C.navy,{w:1.5})+tx(200,40+24,'',{})+ln(200,50,200,58,C.amber,2.5)+ln(150,96,162,96,C.amber,2.5)+ln(238,96,250,96,C.amber,2.5)+tx(200,170,'60 W lamp = uses 60 J every second',{s:14,w:800,c:C.navy})+tx(200,190,'power = energy ÷ time',{s:14,w:900,c:C.red});
+ return F('POWER',o,'Power = how fast energy is used or transferred: energy ÷ time','Measured in watts (W). 1 W = 1 joule per second');});
+// ---- forces ----
+function boxF(a){var o=rc(170,90,60,50,ST2,C.navy,{r:4,w:2});a.forEach(function(v){o+=ar(v[0],v[1],v[2],v[3],v[4],3.5)+tx(v[5],v[6],v[7],{a:v[8]||'middle',s:13,w:800,c:v[4]});});return o;}
+d(['Equilibrium'],function(){var o=boxF([[200,86,200,62,C.green,200,56,'10 N'],[200,144,200,170,C.green,200,186,'10 N'],[164,115,110,115,C.blue,70,120,'5 N'],[236,115,290,115,C.blue,320,120,'5 N']]);o=o.replace(/(<polygon[^>]*>)/,'$1');
+ return F('EQUILIBRIUM',o,'Equilibrium = all forces are balanced, so nothing speeds up, slows down or turns','Opposite forces are equal in size');});
+d(['Resultant force'],function(){var o=boxF([[164,115,128,115,C.blue,116,98,'3 N','end'],[236,115,330,115,C.red,284,98,'8 N']])+ar(120,170,250,170,C.green,4.5)+tx(190,162,'resultant: 5 N →',{s:14,w:900,c:C.green}).replace('y="162"','y="190"');
+ return F('RESULTANT FORCE',o,'Resultant force = the single force that has the same effect as all the forces together','8 N right and 3 N left gives 5 N right');});
+d(['Equilibrant'],function(){var o=rc(170,90,60,50,ST2,C.navy,{r:4,w:2})+ar(236,115,330,115,C.green,4)+tx(290,100,'resultant 5 N',{s:13,w:800,c:C.green})+ar(164,115,70,115,C.blue,4)+tx(110,100,'equilibrant 5 N',{s:13,w:800,c:C.blue})+tx(200,170,'equal and opposite: it balances the resultant',{s:13,w:800,c:C.slate});
+ return F('EQUILIBRANT',o,'Equilibrant = a force equal and opposite to the resultant, that balances it','Resultant + equilibrant = zero');});
+function beam(){return rc(60,100,280,14,ST,C.navy,{r:3,w:2})+pg('90,114 74,142 106,142',ST3,C.navy,1.5)+pg('310,114 294,142 326,142',ST3,C.navy,1.5)+ln(60,146,120,146,ST3,3)+ln(280,146,340,146,ST3,3);}
+d(['Reaction force'],function(){var o=beam()+ar(200,52,200,96,C.red,3.5)+tx(214,66,'load',{a:'start',s:13,w:800,c:C.red})+ar(90,196,90,150,C.green,3.5)+ar(310,196,310,150,C.green,3.5)+tx(130,176,'supports push UP',{a:'start',s:13,w:800,c:C.green});
+ return F('REACTION FORCE',o.replace('M','M'),'Reaction force = the push back from a support that balances the load','Reactions up = load down');});
+d(['Point load'],function(){var o=beam()+ar(200,52,200,96,C.red,4)+tx(214,68,'one load at\none point',{a:'start',s:13,w:800,c:C.red})+tx(200,176,'all the force acts at a single point',{s:13,w:800,c:C.slate});
+ return F('POINT LOAD',o,'Point load = a load that acts at one single point','Example: a person standing on a plank');});
+d(['Distributed load','Uniformly distributed load'],function(){var o=beam();for(var x=90;x<=310;x+=31.4)o+=ar(x,62,x,96,C.red,2.6);o+=ln(90,56,310,56,C.red,2)+tx(200,44,'',{})+tx(200,176,'load spread evenly along the beam',{s:13,w:800,c:C.slate});
+ return F('UNIFORMLY DISTRIBUTED LOAD',o,'Uniformly distributed load (UDL) = a load spread evenly along a beam','Example: snow lying on a roof beam');});
+d(['Free-body diagram'],function(){var o=rc(170,96,60,44,ST2,C.navy,{r:4,w:2})+ar(200,92,200,52,C.green,3.5)+tx(214,60,'normal reaction',{a:'start',s:13,w:800,c:C.green})+ar(200,144,200,184,C.red,3.5)+tx(214,178,'weight',{a:'start',s:13,w:800,c:C.red})+ar(80,118,164,118,C.blue,3.5)+tx(60,106,'push',{a:'start',s:13,w:800,c:C.blue})+ar(236,118,296,118,C.amber,3.5)+tx(246,106,'friction',{a:'start',s:13,w:800,c:C.amber});
+ return F('FREE-BODY DIAGRAM',o,'Free-body diagram = a drawing of one object alone with every force on it as an arrow','The arrow length shows how big the force is');});
+d(['Factor of safety'],function(){var o=ln(40,172,360,172,C.slate,2)+rc(110,64,60,108,'#fecaca',C.red,{w:2})+tx(140,100,'breaks at',{s:13,w:800,c:C.red})+tx(140,118,'400 N',{s:16,w:900,c:C.red})+rc(230,136,60,36,'#bbf7d0',C.green,{w:2})+tx(260,126,'used at 100 N',{s:13,w:800,c:'#166534'})+tx(200,192,'factor of safety = 400 ÷ 100 = 4',{s:14,w:900,c:C.navy});
+ return F('FACTOR OF SAFETY',o,'Factor of safety = failure load ÷ working load','A bigger number means a safer design');});
+d(['Neutral axis'],function(){var o='<path d="M60 84 Q200 134 340 84 L340 118 Q200 168 60 118 Z" fill="#fde68a" stroke="'+C.navy+'" stroke-width="2.2"/>'+W('M60 101 Q200 151 340 101',C.green,3,'6 4')+tx(200,76,'top: squashed (compression)',{s:13,w:800,c:C.blue})+tx(200,176,'bottom: stretched (tension)',{s:13,w:800,c:C.red})+tx(200,194,'dashed line = neutral axis: no stress',{s:13,w:800,c:'#166534'});
+ return F('NEUTRAL AXIS',o,'Neutral axis = the line inside a bending beam that is neither stretched nor squashed','Above it: compression. Below it: tension');});
+d(['Bending stress'],function(){var o='<path d="M60 84 Q200 134 340 84 L340 118 Q200 168 60 118 Z" fill="#fde68a" stroke="'+C.navy+'" stroke-width="2.2"/>'+W('M60 101 Q200 151 340 101',C.green,3,'6 4')+tx(200,70,'biggest stress at the top surface',{s:13,w:800,c:C.blue})+tx(200,178,'biggest stress at the bottom surface',{s:13,w:800,c:C.red})+tx(200,196,'zero stress on the neutral axis',{s:13,w:800,c:'#166534'});
+ return F('BENDING STRESS',o.replace('y="196"','y="196"'),'Bending stress = the stress inside a beam that is being bent','Greatest furthest from the neutral axis');});
+d(['Bending moment'],function(){var o=rc(54,60,16,100,ST3,C.navy,{w:2})+rc(70,100,240,14,ST,C.navy,{r:3,w:2})+ar(296,56,296,96,C.red,3.5)+tx(284,70,'force F',{a:'end',s:13,w:800,c:C.red})+dar(70,138,296,138,C.blue,2.4)+tx(183,160,'distance d',{s:13,w:800,c:C.blue})+tx(200,186,'bending moment = F × d',{s:14,w:900,c:C.navy});
+ return F('BENDING MOMENT',o,'Bending moment = the turning effect that tries to bend a beam: force × distance','It is biggest at the fixed end (the wall)');});
+// ---- bearings and shafts ----
+function ballb(){var o=ci(200,106,52,ST,C.navy,2.5)+ci(200,106,30,'#fff',C.navy,2);for(var i=0;i<8;i++){var a=i*Math.PI/4;o+=ci(200+41*Math.cos(a),106+41*Math.sin(a),7,ST3,C.navy,1.5);}return o+ci(200,106,18,'#e2e8f0',C.navy,2)+ci(200,106,4,C.navy);}
+d(['Bearing'],function(){var o=ballb()+tx(278,70,'outer ring\n(fixed)',{a:'start',s:13,w:800,c:C.navy})+tx(278,120,'balls roll',{a:'start',s:13,w:800,c:C.blue})+tx(278,150,'shaft turns\nin here',{a:'start',s:13,w:800,c:C.red})+rot(200,106,10,true,C.red);
+ return F('BEARING',o,'Bearing = a part that supports a turning shaft and reduces friction','Balls roll instead of sliding');});
+d(['Radial bearing'],function(){var o=ballb()+ar(200,174,200,130,C.red,3.5)+tx(214,186,'load pushes sideways across the shaft',{a:'start',s:13,w:800,c:C.red}).replace('x="214"','x="76"');
+ return F('RADIAL BEARING',o,'Radial bearing = a bearing that supports a load acting across (at 90° to) the shaft','Example: a wheel bearing carrying weight');});
+d(['Thrust bearing'],function(){var o=rc(60,96,280,22,ST3,C.navy,{w:2})+rc(176,80,16,54,ST,C.navy,{w:2})+rc(192,76,14,62,'#fde68a',C.navy,{w:1.8})+rc(206,80,16,54,ST,C.navy,{w:2})+ar(340,66,240,66,C.red,3.5)+tx(199,158,'thrust bearing',{s:13,w:800,c:C.navy})+tx(200,178,'load pushes ALONG the shaft',{s:13,w:800,c:C.red});
+ return F('THRUST BEARING',o,'Thrust bearing = a bearing that supports a load acting along the shaft','Example: a drill press or a screw jack');});
+d(['Journal bearing'],function(){var o=rc(120,74,160,22,ST,C.navy,{w:2})+rc(120,128,160,22,ST,C.navy,{w:2})+rc(60,98,280,28,ST3,C.navy,{w:2})+ln(120,97,280,97,C.amber,2.5)+ln(120,127,280,127,C.amber,2.5)+tx(200,62,'sleeve (the bearing)',{s:13,w:800,c:C.navy})+tx(200,170,'shaft turns inside',{s:13,w:800,c:C.slate})+tx(200,190,'thin film of oil',{s:13,w:800,c:'#b45309'});
+ return F('JOURNAL BEARING',o,'Journal bearing = a plain sleeve that a shaft turns inside','A thin film of oil reduces friction');});
+d(['Brake'],function(){var o=ci(170,112,50,ST,C.navy,2.5)+ci(170,112,6,C.navy)+rot(170,112,30,true,C.slate)+rc(222,92,22,40,'#fca5a5',C.red,{w:2})+ar(300,112,248,112,C.red,3.5)+tx(300,98,'pad presses',{a:'start',s:13,w:800,c:C.red}).replace('x="300"','x="258"').replace('y="98"','y="150"')+tx(100,184,'friction slows the wheel',{a:'start',s:13,w:800,c:C.navy});
+ return F('BRAKE',o,'Brake = a device that slows or stops something by using friction','Brakes turn movement energy into heat');});
+d(['Flexible coupling','Rigid coupling'],null);
+function coupling(flex){return function(){var o=rc(30,100,110,24,ST2,C.navy,{w:2})+rc(260,100,110,24,ST2,C.navy,{w:2});
+ if(flex){o+=rc(140,90,120,44,'#fde68a',C.navy,{r:8,w:2});for(var i=0;i<6;i++)o+=ln(150+i*20,96,162+i*20,128,C.amber,2.5);o+=tx(200,160,'rubber or spring joint',{s:13,w:800,c:'#b45309'})+tx(200,180,'allows a small misalignment',{s:13,w:800,c:'#166534'});}
+ else{o+=rc(140,90,120,44,ST,C.navy,{w:2.5})+ci(160,98,3,C.navy)+ci(160,126,3,C.navy)+ci(240,98,3,C.navy)+ci(240,126,3,C.navy)+tx(200,160,'solid joint, no movement',{s:13,w:800,c:C.slate})+tx(200,180,'shafts must line up exactly',{s:13,w:800,c:C.red});}
+ return F(flex?'FLEXIBLE COUPLING':'RIGID COUPLING',o,flex?'Flexible coupling = joins two shafts but allows a little movement between them':'Rigid coupling = joins two shafts firmly so they turn as one',flex?'It also absorbs shocks and vibration':'It gives no flexibility');};}
+d(['Flexible coupling'],coupling(true));d(['Rigid coupling'],coupling(false));
+d(['Clutch'],function(){function disc(x,c){return rc(x,76,14,60,c,C.navy,{w:2});}
+ var o=ln(20,106,126,106,ST3,6)+disc(126,'#bfdbfe')+disc(144,'#fde68a')+ln(158,106,190,106,ST3,6)+tx(138,66,'ENGAGED',{s:13,w:900,c:C.green})+tx(138,158,'both discs\nturn together',{s:12,w:800,c:C.green})
+ +ln(226,106,276,106,ST3,6)+disc(276,'#bfdbfe')+disc(318,'#fde68a')+ln(332,106,380,106,ST3,6)+tx(300,66,'RELEASED',{s:13,w:900,c:C.red})+tx(300,158,'gap: only one\ndisc turns',{s:12,w:800,c:C.red});
+ return F('CLUTCH',o,'Clutch = a device that connects or disconnects two turning shafts','Used in a car to change gear');});
+// ---- software / systems ----
+d(['Flowchart'],function(){var o=rc(16,96,62,28,'#e2e8f0',C.navy,{r:14,w:2})+tx(47,115,'start',{s:13,w:800})+ar(80,110,102,110,C.slate,2.4)+rc(104,90,76,40,'#bfdbfe',C.navy,{w:2})+tx(142,107,'read',{s:13,w:800})+tx(142,122,'sensor',{s:13,w:800})+ar(182,110,206,110,C.slate,2.4)+pg('250,80 292,110 250,140 208,110','#fde68a',C.navy,2)+tx(250,115,'dark?',{s:13,w:900})+W('M250 80 V66 H306',C.green,2.4)+pg('306,66 298,61 298,71',C.green,C.green,1)+tx(270,58,'Yes',{s:13,w:900,c:C.green})+rc(308,50,72,32,'#bbf7d0',C.navy,{w:2})+tx(344,71,'LED on',{s:13,w:800})+W('M250 140 V160 H306',C.red,2.4)+pg('306,160 298,155 298,165',C.red,C.red,1)+tx(270,176,'No',{s:13,w:900,c:C.red})+rc(308,144,72,32,'#fecaca',C.navy,{w:2})+tx(344,165,'LED off',{s:13,w:800});
+ o='<g transform="translate(0,10)">'+o+'</g>';return F('FLOWCHART',o,'Flowchart = a diagram of the steps of a program, using shapes and arrows','A diamond is a decision: yes or no');});
+d(['Finite loop'],function(){var o=rc(120,84,150,44,'#bfdbfe',C.navy,{r:8,w:2})+tx(195,111,'flash the LED',{s:14,w:800})+W('M270 106 H312 V60 H195 V84',C.blue,3)+pg('195,84 189,74 201,74',C.blue,C.blue,1)+tx(324,100,'repeat\n5 times',{a:'start',s:14,w:900,c:C.blue})+ar(195,130,195,168,C.green,3)+tx(195,186,'then it STOPS',{s:14,w:900,c:C.green});
+ return F('FINITE LOOP',o,'Finite loop = a loop that repeats a set number of times, then stops','Example: flash an LED 5 times');});
+d(['Infinite loop'],function(){var o=rc(120,84,150,44,'#bfdbfe',C.navy,{r:8,w:2})+tx(195,111,'flash the LED',{s:14,w:800})+W('M270 106 H312 V60 H195 V84',C.red,3)+pg('195,84 189,74 201,74',C.red,C.red,1)+tx(324,100,'repeats\nforever',{a:'start',s:14,w:900,c:C.red})+tx(195,170,'it never stops (until the power is off)',{s:13,w:800,c:C.slate});
+ return F('INFINITE LOOP',o,'Infinite loop = a loop that never ends and repeats for ever','Many control programs use one on purpose');});
+d(['Subroutine'],function(){var o=rc(30,60,110,34,'#e2e8f0',C.navy,{w:2})+tx(85,82,'main program',{s:13,w:800})+rc(30,100,110,34,'#fde68a',C.navy,{w:2})+tx(85,122,'call: beep',{s:13,w:800})+rc(30,140,110,34,'#e2e8f0',C.navy,{w:2})+tx(85,162,'carry on',{s:13,w:800})+rc(240,90,130,54,'#bbf7d0',C.navy,{r:8,w:2})+tx(305,112,'subroutine',{s:14,w:900})+tx(305,130,'"beep"',{s:13,w:700,c:C.slate})+ar(142,112,238,112,C.blue,3)+W('M240 134 H190 V156 H146',C.green,3)+pg('142,156 152,150 152,162',C.green,C.green,1)+tx(190,100,'go',{s:13,w:800,c:C.blue})+tx(262,166,'return',{s:13,w:800,c:C.green});
+ return F('SUBROUTINE',o,'Subroutine = a small named piece of program that the main program can call','It saves writing the same steps again');});
+d(['Microcontroller'],function(){var o=rc(150,66,100,100,'#1e293b',C.navy,{r:8,w:2})+tx(200,110,'micro-',{s:14,w:800,c:'#fff'})+tx(200,128,'controller',{s:14,w:800,c:'#fff'});for(var i=0;i<4;i++)o+=ln(130,82+i*22,150,82+i*22,ST3,4)+ln(250,82+i*22,270,82+i*22,ST3,4);
+ o+=tx(110,60,'INPUTS',{a:'end',s:13,w:900,c:C.blue})+tx(110,82,'switch',{a:'end',s:12,w:700,c:C.slate})+tx(110,126,'sensor',{a:'end',s:12,w:700,c:C.slate})+tx(290,60,'OUTPUTS',{a:'start',s:13,w:900,c:C.green})+tx(290,86,'LED',{a:'start',s:12,w:700,c:C.slate})+tx(290,126,'motor',{a:'start',s:12,w:700,c:C.slate});
+ return F('MICROCONTROLLER',o.replace(/<text[^>]*>INPUTS/,'<text x="110" y="58" text-anchor="end" font-size="13" font-weight="900" fill="#2563eb">INPUTS'),'Microcontroller = a tiny computer on one chip that reads inputs and controls outputs','Example: the brain of a robot or alarm');});
+function three(a,b,c,la,lb,lc,col){var o='';[a,b,c].forEach(function(t,i){var x=24+i*124;o+=rc(x,84,100,56,['#e0f2fe','#fde68a','#bbf7d0'][i],i===col?C.red:C.navy,{r:10,w:i===col?4:2})+tx(x+50,108,t[0],{s:t[0].length>9?12:14,w:900})+tx(x+50,126,t[1]||'',{s:12,w:700,c:C.slate});if(i<2)o+=ar(x+102,112,x+122,112,C.blue,3);});return o+tx(200,176,la,{s:13,w:800,c:C.slate});}
+d(['Sensor'],function(){return F('SENSOR',three(['light','(the real world)'],['SENSOR','(LDR)'],['electrical','signal'],'a sensor turns what it detects into a signal',0,0,1),'Sensor = a part that detects something (light, heat, movement) and gives a signal','Example: an LDR detects light');});
+d(['Transducer'],function(){return F('TRANSDUCER',three(['sound','(energy in)'],['TRANSDUCER','(microphone)'],['electrical','signal'],'a transducer changes energy from one form to another',0,0,1),'Transducer = a part that changes energy from one form into another','Sensors and actuators are transducers');});
+d(['Actuator'],function(){return F('ACTUATOR',three(['electrical','signal'],['ACTUATOR','(motor)'],['movement','(the output)'],'an actuator turns a signal into movement',0,0,1),'Actuator = a part that turns a signal into movement or action','Examples: a motor, a cylinder, a solenoid');});
+// ---- signals ----
+d(['Analogue signal'],function(){var o=ar(60,168,350,168,C.slate,2)+ar(60,168,60,52,C.slate,2)+W('M60 110 Q92 52 124 110 T188 110 T252 110 T316 110',C.blue,3.5)+tx(200,190,'smooth: any value between the highest and lowest',{s:13,w:800,c:C.blue})+tx(36,110,'level',{s:12,w:700,c:C.slate});
+ return F('ANALOGUE SIGNAL',o,'Analogue signal = a signal that changes smoothly and can take any value','Example: sound, temperature, light level');});
+d(['Digital signal'],function(){var o=ar(60,168,350,168,C.slate,2)+ar(60,168,60,52,C.slate,2)+W('M60 150 H100 V76 H150 V150 H190 V150 H220 V76 H280 V150 H320',C.green,3.5)+tx(48,80,'1',{s:14,w:900,c:C.green})+tx(48,154,'0',{s:14,w:900,c:C.slate})+tx(200,190,'only two values: ON (1) or OFF (0)',{s:13,w:800,c:C.green});
+ return F('DIGITAL SIGNAL',o,'Digital signal = a signal that has only two values: on (1) or off (0)','Computers and logic gates use digital signals');});
+function pwmF(){return function(){function row(y,on,c){var o='';for(var i=0;i<4;i++){var x=60+i*72;o+=W('M'+x+' '+(y+26)+' V'+y+' H'+(x+on)+' V'+(y+26)+' H'+(x+72),c,3);}return o;}
+ var o=tx(200,64,'short pulses (25% on): LOW average power',{s:13,w:800,c:C.blue})+row(72,18,C.blue)+tx(200,120,'long pulses (75% on): HIGH average power',{s:13,w:800,c:C.green})+row(128,54,C.green)+tx(200,184,'on-time ÷ whole time = duty cycle',{s:13,w:800,c:C.navy});
+ return F('PULSE-WIDTH MODULATION',o,'Pulse-width modulation (PWM) = switching on and off fast; the on-time sets the power','Used to control motor speed or LED brightness');};}
+d(['Pulse-width modulation (PWM)','Pulse-width modulation'],pwmF());
+})();
+
+
 (function(){var old=window.getTermVisualSvg;
-window.getTermVisualSvg=function(row){try{if(row&&row.subject==='Graphic Communication'){var f=window.V2.map[(row.term||'').trim().toLowerCase()];if(f){var r=f();if(r)return r;}}}catch(e){}
+window.getTermVisualSvg=function(row){try{var k=(row.term||'').trim().toLowerCase(),f=window.V2.map[(row.subject||'').toLowerCase()+'|'+k]||(row.subject==='Graphic Communication'?window.V2.map[k]:null);if(f){var r=f();if(r)return r;}}catch(e){}
 return old?old(row):'';};
 window.extraVisualCount=Object.keys(window.V2.map).length;})();
 
