@@ -148,7 +148,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 
 .bilingual-grid{display:grid;grid-template-columns:1.1fr 245px 1.1fr;gap:12px;align-items:stretch}
 .visual-panel{display:flex;align-items:center;justify-content:center;background:#ffffff;border:1px solid var(--line);border-radius:11px;padding:8px}
-.visual-panel svg{width:100%;height:auto;max-height:175px;display:block}
+.visual-panel svg{width:100%;height:auto;max-height:none;display:block}
 .language-panel{min-width:0;border:1px solid var(--line);border-radius:11px;padding:13px 14px;background:#fbfcfe}
 .language-panel.eal-panel{background:#f4f8ff;border-color:#cbdcff}
 .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
@@ -195,7 +195,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 
 @media(max-width:920px){
   .bilingual-grid{grid-template-columns:1fr}
-  .visual-panel svg{max-width:280px}
+  .visual-panel svg{max-width:none}
 }
 @media(max-width:780px){
   .selectors{grid-template-columns:1fr 1fr}
@@ -493,10 +493,10 @@ window.getTermVisualSvg = function(row) {
       return wrapSvg('BLEED', `
         <rect x="40" y="32" width="180" height="116" fill="#60a5fa" stroke="#155eef" stroke-width="1.5"/>
         <rect x="58" y="50" width="144" height="80" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 3"/>
-        <text x="130" y="44" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f295c">Bleed = extra artwork that gets cut off</text>
-        <text x="130" y="94" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">PAGE (after cutting)</text>
-        <text x="130" y="141" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">- - -  trim edge: the cut line  - - -</text>
-        <text x="130" y="165" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">No white edge is left after cutting</text>
+        <text x="130" y="44" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f295c">Bleed = extra artwork that is trimmed off</text>
+        <text x="130" y="94" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">PAGE (after trimming)</text>
+        <text x="130" y="141" text-anchor="middle" font-size="8.5" font-weight="800" fill="#dc2626">- - -  trimmed edge (crop marks)  - - -</text>
+        <text x="130" y="165" text-anchor="middle" font-size="8.5" font-weight="700" fill="#475569">No white edge is left after trimming</text>
       `);
     }
     if (t === 'value') {
@@ -1219,7 +1219,339 @@ window.getTermVisualSvg = function(row) {
 
 </script>
 
-  <!-- Flashcard Study Mode Modal -->
+  <script>
+(function(){
+var old=window.getTermVisualSvg;
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function wrap(title,inner){return '<svg viewBox="0 0 260 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(title)+'"><rect x="1" y="1" width="258" height="173" rx="10" fill="#f8fafc" stroke="#cbd5e1"/><text x="130" y="19" text-anchor="middle" font-size="9.8" font-weight="800" fill="#1e293b" letter-spacing="0.02em">'+esc(title)+'</text>'+inner+'</svg>';}
+function T(x,y,s,o){o=o||{};return '<text x="'+x+'" y="'+y+'" text-anchor="'+(o.a||'middle')+'" font-size="'+(o.s||8.5)+'" font-weight="'+(o.w||700)+'" fill="'+(o.c||'#475569')+'">'+esc(s)+'</text>';}
+function cap(a,b){return T(130,152,a)+(b?T(130,167,b,{w:800,c:'#b42318'}):'');}
+function R(x,y,w,h,f,s,extra){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" '+(extra||'')+'/>';}
+function L(x1,y1,x2,y2,c,w,d){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(c||'#334155')+'" stroke-width="'+(w||1.5)+'"'+(d?' stroke-dasharray="'+d+'"':'')+'/>';}
+function P(pts,f,s,w){return '<polygon points="'+pts+'" fill="'+(f||'none')+'" stroke="'+(s||'#334155')+'" stroke-width="'+(w||1.5)+'"/>';}
+function lines(x,y,w,n,gap,c){var o='';for(var i=0;i<n;i++)o+=R(x,y+i*gap,w-(i==n-1?w*0.4:0),4,c||'#94a3b8');return o;}
+var BL='#155eef',RD='#dc2626',DK='#334155';
+// 3D box helpers (isometric)
+function isoBox(cx,cy,s,ct,cl,cr){var h=s*0.5,w=s*0.87;return P((cx)+','+(cy-s)+' '+(cx+w)+','+(cy-s+h)+' '+cx+','+(cy-s+2*h)+' '+(cx-w)+','+(cy-s+h),ct||'#dbeafe')+P((cx-w)+','+(cy-s+h)+' '+cx+','+(cy-s+2*h)+' '+cx+','+(cy+2*h-0)+' '+(cx-w)+','+(cy+h),cl||'#60a5fa')+P(cx+','+(cy-s+2*h)+' '+(cx+w)+','+(cy-s+h)+' '+(cx+w)+','+(cy+h)+' '+cx+','+(cy+2*h),cr||'#1d4ed8');}
+var V={};
+function def(names,fn){names.forEach(function(n){V[n.toLowerCase()]=fn;});}
+def(['hue'],function(){var cols=['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899'],o='';for(var i=0;i<8;i++){var a0=i*Math.PI/4,a1=(i+1)*Math.PI/4,cx=130,cy=76,r=44;o+='<path d="M'+cx+','+cy+' L'+(cx+r*Math.cos(a0))+','+(cy+r*Math.sin(a0))+' A'+r+','+r+' 0 0 1 '+(cx+r*Math.cos(a1))+','+(cy+r*Math.sin(a1))+' Z" fill="'+cols[i]+'" stroke="#fff" stroke-width="1"/>';}return wrap('HUE',o+T(130,138,'Hue = the colour family (red, blue, green...)')+T(130,152,'The pure colour, before white, black or grey is added')+T(130,167,'Not "hue and cry"',{w:800,c:'#b42318'}));});
+def(['saturation'],function(){var o='<defs><linearGradient id="vsat" x1="0" x2="1"><stop offset="0" stop-color="#8a8a8a"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>'+R(30,40,200,36,'url(#vsat)',DK)+T(30,90,'LOW',{a:'start',w:800})+T(230,90,'HIGH',{a:'end',w:800})+R(46,102,46,26,'#8f97a8',DK)+R(107,102,46,26,'#5b7bd0',DK)+R(168,102,46,26,'#1d4ed8',DK)+T(69,140,'dull / grey')+T(191,140,'vivid / pure');return wrap('SATURATION',o+T(130,160,'How pure or strong a colour looks',{w:800,c:'#b42318'}));});
+def(['tint'],function(){return wrap('TINT',R(24,48,56,50,'#1d4ed8',DK)+T(98,80,'+',{s:20,w:800,c:DK})+R(114,48,56,50,'#ffffff',DK)+T(186,80,'=',{s:20,w:800,c:DK})+R(198,48,44,50,'#93b4f5',DK)+T(52,112,'pure colour')+T(142,112,'white')+T(220,112,'TINT',{w:800,c:BL})+T(130,136,'Tint = colour + white (lighter)')+cap('Shade = colour + black · Tone = colour + grey'));});
+def(['shade'],function(){return wrap('SHADE',R(24,48,56,50,'#1d4ed8',DK)+T(98,80,'+',{s:20,w:800,c:DK})+R(114,48,56,50,'#000000',DK)+T(186,80,'=',{s:20,w:800,c:DK})+R(198,48,44,50,'#0f2a7a',DK)+T(52,112,'pure colour')+T(142,112,'black')+T(220,112,'SHADE',{w:800,c:BL})+T(130,136,'Shade = colour + black (darker)')+cap('Tint = colour + white · Tone = colour + grey'));});
+def(['margin'],function(){return wrap('MARGIN',R(60,30,140,112,'#fff',DK,'stroke-width="1.6"')+R(76,44,108,84,'#dbeafe',BL,'stroke-dasharray="4 3"')+T(130,90,'image area',{c:BL,w:800})+T(130,40,'top',{s:7})+T(130,138,'bottom',{s:7})+T(70,90,'L',{s:7})+T(190,90,'R',{s:7})+cap('Margins = white space round the edges of the page','Not "a small difference"'));});
+def(['widow'],function(){return wrap('WIDOW',R(36,34,84,100,'#fff',DK)+R(140,34,84,100,'#fff',DK)+lines(44,42,68,6,10)+lines(148,42,68,1,10,RD)+lines(148,56,68,6,10)+T(78,30,'page 1',{s:7})+T(182,30,'page 2',{s:7})+T(130,148,'Widow = last line of a paragraph alone at the top of a page',{w:800,c:RD})+T(130,163,'(the red line)'));});
+def(['orphan'],function(){return wrap('ORPHAN',R(36,34,84,100,'#fff',DK)+R(140,34,84,100,'#fff',DK)+lines(44,42,68,6,10)+lines(44,112,68,1,10,RD)+lines(148,42,68,6,10)+T(78,30,'page 1',{s:7})+T(182,30,'page 2',{s:7})+T(130,148,'Orphan = first line of a paragraph alone at the foot of a page',{w:800,c:RD})+T(130,163,'(the red line)'));});
+def(['hierarchy','visual hierarchy','type hierarchy'],function(){return wrap('HIERARCHY',T(40,58,'HEADING',{a:'start',s:20,w:900,c:'#1e293b'})+T(40,84,'Subheading',{a:'start',s:13,w:800,c:'#334155'})+R(40,96,150,4,'#94a3b8')+R(40,106,140,4,'#94a3b8')+R(40,116,120,4,'#94a3b8')+T(205,58,'1st',{a:'start',w:800,c:RD})+T(205,84,'2nd',{a:'start',w:800,c:RD})+T(205,112,'3rd',{a:'start',w:800,c:RD})+cap('The order of importance, shown by size and weight','Not a "ranking of people"'));});
+def(['crop mark','crop marks'],function(){var o=R(70,44,120,76,'#e0ecff',BL);[[70,44],[190,44],[70,120],[190,120]].forEach(function(p){var sx=p[0]==70?-1:1,sy=p[1]==44?-1:1;o+=L(p[0]+sx*6,p[1],p[0]+sx*20,p[1],'#000',1.2)+L(p[0],p[1]+sy*6,p[0],p[1]+sy*20,'#000',1.2);});return wrap('CROP MARKS',o+T(130,86,'page size',{c:BL,w:800})+cap('Crop marks show where the paper is trimmed','They sit outside the trimmed edge'));});
+def(['registration mark','registration marks'],function(){return wrap('REGISTRATION MARKS',R(80,38,100,70,'#fff',DK)+[[130,26],[130,118],[66,73],[194,73]].map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="7" fill="none" stroke="#000" stroke-width="1.2"/>'+L(p[0]-10,p[1],p[0]+10,p[1],'#000',1)+L(p[0],p[1]-10,p[0],p[1]+10,'#000',1);}).join('')+T(130,78,'page',{c:DK})+cap('Crosshairs outside the page line up the colours','They are removed when the paper is trimmed'));});
+def(['folio'],function(){return wrap('FOLIO',R(80,32,100,100,'#fff',DK)+lines(90,44,80,6,10)+T(130,126,'27',{s:11,w:900,c:RD})+T(130,150,'Folio = the page number printed on the page'));});
+def(['reverse text','reversed type'],function(){return wrap('REVERSE TEXT',R(30,40,90,60,'#fff',DK)+T(75,76,'TEXT',{s:20,w:900,c:'#000'})+R(140,40,90,60,'#000',DK)+T(185,76,'TEXT',{s:20,w:900,c:'#fff'})+T(75,114,'normal')+T(185,114,'reversed',{w:800,c:BL})+cap('Reverse = white type on a dark background'));});
+def(['alignment'],function(){function col(x,al){var o='';var w=[60,48,56,40];for(var i=0;i<4;i++){var xx=al=='l'?x:al=='c'?x+(60-w[i])/2:x+60-w[i];o+=R(xx,48+i*12,w[i],5,'#94a3b8');}return o;}return wrap('ALIGNMENT',col(24,'l')+col(100,'c')+col(176,'r')+T(54,108,'left')+T(130,108,'centre')+T(206,108,'right')+cap('Alignment = how text lines up on the page'));});
+def(['contrast','colour contrast'],function(){return wrap('CONTRAST',R(30,40,90,60,'#fde047',DK)+T(75,76,'Aa',{s:22,w:900,c:'#facc15'})+R(140,40,90,60,'#1e293b',DK)+T(185,76,'Aa',{s:22,w:900,c:'#facc15'})+T(75,114,'low contrast: hard to read')+T(185,114,'high contrast',{w:800,c:BL})+cap('Contrast = how different two things are'));});
+def(['proximity'],function(){return wrap('PROXIMITY',R(30,40,40,40,'#93c5fd',DK)+R(76,40,40,40,'#93c5fd',DK)+R(140,40,40,40,'#fda4af',DK)+R(200,40,40,40,'#fda4af',DK)+T(73,98,'close = a group',{w:800,c:BL})+T(190,98,'far apart = separate')+cap('Proximity = things close together look related'));});
+def(['white space','trapped white space'],function(){return wrap('WHITE SPACE',R(40,36,180,90,'#fff',DK)+R(52,48,60,28,'#93c5fd')+lines(52,88,90,3,8)+T(190,70,'space',{c:BL,w:800})+L(120,64,168,64,BL,1.5,'3 3')+cap('White space = empty areas with no text or pictures','It can be any colour, not only white'));});
+def(['pixel','pixel density (ppi)'],function(){var o='';for(var y=0;y<6;y++)for(var x=0;x<6;x++){var d=(x+y)%3;o+=R(60+x*14,38+y*14,14,14,['#1d4ed8','#60a5fa','#bfdbfe'][d],'#fff','stroke-width="0.5"');}return wrap('PIXEL',o+T(180,70,'1 pixel =',{a:'start'})+R(180,76,14,14,'#1d4ed8','#fff')+T(130,140,'A pixel is one tiny square of colour in a picture')+T(130,155,'More pixels per inch (PPI) = sharper picture'));});
+def(['raster graphic','raster image','bitmap'],function(){var o='';for(var y=0;y<5;y++)for(var x=0;x<5;x++)o+=R(40+x*12,38+y*12,12,12,(x+y)%2?'#1d4ed8':'#93c5fd','#fff','stroke-width="0.5"');return wrap('RASTER (PIXELS)',o+T(180,64,'zoom in:',{a:'start'})+R(180,70,40,40,'#1d4ed8','#fff')+R(200,70,20,20,'#93c5fd')+R(180,90,20,20,'#93c5fd')+cap('Raster = a grid of pixels. It goes blocky when enlarged','JPEG, PNG, GIF, TIFF and BMP are raster formats'));});
+def(['vector graphic','vector image'],function(){return wrap('VECTOR',P('50,110 90,44 130,110','#93c5fd',BL,2)+'<circle cx="190" cy="78" r="30" fill="#93c5fd" stroke="'+BL+'" stroke-width="2"/>'+T(70,126,'points and paths')+T(190,126,'stays sharp')+cap('Vector = paths and shapes made from maths','It can be enlarged without going blocky'));});
+def(['cutting plane'],function(){return wrap('CUTTING PLANE',isoBox(90,84,38)+P('150,48 214,48 214,108 150,108','#fecaca',RD,1.5)+T(182,82,'cutting plane',{c:RD,w:800,s:8})+cap('An imaginary flat cut through the object','Not an aeroplane'));});
+function third(hi){var c=function(n){return n==hi?'#fde68a':'#e2e8f0';};return wrap('THIRD-ANGLE PROJECTION',R(70,34,56,36,c('plan'),DK)+T(98,56,'PLAN',{w:800})+R(70,76,56,40,c('elevation'),DK)+T(98,100,'ELEVATION',{w:800,s:7.5})+R(132,76,40,40,c('end'),DK)+T(152,98,'END',{w:800,s:7.5})+T(152,108,'ELEV.',{w:800,s:7.5})+L(98,70,98,76,BL,1,'2 2')+L(126,96,132,96,BL,1,'2 2')+T(130,138,'Plan above · Elevation in the middle · End elevation to the right')+T(130,152,'Third-angle projection is the UK standard'));}
+def(['elevation'],function(){return third('elevation');});def(['plan','plan view'],function(){return third('plan');});def(['end elevation'],function(){return third('end');});def(['third-angle projection'],function(){return third('');});
+def(['isometric view','isometric drawing','isometric projection','isometric axis'],function(){return wrap('ISOMETRIC',isoBox(90,84,38)+L(190,100,190,54,BL,1.5)+L(190,100,222,118,BL,1.5)+L(190,100,158,118,BL,1.5)+T(190,48,'vertical',{s:7})+T(226,130,'30°',{s:7.5,c:BL})+T(154,130,'30°',{s:7.5,c:BL})+cap('A 3D drawing with vertical lines upright and two axes at 30°'));});
+def(['oblique view','oblique drawing','oblique projection'],function(){return wrap('OBLIQUE',R(60,70,70,56,'#bfdbfe',DK)+P('130,70 160,46 160,102 130,126','#60a5fa')+P('60,70 90,46 160,46 130,70','#dbeafe')+T(95,102,'front: true shape',{s:7.5,w:800})+cap('Front face is drawn in true shape','Depth lines go back at an angle (45°)'));});
+def(['one-point perspective','single-point perspective','vanishing point','horizon line'],function(){return wrap('ONE-POINT PERSPECTIVE',L(20,80,240,80,'#94a3b8',1,'4 3')+R(80,60,60,50,'#dbeafe',DK)+L(80,60,160,80,BL,1,'3 2')+L(140,60,160,80,BL,1,'3 2')+L(80,110,160,80,BL,1,'3 2')+L(140,110,160,80,BL,1,'3 2')+'<circle cx="160" cy="80" r="3.5" fill="'+RD+'"/>'+T(168,74,'vanishing point',{a:'start',c:RD,w:800,s:7.5})+T(24,76,'horizon line',{a:'start',s:7.5})+cap('Lines going away meet at one vanishing point'));});
+def(['two-point perspective'],function(){return wrap('TWO-POINT PERSPECTIVE',L(14,70,246,70,'#94a3b8',1,'4 3')+P('110,50 140,56 140,104 110,100','#bfdbfe')+P('140,56 172,50 172,100 140,104','#60a5fa')+'<circle cx="24" cy="70" r="3.5" fill="'+RD+'"/><circle cx="236" cy="70" r="3.5" fill="'+RD+'"/>'+L(110,50,24,70,RD,0.8,'3 2')+L(110,100,24,70,RD,0.8,'3 2')+L(172,50,236,70,RD,0.8,'3 2')+L(172,100,236,70,RD,0.8,'3 2')+T(30,62,'VP1',{a:'start',s:7.5,c:RD,w:800})+T(236,62,'VP2',{a:'end',s:7.5,c:RD,w:800})+cap('Two vanishing points on the horizon line'));});
+function corner(kind,three){var base=P('50,110 50,50 120,50 120,80 90,110','#dbeafe',DK,1.6);var f=kind=='chamfer'?P('50,110 50,50 120,50 120,80 90,110','#dbeafe',DK,1.6):'<path d="M50 110 V50 H112 Q120 50 120 58 V82 L92 110 Z" fill="#dbeafe" stroke="'+DK+'" stroke-width="1.6"/>';return f;}
+def(['chamfer','regular chamfer','2d chamfer','3d chamfer','irregular chamfer'],function(){return wrap('CHAMFER',P('40,114 40,48 120,48 120,84 90,114','#dbeafe',DK,1.6)+L(90,114,120,84,RD,3)+T(130,134,'')+P('150,114 150,48 230,48 230,114','#dbeafe',DK,1.6)+T(80,132,'chamfer: a straight slope',{w:800,c:RD})+T(190,132,'square corner')+cap('A chamfer cuts a corner at an angle (often 45°)'));});
+def(['fillet','regular fillet','2d fillet','3d fillet','irregular fillet'],function(){return wrap('FILLET',P('40,114 40,48 120,48 120,114','#dbeafe',DK,1.6).replace('<polygon','<polygon')+'<path d="M150 114 V48 H212 Q230 48 230 66 V114 Z" fill="#dbeafe" stroke="'+DK+'" stroke-width="1.6"/>'+'<path d="M212 48 Q230 48 230 66" fill="none" stroke="'+RD+'" stroke-width="3"/>'+T(80,132,'square corner')+T(190,132,'fillet: a rounded corner',{w:800,c:RD})+cap('A fillet rounds an edge or corner'));});
+def(['extrude','extrude along a path'],function(){return wrap('EXTRUDE',R(40,60,50,40,'#bfdbfe',BL,'stroke-width="2"')+T(65,84,'2D sketch',{s:7.5,w:800})+L(95,80,120,80,RD,2)+P('130,92 130,56 152,44 152,80','#93c5fd')+'<g>'+P('130,56 190,56 212,44 152,44','#dbeafe')+P('130,92 190,92 190,56 130,56','#60a5fa')+P('190,92 212,80 212,44 190,56','#1d4ed8')+'</g>'+cap('Pull a flat sketch into a 3D shape with depth','Not "to push out"'));});
+def(['revolve','revolved surface'],function(){return wrap('REVOLVE',R(80,50,26,70,'#bfdbfe',BL,'stroke-width="2"')+L(60,50,60,126,RD,1.2,'8 3 2 3')+T(60,142,'axis',{c:RD,s:7.5})+'<path d="M150 50 Q190 50 190 60 L190 110 Q190 120 150 120 Z" fill="#93c5fd" stroke="'+BL+'" stroke-width="1.5"/><ellipse cx="150" cy="85" rx="12" ry="35" fill="#dbeafe" stroke="'+BL+'"/>'+L(110,85,134,85,RD,2)+cap('Spin a 2D sketch round an axis to make a round 3D shape'));});
+def(['loft','multi-section lofting'],function(){return wrap('LOFT',P('60,110 120,110 120,128 60,128','#bfdbfe',BL,1.5)+'<ellipse cx="190" cy="56" rx="18" ry="8" fill="#bfdbfe" stroke="'+BL+'" stroke-width="1.5"/><ellipse cx="90" cy="120" rx="30" ry="9" fill="#bfdbfe" stroke="'+BL+'" stroke-width="1.5"/>'+L(60,120,172,56,BL,1.2,'3 2')+L(120,120,208,56,BL,1.2,'3 2')+cap('Loft = join two or more different sketches into one smooth 3D shape'));});
+def(['sweep','sweep along a path','spatial path sweeping'],function(){return wrap('SWEEP',R(46,100,22,22,'#bfdbfe',BL,'stroke-width="2"')+'<path d="M68 110 C110 110 100 60 150 60 S210 90 214 60" fill="none" stroke="'+RD+'" stroke-width="2.5" stroke-dasharray="5 3"/><path d="M68 106 C110 106 100 56 150 56 S210 86 214 56 L214 66 C210 96 160 70 150 66 S110 120 68 114 Z" fill="#93c5fd" stroke="'+BL+'" stroke-width="1.2"/>'+T(57,134,'profile',{s:7.5})+T(180,46,'path',{c:RD,s:7.5,w:800})+cap('Sweep = move a profile along a path to make a 3D shape'));});
+def(['mirror','mirror feature'],function(){return wrap('MIRROR',P('50,110 50,60 90,60 110,84 110,110','#bfdbfe',BL,1.6)+L(110,44,110,128,RD,1.5,'8 3 2 3')+P('170,110 170,60 130,60 110,84 110,110','#e0ecff',BL,1.2)+T(110,40,'mirror plane',{c:RD,s:7.5,w:800})+cap('Mirror copies a shape to the other side, like a reflection'));});
+def(['shell','shell feature'],function(){return wrap('SHELL',isoBox(70,84,34)+P('150,56 190,76 190,112 150,92','#e2e8f0',DK)+P('190,76 218,64 218,100 190,112','#cbd5e1',DK)+T(70,128,'solid')+T(186,128,'hollow, thin walls',{w:800,c:BL})+cap('Shell removes the inside to leave a thin wall','Not a sea shell'));});
+def(['linear array','array','box array'],function(){return wrap('LINEAR ARRAY',[0,1,2,3,4].map(function(i){return '<circle cx="'+(44+i*40)+'" cy="76" r="14" fill="'+(i?'#bfdbfe':'#60a5fa')+'" stroke="'+BL+'"/>';}).join('')+L(44,104,204,104,RD,1.5)+T(124,118,'equal spacing',{c:RD,w:800})+cap('Array = copies of a feature in a pattern'));});
+def(['radial array'],function(){var o='';for(var i=0;i<6;i++){var a=i*Math.PI/3;o+='<circle cx="'+(130+36*Math.cos(a))+'" cy="'+(78+36*Math.sin(a))+'" r="9" fill="'+(i?'#bfdbfe':'#60a5fa')+'" stroke="'+BL+'"/>';}return wrap('RADIAL ARRAY',o+'<circle cx="130" cy="78" r="3" fill="'+RD+'"/>'+cap('Copies placed round a centre point, like holes in a wheel'));});
+def(['radius'],function(){return wrap('RADIUS',L(130,78,130,78,DK)+'<circle cx="130" cy="78" r="46" fill="#e0ecff" stroke="'+BL+'" stroke-width="2"/>'+L(130,78,176,78,RD,2.5)+'<circle cx="130" cy="78" r="3" fill="'+DK+'"/>'+T(153,72,'R',{c:RD,w:900,s:10})+cap('Radius = from the centre to the edge','Half of the diameter'));});
+def(['tangent'],function(){return wrap('TANGENT','<circle cx="130" cy="92" r="36" fill="#e0ecff" stroke="'+BL+'" stroke-width="2"/>'+L(40,56,220,56,RD,2)+'<circle cx="130" cy="56" r="3.5" fill="'+RD+'"/>'+T(138,48,'touches at one point',{a:'start',c:RD,w:800,s:7.5})+cap('A tangent line touches a curve at one point only','Not "going off the subject"'));});
+def(['hatching','section hatching'],function(){return wrap('HATCHING','<defs><pattern id="vh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#334155" stroke-width="1"/></pattern></defs>'+R(60,40,140,70,'url(#vh)',DK,'stroke-width="1.6"')+R(100,58,60,34,'#fff',DK,'stroke-width="1.6"')+cap('Thin lines at 45° show material the cutting plane has cut through','The hole is empty, so it has no hatching'));});
+def(['centre line'],function(){return wrap('CENTRE LINE','<circle cx="130" cy="76" r="34" fill="#e0ecff" stroke="'+DK+'" stroke-width="2"/>'+L(80,76,180,76,RD,1.3,'12 3 2 3')+L(130,26,130,126,RD,1.3,'12 3 2 3')+cap('A chain line (long, short, long) marks the centre'));});
+def(['hidden detail line','hidden detail'],function(){return wrap('HIDDEN DETAIL',R(60,50,140,60,'#e2e8f0',DK,'stroke-width="2"')+R(100,50,60,40,'none',RD,'stroke-width="1.6" stroke-dasharray="5 3"')+cap('Dashed lines show edges you cannot see in that view'));});
+def(['dimension line','extension line','leader line'],function(){return wrap('DIMENSION LINES',R(70,60,120,50,'#e0ecff',DK,'stroke-width="2"')+L(70,56,70,34,DK,1)+L(190,56,190,34,DK,1)+L(70,40,190,40,RD,1.3)+P('70,40 78,37 78,43',RD,RD,1)+P('190,40 182,37 182,43',RD,RD,1)+T(130,36,'120',{w:800,c:RD})+L(150,92,214,128,BL,1)+T(216,138,'leader line + note',{a:'end',s:7.5,c:BL})+cap('Extension lines · dimension line with arrows · leader line'));});
+def(['exploded view','full exploded view','sectioned exploded view'],function(){return wrap('EXPLODED VIEW',R(80,34,70,20,'#93c5fd',DK)+R(80,72,70,20,'#bfdbfe',DK)+R(80,110,70,20,'#60a5fa',DK)+L(115,54,115,72,RD,1,'3 3')+L(115,92,115,110,RD,1,'3 3')+cap('Parts pulled apart on lines to show how they fit together','Not "blew up"'));});
+def(['thumbnail'],function(){return wrap('THUMBNAIL',[0,1,2,3].map(function(i){return R(32+i*52,44,44,60,'#fff',DK)+R(36+i*52,48,36-(i%2)*10,18,'#93c5fd')+lines(36+i*52,72,36,3,8);}).join('')+cap('Small, quick, rough sketches to try layout ideas'));});
+def(['serif','serif font','serif type'],function(){return wrap('SERIF',T(130,100,'R',{s:64,w:700,c:'#1e293b'}).replace('font-size','font-family="Georgia,serif" font-size')+'<circle cx="107" cy="98" r="9" fill="none" stroke="'+RD+'" stroke-width="1.5"/><circle cx="153" cy="98" r="9" fill="none" stroke="'+RD+'" stroke-width="1.5"/>'+cap('Serif = small feet at the ends of the strokes'));});
+def(['sans serif','sans serif font','sans serif type'],function(){return wrap('SANS SERIF',T(130,100,'R',{s:64,w:700,c:'#1e293b'}).replace('font-size','font-family="Arial,Helvetica,sans-serif" font-size')+cap('Sans serif = no feet ("sans" means without)'));});
+def(['baseline','ascender','descender'],function(){return wrap('TYPE PARTS',T(120,96,'hdpg',{s:46,w:700,c:'#1e293b'})+L(30,96,230,96,RD,1.2)+L(30,60,230,60,BL,1,'3 3')+L(30,120,230,120,BL,1,'3 3')+T(232,92,'baseline',{a:'end',s:7.5,c:RD,w:800})+T(32,56,'ascender line',{a:'start',s:7.5,c:BL})+T(32,132,'descender line',{a:'start',s:7.5,c:BL})+cap('Baseline = the line the letters sit on'));});
+def(['drop cap'],function(){return wrap('DROP CAP',T(46,92,'T',{s:50,w:900,c:BL})+lines(84,56,128,2,9)+lines(84,74,128,2,9)+lines(84,92,128,1,9)+lines(46,110,166,3,9)+cap('Drop cap = a big first letter that drops into the text'));});
+def(['pull quote'],function(){return wrap('PULL QUOTE',lines(30,40,200,3,9)+R(60,74,140,30,'#fef3c7','#d97706')+T(130,93,'"A big quote from the text"',{w:800,c:'#92400e',s:8})+lines(30,112,200,3,9)+cap('A short quote from the article, shown in large type'));});
+def(['line weight','weight'],function(){return wrap('LINE WEIGHT',L(40,50,220,50,DK,0.8)+L(40,76,220,76,DK,2)+L(40,102,220,102,DK,4)+T(40,44,'thin',{a:'start',s:7.5})+T(40,70,'medium',{a:'start',s:7.5})+T(40,96,'thick',{a:'start',s:7.5})+cap('Line weight = how thick a line is'));});
+def(['justification'],function(){return wrap('JUSTIFICATION',[0,1,2,3,4].map(function(i){return R(50,42+i*12,160,5,'#94a3b8');}).join('')+L(50,38,50,104,BL,1)+L(210,38,210,104,BL,1)+cap('Justified text lines up on both the left and the right'));});
+def(['line spacing'],function(){return wrap('LINE SPACING',[0,1,2].map(function(i){return R(40,44+i*18,130,6,DK);}).join('')+L(184,50,184,68,RD,2)+T(190,62,'space',{a:'start',c:RD,w:800})+cap('Line spacing (leading) = space from one line to the next'));});
+def(['complementary colours'],function(){return wrap('COMPLEMENTARY',R(40,44,80,50,'#2563eb',DK)+R(140,44,80,50,'#f59e0b',DK)+T(80,108,'blue')+T(180,108,'orange')+cap('Opposite colours on the colour wheel','They make strong contrast together'));});
+def(['analogous colours'],function(){return wrap('ANALOGOUS',R(30,44,50,50,'#16a34a',DK)+R(80,44,50,50,'#65a30d',DK)+R(130,44,50,50,'#eab308',DK)+R(180,44,50,50,'#f59e0b',DK)+cap('Colours that sit next to each other on the colour wheel'));});
+def(['development','surface development'],function(){return wrap('DEVELOPMENT',R(40,60,90,50,'#e0ecff',DK)+L(65,60,65,110,DK,0.8,'3 3')+L(100,60,100,110,DK,0.8,'3 3')+T(85,128,'flat pattern',{w:800,c:BL})+'<path d="M165 64 V104 A30 8 0 0 0 225 104 V64 A30 8 0 0 0 165 64Z" fill="#93c5fd" stroke="'+BL+'" stroke-width="1.5"/><ellipse cx="195" cy="64" rx="30" ry="8" fill="#dbeafe" stroke="'+BL+'"/>'+T(195,128,'3D shape')+cap('A development is the 3D shape unfolded flat'));});
+window.getTermVisualSvg=function(row){var r=old?old(row):'';if(r&&r.length)return r;if(row.subject==='Graphic Communication'){var f=V[(row.term||'').trim().toLowerCase()];if(f)try{return f();}catch(e){}}return r;};
+window.extraVisualCount=Object.keys(V).length;
+})();
+
+// ST_EAL diagram system v2: 400x270 canvas, 13px+ text, one clear idea per diagram.
+(function(){
+var C={blue:'#2563eb',bl2:'#93c5fd',bl3:'#dbeafe',navy:'#0f172a',slate:'#475569',mut:'#94a3b8',line:'#cbd5e1',red:'#dc2626',green:'#16a34a',amber:'#d97706',pam:'#fef3c7',pred:'#fee2e2',pgr:'#dcfce7',pale:'#eef4ff',paper:'#ffffff'};
+var FF='system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
+var uid=0;
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function tx(x,y,s,o){o=o||{};var sz=o.s||13,out='';String(s).split('\n').forEach(function(ln,i){out+='<text x="'+x+'" y="'+(y+i*(sz+3))+'" text-anchor="'+(o.a||'middle')+'" font-size="'+sz+'" font-weight="'+(o.w||700)+'" fill="'+(o.c||C.navy)+'"'+(o.f?' font-family="'+o.f+'"':'')+(o.ls?' letter-spacing="'+o.ls+'"':'')+'>'+esc(ln)+'</text>';});return out;}
+function ln(x1,y1,x2,y2,c,w,d){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(c||C.navy)+'" stroke-width="'+(w||2)+'" stroke-linecap="round"'+(d?' stroke-dasharray="'+d+'"':'')+'/>';}
+function rc(x,y,w,h,f,s,o){o=o||{};return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(o.r||0)+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(o.w||1.5)+'"'+(o.d?' stroke-dasharray="'+o.d+'"':'')+'/>';}
+function pg(pts,f,s,w){return '<polygon points="'+pts+'" fill="'+(f||'none')+'" stroke="'+(s||C.navy)+'" stroke-width="'+(w||1.5)+'" stroke-linejoin="round"/>';}
+function ci(x,y,r,f,s,w){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||1.5)+'"/>';}
+function ar(x1,y1,x2,y2,c,w){c=c||C.red;w=w||2.2;var a=Math.atan2(y2-y1,x2-x1),h=9,hx=x2-h*Math.cos(a),hy=y2-h*Math.sin(a),px=-Math.sin(a)*4.5,py=Math.cos(a)*4.5;return ln(x1,y1,hx,hy,c,w)+'<polygon points="'+x2+','+y2+' '+(hx+px)+','+(hy+py)+' '+(hx-px)+','+(hy-py)+'" fill="'+c+'"/>';}
+function dar(x1,y1,x2,y2,c,w){return ar(x1,y1,x2,y2,c,w)+ar(x2,y2,x1,y1,c,w);}
+function tl(x,y,w,n,gap,c,last){var o='';for(var i=0;i<n;i++)o+=rc(x,y+i*gap,(i==n-1&&last!==false)?w*(last||0.55):w,5,c||C.mut,null,{r:2.5});return o;}
+function box(cx,cy,a,fT,fL,fR,sk){ // isometric cube, a = edge length; cx,cy = centre of top-face apex-bottom
+ var dx=a*0.866,dy=a*0.5;sk=sk||C.navy;
+ var T=pg(cx+','+(cy-a)+' '+(cx+dx)+','+(cy-a+dy)+' '+cx+','+(cy-a+2*dy)+' '+(cx-dx)+','+(cy-a+dy),fT||'#dbeafe',sk);
+ var L=pg((cx-dx)+','+(cy-a+dy)+' '+cx+','+(cy-a+2*dy)+' '+cx+','+(cy+2*dy)+' '+(cx-dx)+','+(cy+dy),fL||'#93c5fd',sk);
+ var R=pg(cx+','+(cy-a+2*dy)+' '+(cx+dx)+','+(cy-a+dy)+' '+(cx+dx)+','+(cy+dy)+' '+cx+','+(cy+2*dy),fR||'#3b82f6',sk);
+ return T+L+R;}
+function key(course,not){var h=not?74:52,y=262-h;var o=rc(10,y,380,h-8,'#f8fafc',C.line,{r:10,w:1});
+ var cy=y+22;o+=ci(30,cy-4,9,C.green)+'<path d="M25.5 '+(cy-4)+' l3.2 3.4 l6 -7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+ var cl=String(course).split('\n');o+=tx(46,cy,cl.join('\n'),{a:'start',s:13,w:800,c:C.navy});
+ if(not){var ny=cy+cl.length*16+ (cl.length>1?2:4);o+=ci(30,ny-4,9,C.red)+'<path d="M26 '+(ny-8)+' l8 8 M34 '+(ny-8)+' l-8 8" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>'+tx(46,ny,not,{a:'start',s:13,w:600,c:C.slate});}
+ return o;}
+function wrapTxt(s,max){var out=[],cur='';String(s).replace(/\n/g,' ').split(' ').forEach(function(w){if((cur+' '+w).trim().length>max&&cur){out.push(cur);cur=w;}else cur=(cur+' '+w).trim();});if(cur)out.push(cur);return out;}
+function frame(title,body,course,not){var cl=wrapTxt(course,46),nl=not?wrapTxt(not,48):[],isInfo=nl.length&&!/^(Not|Never)\b/.test(not);
+ var kh=14+cl.length*17+(nl.length?nl.length*17+6:0)+10;var y=284-kh,o=rc(10,y,380,kh-4,'#f8fafc',C.line,{r:10,w:1});var cy=y+24;
+ o+=ci(30,cy-4,9,C.green)+'<path d="M25.5 '+(cy-4)+' l3.2 3.4 l6 -7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'+tx(46,cy,cl.join('\n'),{a:'start',s:13,w:800});
+ if(nl.length){var ny=cy+cl.length*16+8+(cl.length-1);
+  if(isInfo)o+=ci(30,ny-4,9,C.blue)+tx(30,ny,'i',{s:13,w:900,c:'#fff'});
+  else o+=ci(30,ny-4,9,C.red)+'<path d="M26 '+(ny-8)+' l8 8 M34 '+(ny-8)+' l-8 8" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>';
+  o+=tx(46,ny,nl.join('\n'),{a:'start',s:13,w:600,c:C.slate});}
+ return '<svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(title+'. '+course.replace(/\n/g,' ')+(not?' '+not:''))+'" font-family="'+FF+'">'+rc(1,1,398,288,'#fff',C.line,{r:14,w:1.5})+'<path d="M1 15 a14 14 0 0 1 14 -14 h370 a14 14 0 0 1 14 14 v28 h-398 z" fill="'+C.pale+'"/>'+tx(18,30,title,{a:'start',s:17,w:800,c:C.navy,ls:0.4})+body+o+'</svg>';}
+function grad(id,a,b,horiz){return '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="'+(horiz===false?0:1)+'" y2="'+(horiz===false?1:0)+'"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs>';}
+function pat(id,c){return '<defs><pattern id="'+id+'" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="'+(c||C.navy)+'" stroke-width="1.3"/></pattern></defs>';}
+window.V2={C:C,FF:FF,esc:esc,tx:tx,ln:ln,rc:rc,pg:pg,ci:ci,ar:ar,dar:dar,tl:tl,box:box,frame:frame,grad:grad,pat:pat,map:{},nid:function(p){return p+(++uid);},def:function(names,fn){names.forEach(function(n){window.V2.map[n.toLowerCase()]=fn;});}};
+})();
+
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,tl=X.tl,F=X.frame,def=X.def;
+var TF='Georgia,"Times New Roman",serif';
+// ---------- BLEED ----------
+def(['bleed'],function(){
+ var o=rc(74,74,112,94,'#60a5fa')+ci(130,121,26,'#fde68a','#f59e0b',2)+rc(84,84,92,74,null,C.red,{d:'6 4',w:2.2});
+ [[84,84,-1,-1],[176,84,1,-1],[84,158,-1,1],[176,158,1,1]].forEach(function(p){var x=p[0],y=p[1],sx=p[2],sy=p[3];o+=ln(x+sx*24,y,x+sx*12,y,'#000',1.6)+ln(x,y+sy*24,x,y+sy*12,'#000',1.6);});
+ o+=ar(210,96,182,118,C.blue)+tx(214,98,'Bleed',{a:'start',s:14,w:800,c:C.blue})+tx(214,113,'extra picture',{a:'start',s:12,w:600,c:C.slate});
+ o+=ar(210,136,178,142,C.red)+tx(214,139,'Trimmed edge',{a:'start',s:13,w:800,c:C.red});
+ o+=ar(210,170,198,160,'#000')+tx(214,174,'Crop marks',{a:'start',s:13,w:800});
+ o+=tx(346,66,'After trimming',{s:12,w:700,c:C.slate})+rc(318,80,56,46,'#60a5fa',C.navy,{w:1.5})+ci(346,103,13,'#fde68a','#f59e0b',1.5)+tx(346,146,'no white',{s:12,w:800,c:C.green})+tx(346,160,'edge',{s:12,w:800,c:C.green});
+ return F('BLEED',o,'Bleed = picture that goes past the trimmed edge,\nso no white edge shows after trimming','Not a nose bleed or losing blood');});
+// ---------- VALUE ----------
+def(['value'],function(){var g=X.nid('g');
+ var o=X.grad(g,'#eff6ff','#0b1f4d')+rc(30,62,340,40,'url(#'+g+')',C.navy,{r:6,w:1.5})+tx(30,120,'LIGHT',{a:'start',s:13,w:800,c:C.slate})+tx(370,120,'DARK',{a:'end',s:13,w:800,c:C.slate})+ar(110,119,290,119,C.slate,1.6);
+ o+=rc(60,134,70,34,'#bfdbfe',C.navy,{r:5})+rc(165,134,70,34,'#3b82f6',C.navy,{r:5})+rc(270,134,70,34,'#1e3a8a',C.navy,{r:5});
+ o+=tx(95,152,'high',{s:13,w:800,c:C.navy})+tx(200,152,'middle',{s:13,w:800,c:'#fff'})+tx(305,152,'low',{s:13,w:800,c:'#fff'});
+ return F('VALUE',o,'Value = how light or dark a colour is','Not "value for money" and not a number');});
+// ---------- TINT / TONE / SHADE ----------
+function mix(hi,title){var rows=[['tint','#ffffff','#a9c4fb','white','TINT'],['tone','#9ca3af','#6f87bd','grey','TONE'],['shade','#000000','#16307a','black','SHADE']],o='';
+ rows.forEach(function(r,i){var y=58+i*42,on=r[0]==hi,op=on?1:0.4;
+  o+='<g opacity="'+op+'">'+(on?rc(14,y-6,372,40,C.pam,C.amber,{r:8,w:1.5}):'')+rc(28,y,28,28,'#2563eb',C.navy,{r:4})+tx(72,y+21,'+',{s:20,w:800})+rc(88,y,28,28,r[1],C.navy,{r:4})+tx(132,y+21,'=',{s:20,w:800})+rc(148,y,28,28,r[2],C.navy,{r:4})+tx(196,y+19,'colour + '+r[3],{a:'start',s:14,w:600,c:C.slate})+tx(358,y+20,r[4],{a:'end',s:15,w:800,c:on?C.blue:C.slate})+'</g>';});
+ return o;}
+def(['tint'],function(){return F('TINT',mix('tint'),'Tint = a colour with white added (lighter)','Not a "tinted window" or a hair dye');});
+def(['tone'],function(){return F('TONE',mix('tone'),'Tone = a colour with grey added (duller)','Not "tone of voice"');});
+def(['shade'],function(){return F('SHADE',mix('shade'),'Shade = a colour with black added (darker)','Not a "lampshade" or a place with shade');});
+// ---------- HUE ----------
+def(['hue'],function(){var cols=['#ef4444','#f97316','#eab308','#84cc16','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#d946ef','#ec4899'],o='',cx=130,cy=116,r=56,n=cols.length;
+ for(var i=0;i<n;i++){var a0=i*2*Math.PI/n-Math.PI/2,a1=(i+1)*2*Math.PI/n-Math.PI/2;o+='<path d="M'+cx+','+cy+' L'+(cx+r*Math.cos(a0)).toFixed(1)+','+(cy+r*Math.sin(a0)).toFixed(1)+' A'+r+','+r+' 0 0 1 '+(cx+r*Math.cos(a1)).toFixed(1)+','+(cy+r*Math.sin(a1)).toFixed(1)+' Z" fill="'+cols[i]+'" stroke="#fff" stroke-width="1.5"/>';}
+ o+=ci(cx,cy,14,'#fff','#fff')+ar(262,96,196,132,C.navy,1.8)+tx(270,92,'Hue = which colour:',{a:'start',s:13,w:800})+tx(270,108,'red, blue, green...',{a:'start',s:13,w:600,c:C.slate});
+ return F('HUE',o,'Hue = the colour family (its place on the colour wheel)','Not "hue and cry"');});
+// ---------- SATURATION ----------
+def(['saturation'],function(){var g=X.nid('g');
+ var o=X.grad(g,'#8d939e','#1d4ed8')+rc(30,60,340,40,'url(#'+g+')',C.navy,{r:6})+tx(30,118,'dull',{a:'start',s:13,w:800,c:C.slate})+tx(370,118,'vivid',{a:'end',s:13,w:800,c:C.slate})+ar(70,117,330,117,C.slate,1.6);
+ o+=rc(50,132,64,34,'#8d939e',C.navy,{r:5})+rc(168,132,64,34,'#5878d0',C.navy,{r:5})+rc(286,132,64,34,'#1d4ed8',C.navy,{r:5})+tx(82,153,'low',{s:13,w:800,c:'#fff'})+tx(200,153,'medium',{s:13,w:800,c:'#fff'})+tx(318,153,'high',{s:13,w:800,c:'#fff'});
+ return F('SATURATION',o,'Saturation = how strong or pure a colour is','Not "saturated" with water');});
+// ---------- TYPE ----------
+def(['leading','line spacing'],function(){var o=rc(40,58,170,8,C.navy,null,{r:3})+rc(40,92,150,8,C.navy,null,{r:3})+rc(40,126,160,8,C.navy,null,{r:3})+ln(30,66,240,66,C.mut,1,'4 4')+ln(30,100,240,100,C.mut,1,'4 4')+ln(30,134,240,134,C.mut,1,'4 4')+dar(232,68,232,98,C.red,2.2)+tx(246,88,'Leading',{a:'start',s:15,w:800,c:C.red})+tx(246,104,'(said "ledding")',{a:'start',s:12,w:600,c:C.slate});
+ return F('LEADING',o,'Leading = space between one line of text and the next','Not leading a team or a dog');});
+def(['kerning'],function(){var o=tx(36,92,'AV',{a:'start',s:54,w:800,c:C.slate,ls:14})+tx(36,166,'AV',{a:'start',s:54,w:800,c:C.blue,ls:-6})+tx(210,76,'before: gap too big',{a:'start',s:13,w:700,c:C.slate})+tx(210,150,'after kerning',{a:'start',s:13,w:800,c:C.blue})+ar(205,102,160,102,'#fff',0.1)+'<path d="M40 100 v6 h54 v-6" fill="none" stroke="'+C.red+'" stroke-width="2"/>'+tx(210,112,'one pair of letters',{a:'start',s:13,w:800,c:C.red});
+ return F('KERNING',o,'Kerning = adjusting space between ONE pair of letters','Not "tracking" (that changes ALL the letters)');});
+def(['tracking'],function(){var o=tx(36,80,'TYPE',{a:'start',s:30,w:800,ls:-1.5})+tx(36,122,'TYPE',{a:'start',s:30,w:800,ls:4})+tx(36,164,'TYPE',{a:'start',s:30,w:800,c:C.blue,ls:15})+tx(250,76,'tight',{a:'start',s:13,c:C.slate})+tx(250,118,'normal',{a:'start',s:13,c:C.slate})+tx(250,160,'loose',{a:'start',s:13,w:800,c:C.blue});
+ return F('TRACKING',o,'Tracking = space adjusted across ALL letters in a block','Not "kerning" (that changes ONE pair)');});
+def(['gutter'],function(){var o=rc(18,58,56,104,'#fff',C.navy)+rc(74,58,56,104,'#fff',C.navy)+tl(24,66,44,8,11)+tl(80,66,44,8,11)+rc(174,58,36,104,'#fff',C.navy)+rc(246,58,36,104,'#fff',C.navy)+rc(210,58,36,104,C.pam)+tl(180,66,24,8,11)+tl(252,66,24,8,11)+rc(300,58,0,0)+ln(54,170,54,170);
+ o=rc(14,66,88,92,'#fff',C.navy,{r:3})+rc(14,66,40,92,'#e5e7eb')+tl(18,74,32,7,11)+rc(60,66,38,92,'#e5e7eb')+tl(64,74,30,7,11)+rc(54,66,6,92,C.amber)+tx(57,178,'columns',{s:12,w:700,c:C.slate})+tx(57,58,'gutter',{s:13,w:800,c:C.amber});
+ o+=rc(214,66,56,92,'#fff',C.navy)+rc(270,66,56,92,'#fff',C.navy)+rc(256,66,28,92,C.pam)+tl(220,76,36,7,11)+tl(276,76,36,7,11)+tx(270,178,'a book (two pages)',{s:12,w:700,c:C.slate})+tx(270,58,'gutter',{s:13,w:800,c:C.amber});
+ // second panel centre fix
+ return F('GUTTER',o,'Gutter = the gap between columns, or the inner margin\nwhere pages join in a book','Not a roof gutter or a drain');});
+def(['margin'],function(){var o=rc(120,66,140,112,'#fff',C.navy,{r:3,w:2})+rc(138,82,104,80,C.bl3,C.blue,{d:'5 4',w:1.8})+tx(190,126,'image area',{s:14,w:800,c:C.blue})+dar(120,122,138,122,C.red,2)+dar(190,66,190,82,C.red,2)+tx(112,127,'margin',{a:'end',s:14,w:800,c:C.red})+tx(190,60,'margin',{s:14,w:800,c:C.red});
+ return F('MARGIN',o,'Margins = the white space around the edge of the page','Not "a small difference" (a margin of error)');});
+def(['widow'],function(){var o=rc(40,70,130,108,'#fff',C.navy,{r:3})+rc(220,70,130,108,'#fff',C.navy,{r:3})+tl(50,84,110,8,11,null,0.7)+tl(230,80,110,1,11,C.red,0.4)+tl(230,104,110,6,11,null,0.9)+tx(105,194,'page 1',{s:13,w:700,c:C.slate})+tx(285,194,'page 2',{s:13,w:700,c:C.slate})+ar(190,56,248,76,C.red)+tx(186,58,'Widow',{a:'end',s:15,w:800,c:C.red});
+ return F('WIDOW',o,'Widow = the LAST line of a paragraph, alone at the TOP of a page','Not a woman whose husband has died');});
+def(['orphan'],function(){var o=rc(40,70,130,108,'#fff',C.navy,{r:3})+rc(220,70,130,108,'#fff',C.navy,{r:3})+tl(50,80,110,7,11,null,0.9)+tl(50,160,110,1,11,C.red,0.9)+tl(230,80,110,8,11,null,0.6)+tx(105,194,'page 1',{s:13,w:700,c:C.slate})+tx(285,194,'page 2',{s:13,w:700,c:C.slate})+tx(200,128,'Orphan',{s:15,w:800,c:C.red})+ar(200,136,176,160,C.red);
+ return F('ORPHAN',o,'Orphan = the FIRST line of a paragraph, alone at the BOTTOM of a page','Not a child without parents');});
+def(['hierarchy','visual hierarchy','type hierarchy'],function(){var o=tx(34,88,'HEADING',{a:'start',s:34,w:900})+tx(34,118,'Subheading',{a:'start',s:20,w:800,c:C.slate})+tl(34,132,230,3,11,null,0.8)+ar(296,84,296,84,C.red)+rc(300,64,70,28,C.pam,C.amber,{r:14})+tx(335,83,'1st',{s:14,w:800,c:C.amber})+rc(300,98,70,24,C.pam,C.amber,{r:12})+tx(335,115,'2nd',{s:14,w:800,c:C.amber})+rc(300,138,70,24,C.pam,C.amber,{r:12})+tx(335,155,'3rd',{s:14,w:800,c:C.amber});
+ return F('HIERARCHY',o,'Hierarchy = the order you read things, shown by size and weight','Not a ranking of bosses');});
+def(['folio'],function(){var o=rc(130,54,140,120,'#fff',C.navy,{r:4})+tl(144,68,112,6,11)+tx(200,160,'27',{s:20,w:900,c:C.red})+ar(310,148,222,158,C.red)+tx(316,146,'Folio',{a:'start',s:15,w:800,c:C.red});
+ return F('FOLIO',o,'Folio = the page number printed on a page','Not a folder or a file');});
+def(['reverse text','reversed type','reverse'],function(){var o=rc(30,62,150,86,'#fff',C.navy,{r:6,w:2})+tx(105,115,'TEXT',{s:34,w:900})+rc(220,62,150,86,'#000',C.navy,{r:6,w:2})+tx(295,115,'TEXT',{s:34,w:900,c:'#fff'})+tx(105,168,'normal',{s:13,c:C.slate})+tx(295,168,'REVERSED',{s:14,w:800,c:C.blue});
+ return F('REVERSE',o,'Reverse = white type on a dark background','Not going backwards');});
+def(['alignment'],function(){function col(x,al){var o='',w=[100,72,92,60],i;for(i=0;i<4;i++){var xx=al=='l'?x:al=='c'?x+(100-w[i])/2:x+100-w[i];o+=rc(xx,66+i*17,w[i],7,C.mut,null,{r:3});}return o;}
+ var o=col(24,'l')+col(150,'c')+col(276,'r')+ln(24,60,24,126,C.red,2)+ln(200,60,200,126,C.red,2,'4 3')+ln(376,60,376,126,C.red,2)+tx(74,150,'left',{s:14,w:800})+tx(200,150,'centre',{s:14,w:800})+tx(326,150,'right',{s:14,w:800});
+ return F('ALIGNMENT',o,'Alignment = how lines of text line up on the page','Not "being in a political alliance"');});
+def(['contrast'],function(){var o=rc(30,62,150,80,'#fde047',C.navy,{r:6})+tx(105,114,'Aa',{s:40,w:900,c:'#facc15'})+rc(220,62,150,80,'#1e293b',C.navy,{r:6})+tx(295,114,'Aa',{s:40,w:900,c:'#facc15'})+tx(105,162,'low contrast: hard to read',{s:13,w:700,c:C.slate})+tx(295,162,'high contrast: easy to read',{s:13,w:800,c:C.blue});
+ return F('CONTRAST',o,'Contrast = how different two things look (light and dark, big and small)','Not "in contrast to" (a comparison)');});
+def(['colour contrast'],function(){return V2.map['contrast']();});
+def(['proximity'],function(){var o=rc(36,70,44,44,C.bl2,C.navy,{r:5})+rc(88,70,44,44,C.bl2,C.navy,{r:5})+rc(244,70,44,44,'#fda4af',C.navy,{r:5})+rc(332,70,44,44,'#fda4af',C.navy,{r:5})+'<path d="M32 126 h104" stroke="'+C.blue+'" stroke-width="3"/>'+tx(84,148,'close = one group',{s:13,w:800,c:C.blue})+tx(310,148,'far apart = separate',{s:13,w:700,c:C.slate})+ln(190,60,190,160,C.line,1.5,'4 4');
+ return F('PROXIMITY',o,'Proximity = things close together look as if they belong together','Not "being near" in general');});
+def(['white space','trapped white space'],function(){var o=rc(60,56,280,112,'#fff',C.navy,{r:4})+rc(76,70,96,46,C.bl2,null,{r:3})+tl(76,128,150,3,10)+rc(240,70,84,0,null)+'<g opacity="1">'+rc(186,70,138,98,'#fff7ed',C.amber,{r:4,d:'5 4',w:1.8})+'</g>'+tx(255,124,'white space',{s:14,w:800,c:C.amber})+tx(255,140,'(empty area)',{s:12,w:600,c:C.slate});
+ return F('WHITE SPACE',o,'White space = empty area with no text or pictures','It can be any colour, not only white');});
+def(['complementary colours'],function(){var o=rc(40,62,130,70,'#2563eb',C.navy,{r:8})+rc(230,62,130,70,'#f59e0b',C.navy,{r:8})+tx(105,103,'BLUE',{s:18,w:900,c:'#fff'})+tx(295,103,'ORANGE',{s:18,w:900,c:C.navy})+tx(200,103,'↔',{s:26,w:800,c:C.slate})+tx(200,156,'opposite sides of the colour wheel',{s:13,w:700,c:C.slate});
+ return F('COMPLEMENTARY COLOURS',o,'Complementary = colours opposite each other on the wheel','Not "complimentary" (a free gift or praise)');});
+def(['analogous colours'],function(){var cs=['#16a34a','#65a30d','#eab308','#f59e0b'],o='';cs.forEach(function(c,i){o+=rc(40+i*83,62,83,70,c,C.navy,{w:1});});o+=tx(200,156,'next to each other on the colour wheel',{s:13,w:700,c:C.slate});
+ return F('ANALOGOUS COLOURS',o,'Analogous = colours that sit side by side on the wheel','They look calm and go well together');});
+// ---------- PRINT MARKS ----------
+def(['crop mark','crop marks'],function(){var o=rc(120,80,160,70,'#dbeafe',C.blue,{w:1.5});[[120,80,-1,-1],[280,80,1,-1],[120,150,-1,1],[280,150,1,1]].forEach(function(p){var x=p[0],y=p[1],sx=p[2],sy=p[3];o+=ln(x+sx*26,y,x+sx*10,y,'#000',2.2)+ln(x,y+sy*20,x,y+sy*8,'#000',2.2);});
+ o+=tx(200,120,'page',{s:15,w:800,c:C.blue})+ar(346,96,296,82,'#000')+tx(352,104,'crop\nmarks',{a:'start',s:14,w:800});
+ return F('CROP MARKS',o,'Crop marks = corner lines that show where to trim the paper','They are outside the page, so they are trimmed off');});
+def(['registration mark','registration marks'],function(){var o=rc(140,88,120,60,'#fff',C.navy,{w:2}),m=function(x,y){return ci(x,y,9,'none','#000',1.6)+ln(x-14,y,x+14,y,'#000',1.6)+ln(x,y-14,x,y+14,'#000',1.6);};
+ o+=m(200,66)+m(200,170)+m(112,118)+m(288,118)+tx(200,123,'page',{s:15,w:800,c:C.slate})+ar(318,86,296,108,'#000')+tx(310,78,'registration\nmark',{a:'start',s:13,w:800});
+ return F('REGISTRATION MARKS',o,'Registration marks = targets that line up the colour plates','They are trimmed off after printing');});
+def(['trim size','trimmed size'],function(){var o=rc(100,56,200,100,'#fff',C.navy,{w:1.5})+rc(124,70,152,72,'#dbeafe',C.red,{d:'6 4',w:2.2})+dar(124,150,276,150,C.red,2)+tx(200,104,'trimmed size',{s:15,w:800,c:C.red})+tx(200,172,'bigger paper (before trimming)',{s:12,w:600,c:C.slate});
+ return F('TRIM SIZE',o,'Trim size = the size of the page after it is trimmed','The paper starts bigger, to allow for trimming');});
+// ---------- IMAGES ----------
+def(['pixel','pixel density (ppi)'],function(){var o='';for(var y=0;y<6;y++)for(var x=0;x<6;x++)o+=rc(40+x*20,56+y*20,20,20,['#1d4ed8','#60a5fa','#bfdbfe'][(x*2+y)%3],'#fff',{w:0.8});
+ o+=ar(210,100,176,96,C.red)+tx(218,96,'1 pixel',{a:'start',s:15,w:800,c:C.red})+tx(218,112,'one tiny square',{a:'start',s:13,w:600,c:C.slate})+tx(218,128,'of colour',{a:'start',s:13,w:600,c:C.slate});
+ return F('PIXEL',o,'Pixel = the smallest square of colour in a digital picture','More pixels per inch (PPI) = a sharper picture');});
+def(['raster graphic','raster image','bitmap'],function(){var o='',cs=function(x,y){return (x*3+y*2)%4<2?'#1d4ed8':'#93c5fd';};for(var y=0;y<8;y++)for(var x=0;x<8;x++)o+=rc(30+x*14,60+y*14,14,14,cs(x,y),'#fff',{w:0.5});
+ o+=rc(30,60,42,42,'none',C.red,{w:2.5})+ar(150,81,208,81,C.red,2.5)+tx(180,70,'zoom in',{s:13,w:800,c:C.red});
+ for(var yy=0;yy<3;yy++)for(var xx=0;xx<3;xx++)o+=rc(224+xx*46,52+yy*46,46,46,cs(xx,yy),'#fff',{w:0.8});o+=tx(293,206,'',{});o+=tx(293,50,'',{})+tx(293,198-8,'',{});
+ return F('RASTER (BITMAP)',o,'Raster = a grid of pixels. It gets blocky when enlarged','Raster formats: JPEG, GIF, PNG, TIFF, BMP');});
+def(['vector graphic','vector image'],function(){var o=pg('60,150 100,70 140,150','#93c5fd',C.blue,2.5)+ci(280,110,42,'#93c5fd',C.blue,2.5)+ci(60,150,4,C.red)+ci(100,70,4,C.red)+ci(140,150,4,C.red)+tx(100,174,'points + lines',{s:13,w:700,c:C.slate})+tx(280,174,'curves (maths)',{s:13,w:700,c:C.slate});
+ return F('VECTOR',o,'Vector = shapes made from points and paths (maths)','It stays sharp at any size');});
+// ---------- TYPE PARTS ----------
+def(['serif','serif font','serif type'],function(){var o=tx(150,140,'R',{s:110,w:700,f:TF})+ci(124,138,12,'none',C.red,2.5)+ci(180,138,12,'none',C.red,2.5)+ci(110,58,0,'none')+ar(290,96,196,134,C.red)+tx(298,92,'small "feet"',{a:'start',s:14,w:800,c:C.red})+tx(298,108,'= serifs',{a:'start',s:13,w:600,c:C.slate});
+ return F('SERIF',o,'Serif = small feet at the ends of the letter strokes','Times New Roman and Georgia are serif fonts');});
+def(['sans serif','sans serif font','sans serif type'],function(){var o=tx(150,140,'R',{s:110,w:700,f:'Arial,Helvetica,sans-serif'})+ar(290,96,200,124,C.red)+tx(298,92,'no feet',{a:'start',s:14,w:800,c:C.red})+tx(298,108,'plain strokes',{a:'start',s:13,w:600,c:C.slate});
+ return F('SANS SERIF',o,'Sans serif = letters with no feet ("sans" means without)','Arial and Helvetica are sans serif fonts');});
+def(['baseline','ascender','descender','x-height'],function(){var o=tx(40,116,'hdpg',{a:'start',s:74,w:700,c:C.navy,f:'Arial,sans-serif'})+ln(24,116,296,116,C.red,2)+ln(24,70,296,70,C.blue,1.5,'4 4')+ln(24,142,296,142,C.blue,1.5,'4 4')+tx(376,120,'baseline',{a:'end',s:14,w:800,c:C.red})+tx(376,72,'ascender line',{a:'end',s:13,w:700,c:C.blue})+tx(376,152,'descender line',{a:'end',s:13,w:700,c:C.blue});
+ return F('PARTS OF A LETTER',o,'Baseline = the line that the letters sit on','Ascenders go up (h, d). Descenders go down (p, g)');});
+def(['drop cap'],function(){var o=tx(38,118,'T',{a:'start',s:78,w:900,c:C.blue,f:TF})+tl(96,66,270,3,13)+tl(96,106,270,1,13)+tl(40,134,326,2,13,null,0.7)+ar(296,160,100,120,C.red)+tx(302,164,'Drop cap',{a:'start',s:14,w:800,c:C.red});
+ return F('DROP CAP',o,'Drop cap = a large first letter that drops down into the text','');});
+def(['pull quote'],function(){var o=tl(30,58,340,3,12,null,0.95)+rc(70,98,260,40,C.pam,C.amber,{r:8})+tx(200,124,'"A key sentence from the story"',{s:14,w:800,c:'#92400e',f:TF})+tl(30,150,340,2,12,null,0.8);
+ return F('PULL QUOTE',o,'Pull quote = a short quote from the text, shown in large type','It grabs attention and breaks up the text');});
+def(['justification','justified'],function(){var o='';for(var i=0;i<6;i++)o+=rc(50,58+i*17,300,7,C.mut,null,{r:3});o+=ln(50,52,50,166,C.red,2)+ln(350,52,350,166,C.red,2);
+ return F('JUSTIFICATION',o,'Justified text lines up on both the left and the right sides','Not "a reason" or "an excuse"');});
+def(['line weight','weight'],function(){var o=ln(40,70,360,70,C.navy,1)+ln(40,106,360,106,C.navy,3)+ln(40,146,360,146,C.navy,6)+tx(40,62,'thin',{a:'start',s:13,w:700,c:C.slate})+tx(40,98,'medium',{a:'start',s:13,w:700,c:C.slate})+tx(40,136,'thick',{a:'start',s:13,w:700,c:C.slate});
+ return F('LINE WEIGHT',o,'Line weight = how thick or thin a line is','Not how heavy something is');});
+})();
+
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,tl=X.tl,F=X.frame,def=X.def,box=X.box;
+function pts(a){return a.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ');}
+function hatch(id,x,y,w,h){return X.pat(id)+rc(x,y,w,h,'url(#'+id+')',C.navy,{w:1.8});}
+// ---------- SECTION (two meanings) ----------
+def(['section'],function(){var h=X.nid('h'),o=ln(205,58,205,176,C.line,1.5,'4 4');
+ o+=tx(105,66,'1  In a drawing',{s:13,w:800,c:C.blue})+tx(300,66,'2  In printing',{s:13,w:800,c:C.blue});
+ o+=rc(22,88,60,56,'#e2e8f0',C.navy,{w:2})+rc(40,104,24,24,null,C.navy,{w:1.5,d:'4 3'})+ln(12,116,92,116,C.red,2,'10 3 3 3')+tx(10,112,'A',{a:'start',s:13,w:800,c:C.red})+tx(94,112,'A',{a:'start',s:13,w:800,c:C.red})+ar(102,116,122,116,C.slate,2)
+ +X.pat(h)+rc(130,88,60,56,'url(#'+h+')',C.navy,{w:2})+rc(148,104,24,24,'#fff',C.navy,{w:2})+tx(160,160,'cut open',{s:12,w:700,c:C.slate})+tx(52,160,'cutting plane',{s:12,w:700,c:C.red});
+ // printing section: sheet of 8 pages -> folded
+ var n=1;for(var r=0;r<2;r++)for(var c=0;c<4;c++){o+=rc(222+c*22,88+r*30,22,30,'#fff',C.navy,{w:1.2})+tx(233+c*22,108+r*30,String(n++),{s:11,w:700,c:C.slate});}
+ o+=ar(314,104,336,104,C.slate,2)+rc(344,92,30,40,'#fff',C.navy,{w:1.5})+rc(347,95,30,40,'#e2e8f0',C.navy,{w:1.5})+rc(350,98,30,40,'#bfdbfe',C.navy,{w:1.5})+tx(266,160,'printed sheet',{s:12,w:700,c:C.slate})+tx(362,160,'folded',{s:12,w:700,c:C.slate});
+ return F('SECTION',o,'Section has 2 meanings here: (1) a view cut open in a\ndrawing  (2) a printed sheet folded to page size','Not a part of a book, or a piece of an orange');});
+def(['sectional view','section view'],function(){var h=X.nid('h');var o=rc(30,70,90,70,'#e2e8f0',C.navy,{w:2})+rc(62,88,26,34,null,C.navy,{w:1.5,d:'4 3'})+ln(18,105,132,105,C.red,2,'10 3 3 3')+tx(16,100,'A',{a:'start',s:14,w:800,c:C.red})+tx(134,100,'A',{a:'start',s:14,w:800,c:C.red})+ar(142,105,176,105,C.slate,2.2)
+ +X.pat(h)+rc(188,70,90,70,'url(#'+h+')',C.navy,{w:2})+rc(220,88,26,34,'#fff',C.navy,{w:2})+tx(75,162,'cutting plane A-A',{s:12,w:700,c:C.red})+tx(233,162,'SECTION A-A',{s:13,w:800,c:C.blue})+tx(340,92,'lines =',{s:12,w:700,c:C.slate})+tx(340,107,'material',{s:12,w:700,c:C.slate})+tx(340,122,'that was cut',{s:12,w:700,c:C.slate});
+ return F('SECTIONAL VIEW',o,'Sectional view = the inside of an object, shown as if cut open','Lines (hatching) show the material the plane has cut');});
+def(['plane','work plane','workplane','sketch plane'],function(){var o=pg('60,150 250,150 330,92 140,92','#dbeafe',C.blue,2.5)+'<ellipse cx="196" cy="121" rx="40" ry="14" fill="#fff" stroke="'+C.red+'" stroke-width="2.5"/>'+tx(196,126,'sketch',{s:13,w:800,c:C.red})+ar(60,150,60,150,C.blue)+ar(100,150,176,150,C.blue,0.1)+tx(300,164,'X',{s:14,w:800,c:C.blue})+tx(338,92,'Y',{a:'start',s:14,w:800,c:C.blue})+tx(70,86,'flat surface',{a:'start',s:13,w:700,c:C.slate})+ar(110,90,150,106,C.slate,1.5);
+ return F('PLANE (CAD)',o,'Plane = a flat surface on which you draw a sketch','Not an aeroplane or a carpenter\'s plane');});
+def(['render','rendering'],function(){var o=box(110,114,52,'none','none','none','#475569')+ar(180,112,226,112,C.red,3)+box(290,114,52,'#dbeafe','#60a5fa','#1e3a8a')+tx(110,186,'',{})+tx(110,56+0,'',{})+tx(110,176,'3D model (lines)',{s:12,w:700,c:C.slate})+tx(290,176,'rendered image',{s:12,w:800,c:C.blue});
+ return F('RENDER',o,'Render = software adds light, colour and material to a 3D model','Not "to give" or "to cover a wall with cement"');});
+// ---------- 3D VIEWS ----------
+function iso(cx,cy,a){var dx=a*0.866,dy=a*0.5;return {F:[cx,cy-a+2*dy],A:[-dx,-dy],B:[dx,-dy],D:[0,a],dx:dx,dy:dy};}
+function P3(g,s,t,u){return [g.F[0]+s*g.A[0]+t*g.B[0]+u*g.D[0],g.F[1]+s*g.A[1]+t*g.B[1]+u*g.D[1]];}
+def(['cutting plane'],function(){var cx=150,cy=108,a=60,g=iso(cx,cy,a);
+ var o=box(cx,cy,a,'#dbeafe','#93c5fd','#3b82f6')+pg(pts([P3(g,0.5,-0.25,-0.2),P3(g,0.5,1.25,-0.2),P3(g,0.5,1.25,1.2),P3(g,0.5,-0.25,1.2)]),'rgba(220,38,38,0.22)',C.red,2.2);
+ o+=ar(300,86,236,100,C.red)+tx(304,84,'cutting plane',{a:'start',s:14,w:800,c:C.red})+tx(304,100,'(imaginary,',{a:'start',s:12,w:600,c:C.slate})+tx(304,114,'flat cut)',{a:'start',s:12,w:600,c:C.slate});
+ return F('CUTTING PLANE',o,'Cutting plane = an imaginary flat cut through an object','Not an aeroplane');});
+function thirdAngle(hi){var Pc='#fde68a',Ec='#93c5fd',Nc='#86efac';
+ function st(k){return k==hi?{s:C.red,w:3}:{s:C.navy,w:1.5};}
+ var o='',g=iso(88,104,48);
+ o+=pg(pts([P3(g,0,0,0),P3(g,1,0,0),P3(g,1,1,0),P3(g,0,1,0)]),Pc,st('plan').s,st('plan').w);
+ o+=pg(pts([P3(g,1,0,0),P3(g,0,0,0),P3(g,0,0,1),P3(g,1,0,1)]),Ec,st('elevation').s,st('elevation').w);
+ o+=pg(pts([P3(g,0,0,0),P3(g,0,1,0),P3(g,0,1,1),P3(g,0,0,1)]),Nc,st('end').s,st('end').w);
+ // views
+ o+=rc(206,60,84,36,Pc,st('plan').s,{w:st('plan').w})+tx(248,83,'PLAN',{s:13,w:800})+rc(206,104,84,56,Ec,st('elevation').s,{w:st('elevation').w})+tx(248,136,'ELEVATION',{s:12,w:800})+rc(298,104,76,56,Nc,st('end').s,{w:st('end').w})+tx(336,128,'END',{s:12,w:800})+tx(336,142,'ELEVATION',{s:10,w:800})
+ +ln(248,96,248,104,C.slate,1.5,'2 2')+ln(290,132,298,132,C.slate,1.5,'2 2');
+ return o;}
+function tdef(names,hi,title,course){def(names,function(){return F(title,thirdAngle(hi),course,'Third-angle projection (BS 8888): the plan is above the elevation');});}
+tdef(['elevation','front elevation','front view'],'elevation','ELEVATION','Elevation = the view of the FRONT of an object');
+tdef(['plan','plan view'],'plan','PLAN','Plan = the view looking straight DOWN from above');
+tdef(['end elevation','side view'],'end','END ELEVATION','End elevation = the view of the SIDE (end) of an object');
+tdef(['third-angle projection','orthographic projection','orthographic view','related orthographic views'],'','ORTHOGRAPHIC VIEWS','Orthographic = flat views: plan, elevation and end elevation');
+def(['isometric view','isometric drawing','isometric projection'],function(){var o=box(130,116,66,'#dbeafe','#93c5fd','#3b82f6')+ln(262,118,262,70,C.blue,2.5)+ln(262,118,306,142,C.blue,2.5)+ln(262,118,218,142,C.blue,2.5)+tx(262,62,'upright',{s:12,w:700,c:C.slate})+tx(320,158,'30°',{s:14,w:800,c:C.red})+tx(204,158,'30°',{s:14,w:800,c:C.red});
+ return F('ISOMETRIC',o,'Isometric = a 3D drawing: upright lines + two axes at 30°','All three faces are shown');});
+def(['isometric axis'],function(){return V2.map['isometric view']();});
+def(['oblique view','oblique drawing','oblique projection'],function(){var o=rc(60,86,110,70,'#bfdbfe',C.navy,{w:2.2})+pg('170,86 214,58 214,128 170,156','#3b82f6')+pg('60,86 104,58 214,58 170,86','#dbeafe')+tx(115,118,'front face\nin true shape',{s:12,w:800,c:C.navy})+ln(170,156,236,156,C.red,1.5,'4 3')+ln(170,156,214,128,C.red,2.5)+'<path d="M200 156 A30 30 0 0 0 194 146" fill="none" stroke="'+C.red+'" stroke-width="2"/>'+tx(262,112,'depth lines',{a:'start',s:13,w:800,c:C.red})+tx(262,128,'go back at 45°',{a:'start',s:13,w:800,c:C.red});
+ return F('OBLIQUE',o,'Oblique = the front face is drawn in true shape','The depth lines go back at an angle (45°)');});
+def(['one-point perspective','single-point perspective','vanishing point','horizon line'],function(){var vx=250,vy=108;
+ var o=ln(20,vy,380,vy,C.mut,1.5,'5 4')+rc(110,76,90,64,'#dbeafe',C.navy,{w:2})+ln(110,76,vx,vy,C.blue,1.5,'4 3')+ln(200,76,vx,vy,C.blue,1.5,'4 3')+ln(110,140,vx,vy,C.blue,1.5,'4 3')+ln(200,140,vx,vy,C.blue,1.5,'4 3')+ci(vx,vy,5,C.red)+ar(300,152,256,116,C.red)+tx(262,170,'vanishing point',{a:'start',s:13,w:800,c:C.red})+tx(22,102,'horizon line',{a:'start',s:12,w:700,c:C.slate});
+ return F('ONE-POINT PERSPECTIVE',o,'One-point perspective = lines going away meet at ONE vanishing point','The front face is drawn in true shape');});
+def(['two-point perspective'],function(){var y=104,o=ln(14,y,386,y,C.mut,1.5,'5 4')+pg('170,70 200,78 200,142 170,134','#bfdbfe',C.navy,2)+pg('200,78 232,70 232,134 200,142','#3b82f6',C.navy,2)+ci(24,y,5,C.red)+ci(376,y,5,C.red)+ln(170,70,24,y,C.red,1,'4 3')+ln(170,134,24,y,C.red,1,'4 3')+ln(232,70,376,y,C.red,1,'4 3')+ln(232,134,376,y,C.red,1,'4 3')+tx(24,92,'VP1',{a:'start',s:13,w:800,c:C.red})+tx(376,92,'VP2',{a:'end',s:13,w:800,c:C.red});
+ return F('TWO-POINT PERSPECTIVE',o,'Two-point perspective = two vanishing points on the horizon line','A corner of the object faces the viewer');});
+// ---------- CAD FEATURES ----------
+def(['chamfer','regular chamfer','2d chamfer','3d chamfer','irregular chamfer'],function(){var o=pg('50,160 50,66 140,66 140,160','#dbeafe',C.navy,2)+tx(95,178,'',{})+tx(95,56,'square corner',{s:13,w:700,c:C.slate})+ar(160,114,196,114,C.slate,2.5)+pg('220,160 220,66 290,66 340,100 340,160','#dbeafe',C.navy,2)+ln(290,66,340,100,C.red,4)+tx(300,56,'chamfer',{s:14,w:800,c:C.red})+tx(345,84,'straight',{a:'start',s:12,w:700,c:C.red})+tx(345,98,'slope',{a:'start',s:12,w:700,c:C.red});
+ return F('CHAMFER',o,'Chamfer = a corner cut off at a straight angle (often 45°)','Not the same as a fillet, which is curved');});
+def(['fillet','regular fillet','2d fillet','3d fillet','irregular fillet'],function(){var o=pg('50,160 50,66 140,66 140,160','#dbeafe',C.navy,2)+tx(95,56,'square corner',{s:13,w:700,c:C.slate})+ar(160,114,196,114,C.slate,2.5)+'<path d="M220 160 V66 H292 Q340 66 340 114 V160 Z" fill="#dbeafe" stroke="'+C.navy+'" stroke-width="2"/><path d="M292 66 Q340 66 340 114" fill="none" stroke="'+C.red+'" stroke-width="4.5"/>'+tx(300,56,'fillet',{s:14,w:800,c:C.red})+tx(346,86,'curved',{a:'start',s:12,w:700,c:C.red});
+ return F('FILLET',o,'Fillet = a corner rounded with a curve','Not the same as a chamfer, which is a straight slope');});
+def(['extrude','extrude along a path'],function(){var o=ci(80,114,34,C.bl3,C.blue,3)+tx(80,162,'2D sketch',{s:13,w:700,c:C.slate})+ar(128,114,180,114,C.red,3)+'<ellipse cx="280" cy="146" rx="34" ry="12" fill="#60a5fa" stroke="'+C.navy+'" stroke-width="1.8"/><rect x="246" y="86" width="68" height="60" fill="#60a5fa"/><line x1="246" y1="86" x2="246" y2="146" stroke="'+C.navy+'" stroke-width="1.8"/><line x1="314" y1="86" x2="314" y2="146" stroke="'+C.navy+'" stroke-width="1.8"/><ellipse cx="280" cy="86" rx="34" ry="12" fill="#dbeafe" stroke="'+C.navy+'" stroke-width="1.8"/>'+dar(334,86,334,146,C.red,2)+tx(342,120,'depth',{a:'start',s:13,w:800,c:C.red})+tx(280,172,'3D solid',{s:13,w:700,c:C.slate});
+ return F('EXTRUDE',o,'Extrude = pull a flat 2D sketch out into a 3D shape','Not "to push out" a liquid');});
+def(['revolve','revolved surface'],function(){var o=ln(90,56,90,170,C.red,2,'10 3 3 3')+pg('90,72 134,72 134,102 114,114 134,126 134,158 90,158','#bfdbfe',C.blue,2.5)+tx(80,118,'axis',{a:'end',s:13,w:800,c:C.red})+tx(112,180,'2D profile',{s:12,w:700,c:C.slate})
+ +'<path d="M230 76 L230 104 L250 116 L230 128 L230 156 A40 11 0 0 0 310 156 L310 128 L290 116 L310 104 L310 76 Z" fill="#93c5fd" stroke="'+C.navy+'" stroke-width="2"/><ellipse cx="270" cy="76" rx="40" ry="11" fill="#dbeafe" stroke="'+C.navy+'" stroke-width="2"/>'+'<path d="M222 62 A52 18 0 0 1 318 62" fill="none" stroke="'+C.red+'" stroke-width="2.5"/>'+tx(322,60,'360°',{a:'start',s:13,w:800,c:C.red})+ar(146,116,206,116,C.red,2.5)+tx(270,180,'3D round shape',{s:12,w:700,c:C.slate});
+ return F('REVOLVE',o,'Revolve = spin a 2D profile round an axis to make a round 3D shape','');});
+def(['loft','multi-section lofting'],function(){var o=rc(40,70,56,40,C.bl3,C.blue,{w:2.5})+tx(68,126,'sketch 1',{s:12,w:700,c:C.slate})+ci(68,152,18,C.bl3,C.blue,2.5)+tx(68,184,'sketch 2',{s:12,w:700,c:C.slate})+ar(120,118,196,118,C.red,3)
+ +'<path d="M236 154 L262 90 L318 90 L344 154 Z" fill="#93c5fd" stroke="'+C.navy+'" stroke-width="2"/><polygon points="236,154 344,154 360,138 252,138" fill="#bfdbfe" stroke="'+C.navy+'" stroke-width="2"/><ellipse cx="290" cy="90" rx="28" ry="9" fill="#dbeafe" stroke="'+C.navy+'" stroke-width="2"/>'+tx(300,176,'one smooth 3D shape',{s:12,w:800,c:C.blue});
+ return F('LOFT',o,'Loft = join two or more different sketches into one smooth 3D shape','');});
+def(['sweep','sweep along a path','spatial path sweeping'],function(){var o='<path d="M70 156 C130 156 130 82 210 82 S300 96 334 70" fill="none" stroke="'+C.red+'" stroke-width="3" stroke-dasharray="7 5"/>'+'<path d="M70 150 C130 150 130 76 210 76 S300 90 334 64 L334 78 C300 104 250 96 210 94 S150 164 70 164 Z" fill="#93c5fd" stroke="'+C.blue+'" stroke-width="1.6"/>'+ci(70,157,12,C.bl3,C.blue,3)+tx(70,186,'profile',{s:13,w:700,c:C.slate})+tx(246,60,'path',{s:14,w:800,c:C.red});
+ return F('SWEEP',o,'Sweep = move a profile along a path to make a 3D shape','Not "to clean with a brush"');});
+def(['mirror','mirror feature'],function(){var o=pg('60,150 60,86 100,70 140,86 140,150','#bfdbfe',C.blue,2.5)+ln(200,66,200,170,C.red,2.5,'10 3 3 3')+pg('340,150 340,86 300,70 260,86 260,150','#dbeafe',C.blue,2.5)+tx(200,60,'mirror line',{s:13,w:800,c:C.red})+tx(100,172,'original',{s:12,w:700,c:C.slate})+tx(300,172,'copy',{s:12,w:700,c:C.slate});
+ return F('MIRROR',o,'Mirror = copy a shape to the other side of a line, like a reflection','');});
+def(['shell','shell feature'],function(){var o=box(110,114,52,'#dbeafe','#93c5fd','#3b82f6')+tx(110,176,'solid',{s:12,w:700,c:C.slate})+ar(168,112,214,112,C.red,3);
+ var g=iso(290,114,52);o+=pg(pts([P3(g,0,0,0),P3(g,1,0,0),P3(g,1,1,0),P3(g,0,1,0)]),'#475569',C.navy,2)+pg(pts([P3(g,0.2,0.2,0),P3(g,0.8,0.2,0),P3(g,0.8,0.8,0),P3(g,0.2,0.8,0)]),'#1e293b',C.navy,1.5)+pg(pts([P3(g,1,0,0),P3(g,0,0,0),P3(g,0,0,1),P3(g,1,0,1)]),'#93c5fd',C.navy,2)+pg(pts([P3(g,0,0,0),P3(g,0,1,0),P3(g,0,1,1),P3(g,0,0,1)]),'#3b82f6',C.navy,2)+tx(290,176,'hollow, open top',{s:12,w:800,c:C.blue});
+ return F('SHELL',o,'Shell = hollow out a solid and leave thin walls','Not a sea shell or a bullet shell');});
+def(['linear array','array','box array'],function(){var o='';for(var i=0;i<5;i++)o+=ci(50+i*75,104,22,i?C.bl3:'#60a5fa',C.blue,2.5);o+=dar(50,146,125,146,C.red,2)+tx(88,166,'equal spacing',{s:13,w:800,c:C.red})+tx(50,64,'original',{s:12,w:700,c:C.slate})+tx(275,64,'copies',{s:12,w:700,c:C.slate});
+ return F('LINEAR ARRAY',o,'Array = copies of a feature repeated in a pattern','');});
+def(['radial array'],function(){var o='';for(var i=0;i<6;i++){var a=i*Math.PI/3-Math.PI/2;o+=ci((200+52*Math.cos(a)).toFixed(1),(112+52*Math.sin(a)).toFixed(1),15,i?C.bl3:'#60a5fa',C.blue,2.5);}o+=ci(200,112,5,C.red)+tx(262,112,'centre point',{a:'start',s:13,w:800,c:C.red})+ar(258,112,210,112,C.red);
+ return F('RADIAL ARRAY',o,'Radial array = copies placed in a circle round a centre','Like the bolt holes in a wheel');});
+def(['radius'],function(){var o=ci(160,112,60,C.bl3,C.blue,3)+ci(160,112,4,C.navy)+ar(160,112,220,112,C.red,3)+tx(190,102,'R',{s:18,w:900,c:C.red})+tx(250,112,'radius',{a:'start',s:15,w:800,c:C.red})+tx(250,130,'centre to edge',{a:'start',s:12,w:600,c:C.slate});
+ return F('RADIUS',o,'Radius = the distance from the centre to the edge','It is half of the diameter');});
+def(['diameter'],function(){var o=ci(160,112,60,C.bl3,C.blue,3)+dar(100,112,220,112,C.red,3)+tx(160,100,'Ø',{s:20,w:900,c:C.red})+tx(250,112,'diameter',{a:'start',s:15,w:800,c:C.red})+tx(250,130,'edge to edge',{a:'start',s:12,w:600,c:C.slate})+tx(250,145,'through the centre',{a:'start',s:12,w:600,c:C.slate});
+ return F('DIAMETER',o,'Diameter = the distance across a circle, through the centre','It is twice the radius');});
+def(['tangent'],function(){var o=ci(200,126,48,C.bl3,C.blue,3)+ln(60,78,340,78,C.red,3)+ci(200,78,6,C.red)+tx(200,64,'touches at ONE point',{s:14,w:800,c:C.red});
+ return F('TANGENT',o,'Tangent = a line that just touches a curve at one point','Not "going off the subject"');});
+def(['hatching','section hatching'],function(){var h=X.nid('h'),o=hatch(h,40,64,240,108)+rc(120,90,80,56,'#fff',C.navy,{w:2})+ar(310,88,276,100,C.red)+tx(296,80,'hatching',{a:'start',s:14,w:800,c:C.red})+tx(160,123,'hole: empty',{s:12,w:700,c:C.slate});
+ return F('HATCHING',o,'Hatching = thin lines at 45° on material the cutting plane cut','');});
+def(['centre line'],function(){var o=ci(150,116,48,C.bl3,C.navy,2.5)+ln(80,116,220,116,C.red,2,'16 4 3 4')+ln(150,56,150,176,C.red,2,'16 4 3 4')+ar(262,100,214,116,C.red,2)+tx(268,98,'centre line',{a:'start',s:14,w:800,c:C.red})+tx(268,116,'long - short - long',{a:'start',s:12,w:600,c:C.slate});
+ return F('CENTRE LINE',o,'Centre line = a chain line that marks the centre of a circle or part','');});
+def(['hidden detail line','hidden detail'],function(){var o=rc(90,66,220,90,'#e2e8f0',C.navy,{w:2.5})+ln(166,66,166,116,C.red,2.5,'7 4')+ln(234,66,234,116,C.red,2.5,'7 4')+ln(166,116,200,134,C.red,2.5,'7 4')+ln(234,116,200,134,C.red,2.5,'7 4')+tx(200,176,'dashed = a drilled hole you cannot see',{s:13,w:800,c:C.red})+tx(52,112,'front',{a:'end',s:12,w:700,c:C.slate})+tx(52,127,'view',{a:'end',s:12,w:700,c:C.slate});
+ return F('HIDDEN DETAIL',o,'Hidden detail = dashed lines for edges you cannot see in that view','');});
+def(['dimension line','extension line','leader line','dimensioning'],function(){var o=rc(90,96,200,62,'#e2e8f0',C.navy,{w:2.5})+ln(90,92,90,64,C.navy,1.4)+ln(290,92,290,64,C.navy,1.4)+dar(90,72,290,72,C.red,2)+tx(190,66,'120',{s:15,w:900,c:C.red})+ln(240,142,330,170,C.blue,1.6)+tx(330,184,'leader line + note',{a:'end',s:12,w:800,c:C.blue})+tx(314,80,'extension',{a:'start',s:12,w:700,c:C.slate})+tx(314,94,'lines',{a:'start',s:12,w:700,c:C.slate})+tx(190,92,'dimension line',{s:12,w:700,c:C.red});
+ return F('DIMENSIONS',o,'Dimension line (arrows) shows the size; extension lines mark its ends','A leader line joins a note to a feature');});
+def(['exploded view','full exploded view','sectioned exploded view'],function(){var o='',ys=[86,132,178],cl=[['#dbeafe','#93c5fd','#3b82f6'],['#bfdbfe','#60a5fa','#2563eb'],['#dbeafe','#93c5fd','#3b82f6']];
+ o+=ln(150,56,150,184,C.red,1.8,'5 4');ys.forEach(function(y,i){o+=box(150,y-17,17,cl[i][0],cl[i][1],cl[i][2]);});
+ o+=ar(244,122,184,122,C.red)+tx(250,118,'parts pulled apart',{a:'start',s:13,w:800,c:C.red})+tx(250,134,'along a line',{a:'start',s:13,w:800,c:C.red});
+ return F('EXPLODED VIEW',o,'Exploded view = parts pulled apart to show how they fit together','Not blown up by a bomb');});
+def(['thumbnail'],function(){var o='';for(var i=0;i<4;i++){var x=24+i*92;o+=rc(x,62,76,100,'#fff',C.navy,{r:3,w:1.8})+rc(x+6,68,64-(i%2)*18,30,C.bl2,null,{r:2})+tl(x+6,108,64,4,10);}o+=tx(200,182,'4 quick ideas',{s:12,w:700,c:C.slate});
+ return F('THUMBNAIL',o,'Thumbnail = a small, quick, rough sketch of a layout idea','Not the nail on your thumb');});
+def(['development','surface development'],function(){var o=rc(40,82,130,62,'#dbeafe',C.navy,{w:2})+ln(40,82,40,82)+ln(105,82,105,144,C.slate,1.2,'4 3')+tx(105,166,'flat pattern (the net)',{s:13,w:800,c:C.blue})+'<path d="M270 90 V138 A44 12 0 0 0 358 138 V90" fill="#93c5fd" stroke="'+C.navy+'" stroke-width="2"/><ellipse cx="314" cy="90" rx="44" ry="12" fill="#dbeafe" stroke="'+C.navy+'" stroke-width="2"/>'+tx(314,166,'3D cylinder',{s:13,w:700,c:C.slate})+ar(184,112,254,112,C.red,2.5)+tx(220,102,'fold',{s:12,w:700,c:C.red});
+ return F('DEVELOPMENT',o,'Development = a 3D shape opened out into a flat pattern','Not "growth" or "a new event"');});
+})();
+
+(function(){var old=window.getTermVisualSvg;
+window.getTermVisualSvg=function(row){try{if(row&&row.subject==='Graphic Communication'){var f=window.V2.map[(row.term||'').trim().toLowerCase()];if(f){var r=f();if(r)return r;}}}catch(e){}
+return old?old(row):'';};
+window.extraVisualCount=Object.keys(window.V2.map).length;})();
+
+
+</script>
+<!-- Flashcard Study Mode Modal -->
   <div id="flashcardModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="fcModalTitle" style="position:fixed; inset:0; background:rgba(15,23,42,0.72); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(3px);">
     <div style="background:#fff; width:100%; max-width:740px; border-radius:20px; box-shadow:0 24px 48px rgba(15,23,42,0.28); overflow:hidden; display:flex; flex-direction:column; max-height:92vh; border:1px solid #cbdcff;">
       <div class="fc-modal-header">
