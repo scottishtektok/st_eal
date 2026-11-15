@@ -359,7 +359,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
         <button id="toggleFlashcardsBtn" class="pill-btn" type="button" title="Practice vocabulary with interactive bilingual flashcards">🎓 Flashcards Mode</button>
         <button id="toggleTrapBtn" class="pill-btn trap-btn" type="button" title="Show only words whose subject meaning differs from everyday English">⚠️ Subject-Specific Meanings Only</button>
         <button id="toggleCmdBtn" class="pill-btn" type="button">📋 SQA Exam Command Words</button>
-        <div class="header-strapline" style="text-align: center; margin-top: 4px; width: 100%;">A Scottish TekTok Resource</div>
       </div>
     </div>
   </header>
@@ -1053,7 +1052,7 @@ window.getTermVisualSvg = function(row) {
       <text x="200" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#dc2626">95th%</text>
     `);
   }
-  return wrapSvg('DESIGN & MANUFACTURE', `
+  return wrapSvg(subj.toUpperCase(), `
     <circle cx="72" cy="86" r="28" fill="#dbeafe" stroke="#155eef" stroke-width="2"/>
     <text x="72" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#155eef">DESIGN</text>
     <path d="M104,86 H154 M148,81 L156,86 L148,91" fill="none" stroke="#dc2626" stroke-width="2.2"/>
