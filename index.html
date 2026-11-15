@@ -1606,6 +1606,123 @@ def(['development','surface development'],function(){var o=rc(40,82,130,62,'#dbe
 })();
 
 (function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,def=X.def,box=X.box;
+function el(cx,cy,rx,ry,f,s,w,d){return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||1.8)+'"'+(d?' stroke-dasharray="'+d+'"':'')+'/>';}
+function pth(d,f,s,w,dash){return '<path d="'+d+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||1.8)+'" stroke-linejoin="round" stroke-linecap="round"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';}
+function lab(x,y,t,c,a,s){return tx(x,y,t,{a:a||'middle',s:s||13,w:800,c:c||C.navy});}
+function pts(a){return a.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ');}
+function rt(x,y,s,dx,dy){dx=dx||1;dy=dy||1;return pth('M'+(x+dx*s)+' '+y+' L'+(x+dx*s)+' '+(y+dy*s)+' L'+x+' '+(y+dy*s),null,C.red,1.8);}
+function iso(cx,cy,a){var dx=a*0.866,dy=a*0.5;return {F:[cx,cy-a+2*dy],A:[-dx,-dy],B:[dx,-dy],D:[0,a],dx:dx,dy:dy};}
+function P3(g,s,t,u){return [g.F[0]+s*g.A[0]+t*g.B[0]+u*g.D[0],g.F[1]+s*g.A[1]+t*g.B[1]+u*g.D[1]];}
+// ---------- SOLIDS ----------
+def(['cylinder'],function(){var cx=200,rx=54,ry=17,y0=62,h=68;
+ var o=pth('M'+(cx-rx)+' '+y0+' L'+(cx-rx)+' '+(y0+h)+' A'+rx+' '+ry+' 0 0 0 '+(cx+rx)+' '+(y0+h)+' L'+(cx+rx)+' '+y0,'#bfdbfe',C.navy,2)+el(cx,y0,rx,ry,'#dbeafe',C.navy,2)+pth('M'+(cx-rx)+' '+(y0+h)+' A'+rx+' '+ry+' 0 0 1 '+(cx+rx)+' '+(y0+h),null,C.mut,1.5,'4 3');
+ o+=ar(300,70,cx+22,y0-2,C.red)+lab(304,68,'flat circular end',C.red,'start',12)+ar(312,112,cx+rx,112,C.red)+lab(316,116,'curved side',C.red,'start',12)+ar(300,y0+h+14,cx+30,y0+h+ry-2,C.red)+lab(304,y0+h+18,'flat circular end',C.red,'start',12);
+ return F('CYLINDER',o,'Cylinder = a solid with two equal circular ends and one curved side','Think of a tin can');});
+def(['cone'],function(){var cx=200,rx=56,ry=17,by=140;
+ var o=pth('M'+cx+' 56 L'+(cx-rx)+' '+by+' A'+rx+' '+ry+' 0 0 0 '+(cx+rx)+' '+by+' Z','#bfdbfe',C.navy,2)+pth('M'+(cx-rx)+' '+by+' A'+rx+' '+ry+' 0 0 1 '+(cx+rx)+' '+by,null,C.mut,1.5,'4 3')+ci(cx,56,4,C.red);
+ o+=ar(270,60,cx+8,56,C.red)+lab(274,64,'apex (point)',C.red,'start',12)+ar(312,150,cx+rx-4,146,C.red)+lab(316,150,'circular base',C.red,'start',12)+ar(112,112,cx-30,102,C.red)+lab(108,118,'slant side',C.red,'end',12);
+ return F('CONE',o,'Cone = a solid with a circular base that narrows to a point (apex)','Like a party hat');});
+def(['pyramid'],function(){var A=[130,142],B=[200,164],Cc=[270,142],D=[200,120],T=[200,56];
+ var o=pg(pts([A,B,T]),'#dbeafe',C.navy,2)+pg(pts([B,Cc,T]),'#93c5fd',C.navy,2)+ln(A[0],A[1],D[0],D[1],C.mut,1.5,'4 3')+ln(D[0],D[1],Cc[0],Cc[1],C.mut,1.5,'4 3')+ln(D[0],D[1],T[0],T[1],C.mut,1.5,'4 3')+ci(T[0],T[1],4,C.red);
+ o+=ar(296,62,T[0]+8,T[1]+4,C.red)+lab(300,66,'apex',C.red,'start',12)+ar(304,160,Cc[0]-4,148,C.red)+lab(308,168,'square base',C.red,'start',12)+ar(104,104,T[0]-26,98,C.red)+lab(100,108,'triangular faces',C.red,'end',12);
+ return F('PYRAMID',o,'Pyramid = a solid with a flat base and triangular sides that meet at an apex','This one has a square base');});
+function prismShape(){var f=[[110,152],[190,152],[150,100]],dx=70,dy=-26;
+ var b=f.map(function(p){return [p[0]+dx,p[1]+dy];});
+ return pg(pts([f[0],f[2],b[2],b[0]]),'#bfdbfe',C.navy,2)+pg(pts([f[1],b[1],b[2],f[2]]),'#93c5fd',C.navy,2)+pg(pts(f),'#dbeafe',C.navy,2.4);}
+def(['prism','right prism'],function(){var o=prismShape();
+ o+=ar(76,100,126,128,C.red)+lab(72,96,'end shape',C.red,'end',12)+ar(298,76,236,88,C.red)+lab(302,76,'same shape',C.red,'start',12)+lab(302,91,'at other end',C.red,'start',12)+ar(298,140,252,132,C.red)+lab(302,144,'flat sides',C.red,'start',12);
+ return F('PRISM',o,'Prism = a solid with two identical ends joined by flat sides','Right prism: the sides are at 90° to the ends');});
+def(['sphere'],function(){var id=X.nid('sp'),cx=220,cy=116,r=54;
+ var o='<defs><radialGradient id="'+id+'" cx="36%" cy="32%" r="70%"><stop offset="0" stop-color="#eff6ff"/><stop offset="1" stop-color="#60a5fa"/></radialGradient></defs>'+ci(cx,cy,r,'url(#'+id+')',C.navy,2)+pth('M'+(cx-r)+' '+cy+' A'+r+' 16 0 0 0 '+(cx+r)+' '+cy,null,C.slate,1.4,'4 3')+ln(cx,cy,cx+r,cy,C.red,2.5)+ci(cx,cy,4,C.red);
+ o+=lab(cx+r/2+4,cy-8,'radius',C.red,'middle',12)+ar(130,92,cx-6,cy-4,C.red)+lab(126,92,'centre',C.red,'end',12);
+ return F('SPHERE',o,'Sphere = a perfectly round solid. Every point on the surface is the same distance from the centre','Like a ball');});
+
+// ---------- CURVES ----------
+def(['ellipse'],function(){var cx=190,cy=118,a=80,b=40,c=Math.sqrt(a*a-b*b);
+ var o=el(cx,cy,a,b,'#dbeafe',C.navy,2.2)+ln(cx-a-10,cy,cx+a+10,cy,C.blue,1.3,'6 3')+ln(cx,cy-b-10,cx,cy+b+10,C.blue,1.3,'6 3')+ci(cx-c,cy,4.5,C.red)+ci(cx+c,cy,4.5,C.red);
+ o+=lab(cx+a+16,cy+4,'major axis',C.blue,'start',12)+lab(cx+8,cy-b-14,'minor axis',C.blue,'start',12)+lab(cx-c,cy+22,'focus',C.red,'middle',12)+lab(cx+c,cy+22,'focus',C.red,'middle',12);
+ return F('ELLIPSE',o,'Ellipse = a stretched circle (an oval) with two foci','Foci (plural of focus) = the two special points inside');});
+def(['parabola'],function(){var pt=[],i;for(i=-6;i<=6;i++){var x=i*14,y=x*x/90;pt.push([200+x,60+y]);}
+ var d='M'+pt.map(function(p){return p[0]+' '+p[1];}).join(' L');
+ var o=pth(d,null,C.navy,2.4)+ln(200,52,200,172,C.mut,1.3,'6 3')+ci(200,60,4,C.red)+ci(200,60+22.5,4,C.green)+lab(214,56,'vertex',C.red,'start',12)+lab(214,90,'focus',C.green,'start',12)+lab(190,172,'axis',C.blue,'end',12);
+ return F('PARABOLA',o,'Parabola = a U-shaped curve with a vertex, an axis and a focus','Like the path of a thrown ball');});
+def(['hyperbola'],function(){var L=[],R=[],i;for(i=-5;i<=5;i++){var y=i*11,x=26*Math.sqrt(1+y*y/1400)*1+22;L.push([200-x,112+y]);R.push([200+x,112+y]);}
+ var f=function(p){return 'M'+p.map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1);}).join(' L');};
+ var o=ln(110,50,290,176,C.mut,1.3,'6 3')+ln(110,176,290,50,C.mut,1.3,'6 3')+pth(f(L),null,C.navy,2.4)+pth(f(R),null,C.navy,2.4)+lab(200,112,'centre',C.slate,'middle',12)+lab(318,62,'asymptote',C.blue,'start',12)+lab(70,120,'branch',C.red,'middle',12)+lab(330,120,'branch',C.red,'middle',12);
+ return F('HYPERBOLA',o,'Hyperbola = a curve with two separate open branches','The dashed lines (asymptotes) are never quite reached');});
+def(['helix'],function(){var cx=190,rx=42,ry=11,y0=146,pitch=22,n=3,i,segs=[],cur=[];
+ for(i=0;i<=n*48;i++){var t=i/48*2*Math.PI,x=cx+rx*Math.cos(t),y=y0-pitch*(t/(2*Math.PI))+ry*Math.sin(t),bb=Math.sin(t)<0;
+  if(cur.length&&cur[cur.length-1].b!==bb){segs.push(cur);cur=[cur[cur.length-1]];}cur.push({x:x,y:y,b:bb});}
+ segs.push(cur);var o='';
+ segs.forEach(function(sg){var b=sg[sg.length-1].b,dd='M'+sg.map(function(q){return q.x.toFixed(1)+' '+q.y.toFixed(1);}).join(' L');o+=pth(dd,null,b?C.mut:C.navy,b?1.6:2.8,b?'4 3':null);});
+ o+=ln(cx+rx+20,y0,cx+rx+20,y0-pitch,C.red,2)+ln(cx+rx+14,y0,cx+rx+26,y0,C.red,2)+ln(cx+rx+14,y0-pitch,cx+rx+26,y0-pitch,C.red,2)+lab(cx+rx+32,y0-pitch/2+4,'pitch',C.red,'start',12)+lab(cx-rx-14,y0-50,'solid line = front',C.navy,'end',12)+lab(cx-rx-14,y0-34,'dashed = back',C.slate,'end',12);
+ return F('HELIX',o,'Helix = a curve that winds around a cylinder, like a spring or screw thread','Pitch = height of one turn. Not a flat spiral');});
+def(['locus'],function(){var cx=170,cy=116,r=46,o=ci(cx,cy,r,'#eff6ff',C.blue,2.2)+ci(cx,cy,4.5,C.red);
+ [30,120,215,300].forEach(function(a){var t=a*Math.PI/180;o+=ci(cx+r*Math.cos(t),cy+r*Math.sin(t),4.5,C.navy);});
+ o+=ln(cx,cy,cx+r*Math.cos(-0.5236),cy+r*Math.sin(-0.5236),C.red,2)+ar(100,150,cx-8,cy+6,C.red)+lab(96,154,'fixed point',C.red,'end',12)+lab(cx+r+16,cy-14,'moving point',C.navy,'start',12)+lab(cx+r+16,cy+1,'always the same',C.slate,'start',12)+lab(cx+r+16,cy+16,'distance away',C.slate,'start',12);
+ return F('LOCUS',o,'Locus = the path a point makes when it follows a rule','Here the rule is: stay the same distance from one point. The path is a circle');});
+def(['involute'],function(){var r=14,i,P=[],T=4.2;for(i=0;i<=70;i++){var t=i/70*T;P.push([r*(Math.cos(t)+t*Math.sin(t)),r*(Math.sin(t)-t*Math.cos(t))]);}
+ var xs=P.map(function(p){return p[0];}),ys=P.map(function(p){return p[1];}),mnx=Math.min.apply(0,xs.concat([-r])),mxx=Math.max.apply(0,xs),mny=Math.min.apply(0,ys.concat([-r])),mxy=Math.max.apply(0,ys.concat([r]));
+ var k=Math.min(220/(mxx-mnx),112/(mxy-mny)),ox=100-mnx*k,oy=62-mny*k;function X2(p){return [ox+p[0]*k,oy+p[1]*k];}
+ var d='M'+P.map(function(p){var q=X2(p);return q[0].toFixed(1)+' '+q[1].toFixed(1);}).join(' L');
+ var c0=X2([0,0]),t0=3.1,ex=X2([r*(Math.cos(t0)+t0*Math.sin(t0)),r*(Math.sin(t0)-t0*Math.cos(t0))]),tp=X2([r*Math.cos(t0),r*Math.sin(t0)]);
+ var o=pth(d,null,C.navy,2.4)+ci(c0[0],c0[1],r*k,'#dbeafe',C.blue,2)+ln(tp[0],tp[1],ex[0],ex[1],C.red,2,'5 3')+ci(ex[0],ex[1],4.5,C.red)+lab(c0[0],c0[1]+4,'base circle',C.blue,'middle',11)+ar(ex[0]+60,ex[1]+8,ex[0]+6,ex[1]+2,C.red)+lab(ex[0]+64,ex[1]+14,'taut string',C.red,'start',12);
+ return F('INVOLUTE',o,'Involute = the curve traced by the end of a string as it unwinds from a circle','Used for the tooth shape of gears');});
+def(['tangent'],function(){var cx=180,cy=120,r=36,a=-0.9,px=cx+r*Math.cos(a),py=cy+r*Math.sin(a),nx=-Math.sin(a),ny=Math.cos(a);
+ var o=ci(cx,cy,r,'#eff6ff',C.navy,2.2)+ln(px-nx*62,py-ny*62,px+nx*62,py+ny*62,C.blue,2.6)+ln(cx,cy,px,py,C.slate,1.8)+ci(cx,cy,3.5,C.navy)+ci(px,py,4.5,C.red)
+ +lab(px+nx*62+8,py+ny*62+4,'tangent line',C.blue,'start',12)+ar(cx-50,cy+34,cx-4,cy-4,C.slate,1.6)+lab(cx-54,cy+38,'radius',C.slate,'end',12)+ar(px+60,py-14,px+7,py-2,C.red)+lab(px+64,py-12,'touches at',C.red,'start',12)+lab(px+64,py+3,'one point only',C.red,'start',12);
+ return F('TANGENT',o,'Tangent = a straight line that touches a curve at one point only','It meets the radius at 90°');});
+
+// ---------- DIMENSIONS ----------
+function dimH(x1,x2,y,t,c){c=c||C.red;return ln(x1,y-6,x1,y+6,c,1.6)+ln(x2,y-6,x2,y+6,c,1.6)+dar(x1,y,x2,y,c)+lab((x1+x2)/2,y-6,t,c,'middle',13);}
+def(['linear dimension'],function(){var o=rc(120,70,160,60,'#dbeafe',C.navy,{w:2.2})+ln(120,132,120,160,C.slate,1.2)+ln(280,132,280,160,C.slate,1.2)+dar(120,152,280,152,C.red)+lab(200,146,'120',C.red,'middle',14)+ln(282,70,310,70,C.slate,1.2)+ln(282,130,310,130,C.slate,1.2)+dar(302,70,302,130,C.red)+lab(322,104,'60',C.red,'middle',14);
+ return F('LINEAR DIMENSION',o,'Linear dimension = the length of a straight edge, in mm','Extension lines + dimension line with arrows + number');});
+def(['radial dimension'],function(){var cx=190,cy=112,r=48,o=ci(cx,cy,r,'#dbeafe',C.navy,2.2)+ci(cx,cy,3,C.navy)+ln(cx,cy,cx+r*0.707,cy-r*0.707,C.red,2)+ar(cx+r*0.35,cy-r*0.35,cx+r*0.707,cy-r*0.707,C.red,2)+ln(cx+r*0.707,cy-r*0.707,cx+r*0.707+36,cy-r*0.707,C.red,2)+lab(cx+r*0.707+40,cy-r*0.707+5,'R30',C.red,'start',15);
+ return F('RADIAL DIMENSION',o,'Radial dimension = the radius of an arc or circle. It starts with R','Radius = centre to edge');});
+def(['diametric dimension'],function(){var cx=190,cy=112,r=48,o=ci(cx,cy,r,'#dbeafe',C.navy,2.2)+ln(cx-r-14,cy,cx+r+14,cy,C.red,2)+ar(cx-8,cy,cx-r,cy,C.red,2)+ar(cx+8,cy,cx+r,cy,C.red,2)+lab(cx,cy-8,'Ø60',C.red,'middle',15);
+ return F('DIAMETRIC DIMENSION',o,'Diametric dimension = the diameter of a circle. It starts with Ø','Diameter = all the way across, through the centre');});
+def(['angular dimension'],function(){var ox=120,oy=156,L=150,a=40*Math.PI/180,o=ln(ox,oy,ox+L,oy,C.navy,2.6)+ln(ox,oy,ox+L*Math.cos(a),oy-L*Math.sin(a),C.navy,2.6)+pth('M'+(ox+90)+' '+oy+' A90 90 0 0 0 '+(ox+90*Math.cos(a))+' '+(oy-90*Math.sin(a)),null,C.red,2)+lab(ox+104,oy-26,'40°',C.red,'start',15);
+ return F('ANGULAR DIMENSION',o,'Angular dimension = the size of an angle, in degrees (°)','The arc goes between the two lines');});
+// ---------- SCALE ----------
+function scaleDiag(t,l,k,note,cap){var w=70*k,h=36*k;return F(t,rc(50,112-18,70,36,'#dbeafe',C.navy,{w:2})+lab(85,172,'real object',C.slate,'middle',12)+ar(140,112,196,112,C.red)+lab(168,100,l,C.red,'middle',14)+rc(215+(120-w)/2,112-h/2,w,h,'#93c5fd',C.navy,{w:2})+lab(275,172,'drawing',C.slate,'middle',12),cap,note);}
+def(['full-size scale'],function(){return scaleDiag('FULL-SIZE SCALE','1:1',1,'1 mm on the drawing = 1 mm real','Full-size = same size as the real object');});
+def(['reduction scale'],function(){return scaleDiag('REDUCTION SCALE','1:2',0.5,'1 mm on the drawing = 2 mm real','Reduction = the drawing is smaller than the real object');});
+def(['enlargement scale'],function(){return scaleDiag('ENLARGEMENT SCALE','2:1',1.7,'2 mm on the drawing = 1 mm real','Enlargement = the drawing is bigger than the real object');});
+// ---------- SECTIONS ----------
+function cylBlock(x,y,w,h,fill){return rc(x,y,w,h,fill||'#dbeafe',C.navy,{w:2.2});}
+def(['break line'],function(){var L='M196 86 L206 104 L194 122 L206 140 L196 150',R='M214 86 L224 104 L212 122 L224 140 L214 150';
+ var o='<rect x="60" y="92" width="136" height="44" fill="#dbeafe"/><rect x="214" y="92" width="126" height="44" fill="#dbeafe"/>'+ln(60,92,198,92,C.navy,2.2)+ln(60,136,198,136,C.navy,2.2)+ln(60,92,60,136,C.navy,2.2)+ln(214,92,340,92,C.navy,2.2)+ln(214,136,340,136,C.navy,2.2)+ln(340,92,340,136,C.navy,2.2)
+ +pth('M199 92 L206 104 L194 122 L202 136',null,C.navy,2.4)+pth('M213 92 L220 104 L208 122 L216 136',null,C.navy,2.4)
+ +ar(270,66,226,100,C.red)+lab(276,64,'break line',C.red,'start',13)+lab(200,168,'the middle of a long object is not drawn',C.slate,'middle',12);
+ return F('BREAK LINE',o,'Break line = a zig-zag line showing part of a long object is left out','The real length is written in the dimension');});
+function hatchRect(id,x,y,w,h){return X.pat(id)+rc(x,y,w,h,'url(#'+id+')',C.navy,{w:2});}
+def(['full section','cross-section'],function(){var h=X.nid('h'),o=X.pat(h)+rc(110,76,180,70,'url(#'+h+')',C.navy,{w:2.2})+rc(170,96,60,30,'#fff',C.navy,{w:2.2})+ln(90,111,310,111,C.red,2,'12 3 3 3')+lab(86,115,'A',C.red,'end',14)+lab(314,115,'A',C.red,'start',14);
+ return F('FULL SECTION',o,'Full section = the object is cut all the way through and the cut face is hatched','Cut face = diagonal hatching lines');});
+def(['partial section','part section','partial cut'],function(){var h=X.nid('h'),o=rc(110,76,180,70,'#dbeafe',C.navy,{w:2.2})+X.pat(h)+rc(110,76,80,70,'url(#'+h+')',C.navy,{w:2.2})+rc(138,96,24,30,'#fff',C.navy,{w:2.2})+pth('M190 76 Q198 92 188 106 Q198 122 190 146',null,C.navy,2.2)+rc(240,96,24,30,null,C.navy,{w:1.5,d:'4 3'})
+ +ar(150,170,150,148,C.red)+lab(156,176,'cut part (hatched)',C.red,'start',12)+ar(262,170,262,148,C.slate)+lab(268,176,'not cut',C.slate,'start',12);
+ return F('PARTIAL SECTION',o,'Partial section = only a small part is cut away to show the inside','A wavy line shows where the cut stops');});
+def(['revolved section'],function(){var h=X.nid('h'),o=pg('70,100 330,100 330,130 70,130','#dbeafe',C.navy,2.2)+ci(200,115,26,'#fff',C.navy,2)+X.pat(h)+ci(200,115,26,'url(#'+h+')',C.navy,2.2)+lab(200,162,'section turned 90° and drawn on the view',C.red,'middle',12);
+ return F('REVOLVED SECTION',o,'Revolved section = the cut shape is turned through 90° and drawn on the view itself','No extra view is needed');});
+def(['cut-away'],function(){var g=iso(170,126,54),o=box(170,126,54,'#dbeafe','#93c5fd','#3b82f6')+pg(pts([P3(g,0.45,0.45,-0.02),P3(g,1.02,0.45,-0.02),P3(g,1.02,1.02,-0.02),P3(g,0.45,1.02,-0.02)]),'#1e3a8a',C.navy,1.8)+ar(290,100,236,106,C.red)+lab(294,98,'a corner is',C.red,'start',12)+lab(294,113,'cut away to',C.red,'start',12)+lab(294,128,'show the inside',C.red,'start',12);
+ return F('CUT-AWAY',o,'Cut-away = part of the outside is removed in the picture to show what is inside','Used in exploded and technical views');});
+// ---------- PROJECTION ----------
+function view(x,y,w,h,t,c){return rc(x,y,w,h,c||'#dbeafe',C.navy,{w:2})+lab(x+w/2,y+h/2+5,t,C.navy,'middle',13);}
+def(['first-angle projection'],function(){
+ var o=view(70,60,90,52,'Elevation')+view(70,120,90,40,'Plan')+view(176,60,52,52,'End')+lab(250,92,'END elevation',C.red,'start',12)+lab(250,107,'is on the',C.red,'start',12)+lab(250,122,'OPPOSITE side',C.red,'start',12)+ar(246,90,230,86,C.red)
+ +lab(70,176,'Plan goes BELOW the elevation',C.blue,'start',12);
+ return F('FIRST-ANGLE PROJECTION',o,'First-angle projection = plan below the elevation, end elevation on the opposite side','Scottish courses use third-angle (BS 8888), not this');});
+def(['projection symbol'],function(){var o=ci(105,104,32,'#fff',C.navy,2.2)+ci(105,104,16,'#fff',C.navy,2.2)+ln(60,104,150,104,C.navy,1.4,'10 3 3 3')+ln(105,60,105,148,C.navy,1.4,'10 3 3 3')
+ +pg('200,72 320,89 320,119 200,136','#dbeafe',C.navy,2.2)+ln(190,104,330,104,C.navy,1.4,'10 3 3 3')
+ +lab(105,166,'circles',C.slate,'middle',12)+lab(260,70,'cone (side view)',C.slate,'middle',12)+ar(236,150,204,128,C.red)+lab(240,154,'wide end faces the circles',C.red,'start',12);
+ return F('PROJECTION SYMBOL',o,'Projection symbol = this drawing shows the object was drawn in THIRD-ANGLE projection','Circles on the left, cone on the right. Put it in the title block');});
+// ---------- TITLE BLOCK ----------
+def(['title block'],function(){var o=rc(40,64,320,106,'#fff',C.navy,{w:2.2})+rc(200,110,160,60,'#eff6ff',C.navy,{w:2.2})+ln(200,138,360,138,C.navy,1.4)+ln(280,138,280,170,C.navy,1.4)
+ +lab(110,122,'drawing area',C.slate,'middle',13)+lab(280,129,'Pencil case',C.navy,'middle',12)+lab(240,152,'Scale',C.red,'middle',11)+lab(240,165,'1:2',C.navy,'middle',11)+lab(320,152,'Date',C.red,'middle',11)+lab(320,165,'15/11/26',C.navy,'middle',11)+ar(310,60,300,108,C.red)+lab(316,62,'title block',C.red,'start',13);
+ return F('TITLE BLOCK',o,'Title block = a box in the corner of a drawing with its name, scale and date','Usually bottom right');});
+})();
+
+(function(){
 var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,tl=X.tl,F=X.frame,sd=X.sdef,S='Practical Woodworking';
 var W1='#f3dfb5',W2='#d9a864',W3='#a8742f',W4='#7a4a1c';
 function d(names,fn){sd(S,names,fn);}
