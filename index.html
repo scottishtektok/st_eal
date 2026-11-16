@@ -4170,7 +4170,7 @@ async function renderAll() {
   // Update summary bar
   const scopeLabel = searchAllSubjects ? 'All 5 D&T Subjects' : `${subjectEl.value} (${levelEl.value})`;
   document.getElementById('resultSummary').innerHTML =
-    `Showing <strong>${pageRows.length}</strong> of <strong>${total}</strong> terms in <strong>${escapeHtml(scopeLabel)}</strong>` +
+    `Showing <strong>${pageRows.length}</strong> of <strong>${total}</strong> terms in ` + ((!searchAllSubjects && selectedTopic !== 'ALL') ? `<strong>${escapeHtml(selectedTopic)}</strong> in ` : '') + `<strong>${escapeHtml(scopeLabel)}</strong>` +
     (onlySpecialist ? ' · <span style="color:var(--red);font-weight:700">Subject-Specific Meanings Only</span>' : '');
 
   
