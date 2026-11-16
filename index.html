@@ -3465,6 +3465,159 @@ d(['Micrometer'],function(){
  return F('MICROMETER',o,'Micrometer = a precise tool that measures small sizes with a screw','It reads to 0.01 mm');});
 })();
 
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,def=X.def,sd=X.sdef;
+function lab(x,y,t,c,a,s){return tx(x,y,t,{a:a||'middle',s:s||11,w:800,c:c||C.navy});}
+function pth(dd,f,s,w,da){return '<path d="'+dd+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||2)+'" stroke-linejoin="round" stroke-linecap="round"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
+var BL='#dbeafe',GR='#e2e8f0',AM='#fef3c7';
+var G='Graphic Communication',W='Practical Woodworking',M='Practical Metalworking';
+function bx(x,y,w,h,t,f,c){return rc(x,y,w,h,f||'#fff',C.navy,{w:2,r:4})+lab(x+w/2,y+h/2+4,t,c||C.navy,'middle',11);}
+
+/* ARRAY (generic) and BOX ARRAY */
+def(['array'],function(){
+ var o='',i,j;
+ for(i=0;i<4;i++)o+=ci(40+i*26,92,8,i?C.bl3:'#60a5fa',C.blue,2);
+ for(i=0;i<3;i++)for(j=0;j<3;j++)o+=ci(176+i*26,82+j*22,8,(i||j)?C.bl3:'#60a5fa',C.blue,2);
+ for(i=0;i<6;i++){var a=i*Math.PI/3-Math.PI/2;o+=ci(320+34*Math.cos(a),100+34*Math.sin(a),8,i?C.bl3:'#60a5fa',C.blue,2);}
+ o+=lab(78,120,'linear',C.red)+lab(202,152,'box',C.red)+lab(320,154,'polar',C.red);
+ return F('ARRAY',o,'Array = copies of a feature repeated in a pattern: in a line, in rows and columns, or round a centre','The dark shape is the original');});
+def(['box array','rectangular array'],function(){
+ var o='',i,j;
+ for(j=0;j<3;j++)for(i=0;i<4;i++)o+=ci(100+i*62,70+j*30,12,(i||j)?C.bl3:'#60a5fa',C.blue,2.5);
+ o+=dar(100,150,162,150,C.red,2)+lab(131,164,'column spacing',C.red,'middle',11)
+  +dar(66,70,66,100,C.red,2)+lab(58,88,'row\nspacing',C.red,'end',11);
+ return F('BOX (RECTANGULAR) ARRAY',o,'Box array = a feature copied in rows and columns, so it makes a grid','Set the number of rows, columns and the spacing');});
+
+/* CAG */
+sd(G,['CAG'],function(){
+ var o=rc(40,70,100,70,GR,C.navy,{w:2,r:4})+rc(52,80,76,50,'#fff',C.navy,{w:1.5})+ci(78,105,12,'#93c5fd',C.blue,2)+pg('96,126 112,96 128,126','#fecaca',C.red,2)+rc(70,140,40,8,C.navy)
+  +lab(90,162,'computer + graphics software',C.slate,'middle',10)
+  +ar(150,105,192,105,C.red)
+  +rc(200,66,70,90,'#fff',C.navy,{w:2})+rc(208,74,54,10,C.blue)+ci(235,106,14,'#93c5fd',C.blue,2)+ln(208,130,262,130,C.mut,2)+ln(208,140,250,140,C.mut,2)+lab(235,166,'poster',C.slate,'middle',10)
+  +rc(290,76,72,50,'#fff',C.navy,{w:2})+pg('300,118 322,92 344,118','#bbf7d0',C.green,2)+lab(326,142,'logo / image',C.slate,'middle',10);
+ return F('COMPUTER-AIDED GRAPHICS',o,'CAG = using computer software to create graphics such as logos, posters and images','Not the same as CAM, which runs machines');});
+
+/* FORESHORTENING (cabinet oblique) */
+def(['foreshortening'],function(){
+ var o=rc(90,92,70,70,BL,C.navy,{w:2})+pg('90,92 125,62 195,62 160,92','#eff6ff',C.navy,2)+pg('160,92 195,62 195,132 160,162','#bfdbfe',C.navy,2)
+  +lab(125,174,'width: true length',C.green,'middle',10)
+  +ln(250,84,320,84,C.navy,3)+lab(285,76,'real depth',C.slate,'middle',11)
+  +ln(250,128,285,110,C.red,3)+lab(285,146,'drawn at half length',C.red,'middle',11)
+  +lab(285,160,'(foreshortened)',C.red,'middle',11);
+ return F('FORESHORTENING',o,'Foreshortening = a receding edge is drawn shorter than its real length in a pictorial drawing','Depth in cabinet oblique is drawn at half size');});
+
+/* BOTTOM-UP / TOP-DOWN */
+sd(G,['Bottom-up modelling'],function(){
+ var o=bx(40,66,70,28,'part A','#bfdbfe')+bx(40,106,70,28,'part B','#bbf7d0')+bx(40,146,70,28,'part C',AM)
+  +lab(75,60,'1. model each part alone',C.slate,'middle',10)
+  +ar(120,110,190,110,C.red)+lab(155,100,'2. assemble',C.red,'middle',11)
+  +rc(200,72,150,96,'#f8fafc',C.navy,{w:2,r:4,d:'5 3'})+rc(215,86,50,24,'#bfdbfe',C.navy,{w:1.5})+rc(280,86,50,24,'#bbf7d0',C.navy,{w:1.5})+rc(246,128,50,24,AM,C.navy,{w:1.5})+lab(275,164,'assembly',C.navy,'middle',11);
+ return F('BOTTOM-UP MODELLING',o,'Bottom-up = model each part on its own first, then bring the finished parts together','Parts can be reused in other assemblies');});
+sd(G,['Top-down modelling'],function(){
+ var o=rc(60,70,280,100,'#f8fafc',C.navy,{w:2,r:4,d:'5 3'})+lab(200,62,'1. start with the whole assembly',C.slate,'middle',10)
+  +rc(80,96,70,50,'#bfdbfe',C.navy,{w:2})+rc(260,96,60,50,AM,C.navy,{w:2})+rc(170,110,70,24,'#bbf7d0',C.green,{w:2,d:'4 3'})
+  +ar(205,92,205,108,C.red)+lab(205,86,'2. new part shaped to fit the gap',C.red,'middle',10).replace('y="86"','y="84"')
+  +lab(115,160,'existing',C.slate,'middle',10)+lab(290,160,'existing',C.slate,'middle',10);
+ return F('TOP-DOWN MODELLING',o,'Top-down = design new parts inside the assembly, using the surrounding parts to set their size and position','Changes to one part can update the others');});
+
+/* MODELLING EDIT / PLAN */
+sd(G,['Modelling edit'],function(){
+ var o=rc(40,68,110,92,'#fff',C.navy,{w:2,r:4})+lab(95,84,'history tree',C.slate,'middle',10)
+  +lab(52,102,'Sketch 1',C.navy,'start',11)+rc(46,110,98,20,'#fef08a',C.amber,{w:2,r:3})+lab(52,124,'Extrude: 20',C.navy,'start',11)+lab(52,148,'Fillet R3',C.navy,'start',11)
+  +ar(158,120,196,120,C.red)+lab(177,110,'edit',C.red,'middle',11)
+  +pg('230,150 230,104 290,104 290,150','#bfdbfe',C.navy,2)+pg('230,104 250,90 310,90 290,104','#eff6ff',C.navy,2)+pg('290,104 310,90 310,136 290,150','#93c5fd',C.navy,2)
+  +lab(270,168,'depth: 20',C.slate,'middle',10)
+  +pg('330,150 330,104 380,104 380,150','#bfdbfe',C.navy,2).replace(/.*/,'');
+ return F('MODELLING EDIT',o,'Modelling edit = go back to a feature in the history tree and change it; the model updates','The rest of the model rebuilds');});
+sd(G,['Modelling plan'],function(){
+ var s=['1  Base sketch','2  Extrude it','3  Cut the hole','4  Add fillets'],o='',i;
+ for(i=0;i<4;i++){o+=bx(50,62+i*26,150,22,s[i],i%2?'#dbeafe':'#eff6ff');if(i<3)o+=ar(125,84+i*26,125,88+i*26,C.red,1.5).replace(/.*/,'');}
+ o+=pg('250,150 250,112 310,112 310,150','#bfdbfe',C.navy,2)+pg('250,112 268,98 328,98 310,112','#eff6ff',C.navy,2)+pg('310,112 328,98 328,136 310,150','#93c5fd',C.navy,2)+ci(280,131,9,'#fff',C.navy,2)
+  +lab(290,168,'finished model',C.slate,'middle',10);
+ return F('MODELLING PLAN',o,'Modelling plan = decide the order of sketches and features before you start building the model','A good order is quick to edit later');});
+
+/* LINEAR SECTION / SECTION SYMBOL -> FULL SECTION */
+var fs=X.map['full section'];
+if(fs){sd(G,['Linear section'],fs);sd(G,['Section symbol'],fs);}
+
+/* NURBS CURVE */
+sd(G,['NURBS curve'],function(){
+ var o=pth('M60 150 L130 80 L220 80 L290 150 L350 100',null,C.mut,1.5,'5 3')+pth('M60 150 C110 70 170 70 220 100 S 320 150 350 100',null,C.blue,3.5)
+  +[[60,150],[130,80],[220,80],[290,150],[350,100]].map(function(p){return rc(p[0]-5,p[1]-5,10,10,C.red,C.navy,{w:1.2});}).join('')
+  +lab(130,70,'control vertex',C.red,'middle',11)+lab(200,172,'curve is pulled towards the vertices',C.slate,'middle',10);
+ return F('NURBS CURVE',o,'NURBS curve = a smooth curve shaped by moving control vertices (CVs) that sit off the curve','Used for car bodies and product surfaces');});
+
+/* GENERAL DIMENSIONING */
+sd(G,['General dimensioning'],function(){
+ var o=rc(110,86,150,46,BL,C.navy,{w:2.5})+ci(150,109,11,'#fff',C.navy,2)
+  +ln(110,132,110,152,C.slate,1.2)+ln(260,132,260,152,C.slate,1.2)+dar(110,148,260,148,C.red,1.8)+lab(185,166,'60',C.red,'middle',13)
+  +ln(260,86,292,86,C.slate,1.2)+ln(260,132,292,132,C.slate,1.2)+dar(288,86,288,132,C.red,1.8)+lab(306,114,'30',C.red,'start',13)
+  +ln(150,109,100,68,C.slate,1.4)+ln(100,68,74,68,C.slate,1.4)+lab(72,72,'\u2300 12',C.red,'end',13)
+  +lab(340,150,'dimension line',C.slate,'end',10)+lab(340,164,'+ extension lines',C.slate,'end',10);
+ return F('GENERAL DIMENSIONING',o,'Dimensioning = extension lines, dimension lines with arrowheads, and a value for each size','Leader lines point to holes and notes');});
+
+/* ORTHOGRAPHIC SKETCH */
+sd(G,['Orthographic sketch'],function(){
+ var o=pth('M70 64 L70 92 L170 92 L170 64 Z',BL,C.navy,2)+pth('M70 100 L70 150 L170 150 L170 100 Z',BL,C.navy,2)+pth('M182 100 L182 150 L222 150 L222 100 Z',BL,C.navy,2)
+  +ln(120,92,120,100,C.mut,1.2,'3 3')+ln(170,125,182,125,C.mut,1.2,'3 3')
+  +lab(120,162,'elevation',C.slate,'middle',10)+lab(120,60,'plan',C.slate,'middle',10)+lab(202,162,'end elevation',C.slate,'middle',10)
+  +lab(300,100,'views lined up',C.red,'start',11)+lab(300,116,'by eye, freehand',C.red,'start',11);
+ return F('ORTHOGRAPHIC SKETCH',o,'Orthographic sketch = a quick freehand sketch of the plan and elevations, lined up with each other','Keep the views the right way round');});
+
+/* METALWORKING */
+sd(M,['Guillotine'],function(){
+ var o=rc(70,138,230,16,'#94a3b8',C.navy,{w:2})+rc(100,130,160,8,'#e2e8f0',C.navy,{w:1.5})
+  +pg('90,78 270,100 270,114 90,92','#cbd5e1',C.navy,2)+ln(90,92,270,114,C.red,3)
+  +rc(130,100,16,30,'#fcd34d',C.navy,{w:1.5}).replace(/.*/,'')
+  +ln(270,107,320,107,C.navy,5)+ci(270,107,5,C.navy)
+  +ar(330,80,330,128,C.slate,1.6)+lab(345,70,'pull down',C.slate,'middle',10).replace('x="345"','x="348"')
+  +lab(150,72,'angled blade',C.red,'middle',11)+lab(180,127,'',C.slate).replace(/.*/,'')+lab(165,168,'sheet metal on the bed',C.slate,'middle',10)+lab(300,126,'lever',C.slate,'middle',10)
+  +ar(110,170,110,146,C.slate,1.2).replace(/.*/,'');
+ return F('GUILLOTINE',o,'Guillotine = a lever-operated shear with a long angled blade that cuts sheet metal in a straight line','Keep fingers clear of the blade');});
+sd(M,['Cross-pein hammer'],function(){
+ var o=pth('M80 82 L96 78 L96 120 L80 116 Z','#cbd5e1',C.navy,2)+rc(96,78,84,42,'#cbd5e1',C.navy,{w:2})+pg('180,78 262,96 262,102 180,120','#cbd5e1',C.navy,2)
+  +rc(122,120,20,46,'#d6a96b',C.navy,{w:2})
+  +lab(82,68,'face',C.red,'middle',11)+lab(236,78,'wedge pein',C.red,'middle',11)+lab(168,150,'handle',C.slate,'start',10)
+  +lab(335,112,'edge runs',C.green,'end',10)+lab(335,125,'across the',C.green,'end',10)+lab(335,138,'handle',C.green,'end',10);
+ return F('CROSS-PEIN HAMMER',o,'Cross-pein hammer = a flat face on one end and a wedge-shaped pein on the other, its edge across the handle','Used to spread metal and for riveting');});
+sd(M,['Silver soldering'],function(){
+ var o=rc(70,122,130,26,'#fdba74',C.navy,{w:2})+rc(220,122,130,26,'#fdba74',C.navy,{w:2})+rc(200,126,20,18,'#e2e8f0',C.slate,{w:1.5})
+  +pth('M210 66 C198 84 224 92 210 118','#fb923c','#dc2626',2.5)
+  +lab(250,80,'torch flame',C.red,'start',11)
+  +ar(262,168,214,150,C.slate,1.6)+lab(268,172,'silver solder fills the joint',C.slate,'start',10)
+  +lab(135,166,'copper or brass',C.slate,'middle',10)+lab(135,179,'(cleaned + flux)',C.slate,'middle',10);
+ return F('SILVER SOLDERING',o,'Silver soldering = joining metal with a silver-alloy filler that melts at about 600\u2013800\u00b0C, below the metal itself','The parent metal does not melt');});
+sd(M,['Tack weld'],function(){
+ var o=rc(60,86,280,34,'#cbd5e1',C.navy,{w:2})+rc(60,120,280,34,'#94a3b8',C.navy,{w:2})+ln(60,120,340,120,C.navy,2,'0')
+  +ci(90,120,8,C.red)+ci(200,120,8,C.red)+ci(310,120,8,C.red)
+  +lab(200,76,'two plates side by side',C.slate,'middle',10)
+  +lab(90,180,'tack',C.red,'middle',11)+lab(200,180,'tack',C.red,'middle',11)+lab(310,180,'tack',C.red,'middle',11);
+ return F('TACK WELD',o,'Tack weld = a few small welds that hold the parts in position before the full weld is run','Stops the parts moving or distorting');});
+
+/* WOODWORKING */
+sd(W,['Lapped dovetail'],function(){
+ var o=rc(100,106,230,54,'#f5deb3',C.navy,{w:2})+rc(100,62,90,44,'#d6a96b',C.navy,{w:2})
+  +pg('122,106 168,106 180,150 110,150','#d6a96b',C.navy,2)+rc(100,150,230,10,'#fde68a',C.red,{w:2})
+  +lab(145,84,'side board',C.navy,'middle',11)+lab(145,132,'tail',C.navy,'middle',11)
+  +lab(260,122,'front board',C.slate,'middle',11)+lab(262,148,'lap',C.red,'middle',11).replace(/.*/,'')
+  +ar(330,150,310,157,C.red,1.6).replace(/.*/,'')+lab(335,140,'lap hides',C.red,'start',10).replace('x="335"','x="338"')+lab(338,153,'end grain',C.red,'start',10)+ln(334,150,322,155,C.red,1.4)
+  +lab(60,100,'plan view',C.slate,'middle',10).replace(/.*/,'');
+ return F('LAPPED DOVETAIL',o,'Lapped dovetail = the sockets stop short of the front face, leaving a lap that hides the end grain','Plan view of a drawer corner');});
+sd(W,['Dovetail template'],function(){
+ var o=rc(70,66,170,90,'#f5deb3',C.navy,{w:2})+pg('140,66 170,66 182,156 128,156','none',C.red,2.5)
+  +lab(155,112,'tail',C.red,'middle',11)
+  +pg('280,66 280,156 292,156','#cbd5e1',C.navy,2)+lab(268,112,'8',C.slate,'end',12)+lab(286,172,'1',C.slate,'middle',12)
+  +lab(340,100,'template',C.slate,'middle',11)+lab(340,114,'sets this',C.slate,'middle',11)+lab(340,128,'slope',C.slate,'middle',11)
+  +lab(155,172,'1 : 8 hardwood',C.red,'middle',10);
+ return F('DOVETAIL TEMPLATE',o,'Dovetail template = a guide that sets the slope of the dovetails so you can mark them accurately','1:8 for hardwood, 1:6 for softwood');});
+sd(W,['Abrasion'],function(){
+ var o=rc(70,140,260,22,'#d6a96b',C.navy,{w:2})+pth('M70 140 L90 136 L110 141 L130 135 L150 141 L170 136 L190 140',null,C.navy,2).replace(/.*/,'')
+  +rc(150,108,90,24,'#e8c98f',C.navy,{w:2,r:4})+rc(150,132,90,6,'#fde047',C.amber,{w:1.5})+'<g fill="'+C.amber+'">'+[156,168,180,192,204,216,228].map(function(x){return '<circle cx="'+x+'" cy="140" r="2"/>';}).join('')+'</g>'
+  +ar(250,120,320,120,C.red)+lab(290,138,'rub along grain',C.red,'middle',10)
+  +lab(195,100,'sanding block + glasspaper',C.slate,'middle',10)+lab(110,176,'rough',C.slate,'middle',10)+lab(290,176,'smooth',C.slate,'middle',10);
+ return F('ABRASION',o,'Abrasion = rubbing with an abrasive (like glasspaper) to remove material and smooth the surface','Work through finer grades');});
+})();
+
 (function(){var m=window.V2.map;
 function cp(to,from){if(m[to])return;if(m[from])m[to]=m[from];}
 var W='practical woodworking|',M='practical metalworking|';
