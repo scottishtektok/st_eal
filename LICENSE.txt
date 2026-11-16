@@ -1,0 +1,21 @@
+STAtoZ - An A to Z of Scottish Technologies
+Copyright (c) 2026 Scottish TekTok. All rights reserved.
+
+PERMISSION GRANTED
+Pupils, teachers and schools may use this website freely for learning,
+teaching and revision, in class, at home and offline.
+
+NOT PERMITTED WITHOUT WRITTEN PERMISSION
+You may not copy, republish, host elsewhere, translate, adapt, sell, or
+include this website, its source code, text, definitions, translations,
+diagrams, name or logo in another product, site or publication, whether
+free or paid.
+
+TRADEMARKS
+STAtoZ and the STAtoZ logo are trademarks of Scottish TekTok.
+
+NO AFFILIATION
+This is an independent teaching resource. It is not produced, endorsed or
+approved by SQA or Qualifications Scotland.
+
+Permission requests: scottishtektok@gmail.com
