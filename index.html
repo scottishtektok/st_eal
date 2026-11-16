@@ -3787,6 +3787,26 @@ function speakEnglish(text) {
   window.speechSynthesis.speak(utter);
 }
 
+const SPEAK_LANG = {'zh-CN':'zh-CN','pl':'pl-PL','ur':'ur-PK','ar':'ar-SA','uk':'uk-UA'};
+function speakTranslated(btn) {
+  if (!('speechSynthesis' in window)) return;
+  const el = document.getElementById(btn.dataset.target);
+  const text = el ? el.textContent.trim() : '';
+  if (!text) return;
+  const lang = SPEAK_LANG[btn.dataset.lang] || btn.dataset.lang;
+  const voices = window.speechSynthesis.getVoices() || [];
+  const base = lang.split('-')[0].toLowerCase();
+  const voice = voices.find(v => v.lang.toLowerCase().replace('_','-') === lang.toLowerCase()) || voices.find(v => v.lang.toLowerCase().startsWith(base));
+  if (voices.length && !voice) {
+    const old = btn.innerHTML; btn.textContent = 'No voice on this device';
+    setTimeout(() => { btn.innerHTML = old; }, 2500); return;
+  }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang; if (voice) u.voice = voice; u.rate = 0.9;
+  window.speechSynthesis.speak(u);
+}
+
 // Deterministic topic normalizer ensuring ZERO orphaned terms across all 1,075 entries
 function normalizedTopic(row) {
   const s = row.subject;
@@ -4156,6 +4176,7 @@ async function renderAll() {
           ${code === 'en' ? '' : `<section class="language-panel eal-panel" lang="${escapeHtml(code)}" dir="${isRtl ? 'rtl' : 'ltr'}">
             <div class="panel-head">
               <h4>${escapeHtml(ealLabel)}</h4>
+              <button class="speak-btn eal-speak" type="button" data-lang="${escapeHtml(code)}" data-target="eal-term-${idx}" title="Listen in this language">🔊 Listen</button>
             </div>
             <p class="panel-term ${isSpec ? 'specialist-term' : ''}" id="eal-term-${idx}">${escapeHtml(initialEalTerm)}</p>
             ${pronFor(r, code) ? `<p class="pron" title="How to say the English word, written in your language"><span aria-hidden="true">🗣</span> <span class="pron-label">${escapeHtml(pronLabel(code))}</span> <strong>${escapeHtml(pronFor(r, code))}</strong></p>` : ''}
@@ -4172,8 +4193,11 @@ async function renderAll() {
   }).join('');
 
   // Bind audio buttons
-  termsHolder.querySelectorAll('.speak-btn').forEach(btn => {
+  termsHolder.querySelectorAll('.speak-btn:not(.eal-speak)').forEach(btn => {
     btn.addEventListener('click', () => speakEnglish(btn.dataset.speak));
+  });
+  termsHolder.querySelectorAll('.eal-speak').forEach(btn => {
+    btn.addEventListener('click', () => speakTranslated(btn));
   });
 
   // Update notice banner
