@@ -143,6 +143,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 /* Instant Search Bar */
 .search-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .search-wrap{position:relative;flex:1 1 320px}
+.search-hint{margin:8px 2px 0;padding:8px 12px;border-radius:10px;background:#fff7e6;border:1px solid #f5c978;color:#6b4300;font-size:13px;line-height:1.4}.search-hint button{margin-left:6px;border:1px solid #e0a53a;background:#ffe2a8;color:#5a3600;border-radius:999px;padding:3px 10px;font:700 12px/1.2 inherit;cursor:pointer}
 .search-wrap input{
   width:100%;min-height:50px;border:2px solid #9dbaff;border-radius:12px;
   padding:12px 42px 12px 16px;font:500 16px/1.3 inherit;background:#fff;color:#0b1f6b;
@@ -378,7 +379,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 
     <div class="search-row">
       <div class="search-wrap">
-        <input id="searchInput" type="search" placeholder="Type any English technical word, definition, or Chinese (中文) term for instant lookup…" autocomplete="off" aria-label="Instant vocabulary search">
+        <input id="searchInput" type="search" placeholder="Search any English word or Chinese (中文) term…" autocomplete="off" aria-label="Instant vocabulary search">
         <button id="clearSearchBtn" class="clear-btn" type="button" aria-label="Clear search">✕</button>
       </div>
       <div class="scope-toggle" role="group" aria-label="Search scope">
@@ -386,6 +387,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
         <button id="scopeAllBtn" type="button">All 5 Subjects</button>
       </div>
     </div>
+    <div id="searchHint" class="search-hint hidden" role="status"></div>
   </section>
 
   <div class="status-strip">
@@ -408,7 +410,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
   <div id="notice" class="notice"></div>
 
   <footer class="footer">
-    <strong>STA<span class="sc">TO</span>Z</strong> · An A to Z of Scottish Technologies · Developed by Scottish TekTok. A free vocabulary tool for Scottish Technologies subjects, with optional translations in five languages. Works offline. All rights reserved: please do not copy, republish or redistribute this file or its content without written permission. † Technical translations are interpretations of the English subject meaning, not official or exam-approved translations. If in doubt, rely on the English definition and the diagram. <span style="display:block;margin-top:6px"><strong>Sources:</strong> terms are drawn from published SQA course specifications and related classroom vocabulary; explanations, examples, diagrams and translations were written by Scottish TekTok.</span><span style="display:block;margin-top:6px"><strong>Exam use:</strong> this is a learning and revision tool. Ask your school’s SQA coordinator what support is allowed in exams, including for candidates who use another language.</span>Translations are shown only when they have been entered; nothing is machine-translated at run time.<br>This is an independent teaching resource. It is not produced, endorsed or approved by SQA or Qualifications Scotland, and it is not a substitute for their published course specifications and exam materials. Spotted a wrong or unclear translation? <a href="mailto:scottishtektok@gmail.com?subject=STATOZ%20translation%20feedback">Report it by email</a> (please include the term, subject and language).<span style="display:block;margin-top:6px">© 2026 Scottish TekTok. All rights reserved. STA<span class="sc">TO</span>Z™ and the STA<span class="sc">TO</span>Z logo are trademarks of Scottish TekTok. Free for pupils and teachers to use for learning and teaching. Please do not copy, republish, sell or build on this site or its content without written permission: scottishtektok@gmail.com.</span><span style="display:block;margin-top:6px">Past paper links go to DesignClass (detscotland.co.uk), which hosts papers from Qualifications Scotland. They need an internet connection.</span>
+    <strong>STA<span class="sc">TO</span>Z</strong> · An A to Z of Scottish Technologies · Developed by Scottish TekTok. A free vocabulary tool for Scottish Technologies subjects, with optional translations in five languages. Works offline. All rights reserved: please do not copy, republish or redistribute this file or its content without written permission. † Technical translations are interpretations of the English subject meaning, not official or exam-approved translations. If in doubt, rely on the English definition and the diagram. <span style="display:block;margin-top:6px"><strong>Sources:</strong> terms are drawn from published SQA course specifications and related classroom vocabulary; explanations, examples, diagrams and translations were written by Scottish TekTok.</span><span style="display:block;margin-top:6px"><strong>Acknowledgements:</strong> Higher Graphic Communication past-paper question links open papers published by DesignClass (detscotland.co.uk), used with their permission. SQA past papers are © Scottish Qualifications Authority and are linked from sqa.org.uk, not copied.</span><span style="display:block;margin-top:6px"><strong>Exam use:</strong> this is a learning and revision tool. Ask your school’s SQA coordinator what support is allowed in exams, including for candidates who use another language.</span>Translations are shown only when they have been entered; nothing is machine-translated at run time.<br>This is an independent teaching resource. It is not produced, endorsed or approved by SQA or Qualifications Scotland, and it is not a substitute for their published course specifications and exam materials. Spotted a wrong or unclear translation? <a href="mailto:scottishtektok@gmail.com?subject=STATOZ%20translation%20feedback">Report it by email</a> (please include the term, subject and language).<span style="display:block;margin-top:6px">© 2026 Scottish TekTok. All rights reserved. STA<span class="sc">TO</span>Z™ and the STA<span class="sc">TO</span>Z logo are trademarks of Scottish TekTok. Free for pupils and teachers to use for learning and teaching. Please do not copy, republish, sell or build on this site or its content without written permission: scottishtektok@gmail.com.</span><span style="display:block;margin-top:6px">Past paper links go to DesignClass (detscotland.co.uk), which hosts papers from Qualifications Scotland. They need an internet connection.</span>
 </footer>
 </main>
 
@@ -2168,7 +2170,7 @@ def(['perpendicularity tolerance'],function(){var o=ln(80,150,320,150,C.navy,4)+
  return F('PERPENDICULARITY',o,'Perpendicularity tolerance = how far a surface may lean away from exactly 90° to a datum','Zone between two parallel planes');});
 def(['concentricity tolerance'],function(){var o=ci(200,106,50,'#dbeafe',C.navy,2.4)+ci(200,106,24,'#fff',C.navy,2.2)+ci(200,106,7,'none',C.red,1.8)+ci(203,108,2.5,C.red)+lab(280,98,'axis must stay',C.slate,'start',11)+lab(280,112,'inside this',C.slate,'start',11)+lab(280,126,'small circle',C.slate,'start',11)+ar(278,112,212,108,C.red);
  return F('CONCENTRICITY',o,'Concentricity tolerance = how far the centre of one circle may be from the centre of another','Zone is a tiny circle');});
-def(['flatness tolerance'],function(){var o=ln(70,126,330,126,C.red,1.6,'5 3')+ln(70,110,330,110,C.red,1.6,'5 3')+pth('M70 120 Q140 112 200 120 Q260 128 330 118',null,C.navy,3.2)+dar(344,110,344,126,C.red)+lab(300,96,'0.1',C.red,'middle',12)+lab(200,160,'the surface must stay between two flat planes',C.slate,'middle',12);
+def(['flatness tolerance'],function(){var o=ln(70,126,330,126,C.red,1.6,'5 3')+ln(70,110,330,110,C.red,1.6,'5 3')+pth('M70 120 Q140 112 200 120 Q260 128 330 118',null,C.navy,3.2)+dar(346,108,346,128,C.red,2)+lab(362,122,'0.1',C.red,'start',12)+lab(200,160,'the surface must stay between two flat planes',C.slate,'middle',12);
  return F('FLATNESS',o,'Flatness tolerance = how much a surface may bulge or dip: it must stay between two parallel planes','Zone width = the tolerance');});
 def(['surface texture symbol'],function(){var o=pth('M150 120 L180 150 L240 70',null,C.navy,3)+ln(240,70,280,70,C.navy,2.4)+lab(262,62,'Ra 1.6',C.red,'middle',14)+ln(110,150,320,150,C.mut,1.4)+lab(200,176,'a check mark on the surface + roughness value',C.slate,'middle',12);
  return F('SURFACE TEXTURE SYMBOL',o,'Surface texture symbol = a tick-shaped mark on a drawing with a number for how rough the surface may be','Smaller Ra = smoother');});
@@ -3538,6 +3540,57 @@ d(['Micrometer'],function(){
 })();
 
 (function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,sd=X.sdef;
+var M1='#cbd5e1',M2='#94a3b8',M3='#64748b',W1='#f3e0b0',BR='#a8742f';
+var MW='Practical Metalworking',WW='Practical Woodworking';
+function lab(x,y,t,c,a,s){return tx(x,y,t,{a:a||'start',s:s||13,w:800,c:c||C.red});}
+function pth(dd,f,s,w,da){return '<path d="'+dd+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||2)+'" stroke-linejoin="round" stroke-linecap="round"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
+function d(subj,n,f){sd(subj,n,f);}
+// ---- Tap wrench ----
+d(MW,['Tap wrench'],function(){var o=rc(96,58,208,12,M3,C.navy,{w:2})+rc(186,52,28,26,M2,C.navy,{r:3,w:2})+rc(193,78,14,16,M2,C.navy,{w:1.6})+rc(196,94,8,34,M1,C.navy,{w:1.6})+pg('192,128 208,128 208,162 203,170 197,170 192,162',M1,C.navy,1.8);
+ for(var i=0;i<5;i++)o+=ln(192,134+i*7,208,138+i*7,C.navy,1.4);
+ o+=lab(312,68,'T-handle',C.blue,'start',12)+lab(222,98,'chuck grips the',C.red,'start',12)+lab(222,112,'square end',C.red,'start',12)+lab(222,152,'tap (cuts the thread)',C.red,'start',12)+lab(200,186,'turn forward, then back a little to snap the swarf',C.slate,'middle',12);
+ return F('TAP WRENCH',o,'Tap wrench = a handle that grips the square end of a tap so you can turn it by hand','Keep the tap straight and upright');});
+// ---- Three taps ----
+d(MW,['Taper tap, second tap, and plug tap'],function(){var o='';
+ [[90,44,'taper (1st)'],[200,22,'second'],[310,9,'plug (finish)']].forEach(function(t){var cx=t[0],ch=t[1];
+  o+=rc(cx-10,52,20,14,M3,C.navy,{r:2,w:1.6})+rc(cx-4,66,8,26,M1,C.navy,{w:1.4})+pg((cx-9)+',92 '+(cx+9)+',92 '+(cx+9)+','+(150-ch)+' '+(cx+3)+',152 '+(cx-3)+',152 '+(cx-9)+','+(150-ch),M2,C.navy,1.8);
+  for(var y=98;y<150-ch+2;y+=7)o+=ln(cx-9,y,cx+9,y+4,C.navy,1.3);
+  o+=lab(cx,168,t[2],C.red,'middle',12);});
+ o+=lab(90,184,'',C.red)+lab(200,60,'',C.red);
+ return F('TAP SET',o,'Taper, second and plug taps = a set of three: the taper tap starts the thread, the second tap goes deeper, the plug tap finishes it','The taper lead gets shorter on each tap');});
+// ---- Pop-rivet gun ----
+d(MW,['Pop-rivet gun'],function(){var o=rc(130,148,140,8,M1,C.navy,{w:2})+rc(130,156,140,8,M2,C.navy,{w:2})+rc(190,138,20,10,M3,C.navy,{w:1.6})+ln(200,100,200,140,C.red,3)
+ +rc(176,60,48,40,'#3b82f6',C.navy,{r:4,w:2.2})+rc(190,100,20,14,M3,C.navy,{w:1.8})+pg('176,64 150,64 140,112 164,112',M2,C.navy,2)+pg('224,64 262,64 272,112 248,112',M2,C.navy,2)
+ +lab(280,76,'squeeze the handles',C.blue,'start',12)+lab(214,130,'mandrel',C.red,'start',12)+lab(92,146,'plates',C.slate,'end',12)+lab(280,142,'rivet',C.slate,'start',12)
+ +lab(200,184,'the gun pulls the mandrel until it snaps off',C.slate,'middle',12);
+ return F('POP-RIVET GUN',o,'Pop-rivet gun = a hand tool with two handles that pulls the mandrel of a blind rivet until the rivet is set','Used when you can only reach one side');});
+// ---- File card ----
+d(MW,['File card'],function(){var o=rc(60,112,280,18,M3,C.navy,{w:1.6});for(var i=0;i<14;i++)o+=pg((62+i*20)+',112 '+(70+i*20)+',102 '+(76+i*20)+',112',M2,C.navy,1);
+ o+=rc(110,52,130,14,BR,C.navy,{w:1.6});for(var j=0;j<27;j++)o+=ln(112+j*4.7,66,112+j*4.7,100,'#475569',1.4);
+ o+=ar(260,70,300,70,C.red)+lab(300,64,'brush along',C.red,'start',12).replace('x="300"','x="268"').replace('y="64"','y="92"')+lab(200,160,'file card = a wire brush that cleans the file teeth',C.blue,'middle',12);
+ return F('FILE CARD',o,'File card = a wire brush used to clean metal bits out of the teeth of a file','Brush along the teeth, in the direction of the rows');});
+// ---- PPE ----
+d(MW,['Personal protective equipment','PPE'],function(){var o=rc(40,70,70,26,'#bae6fd',C.navy,{w:2.2})+ci(60,83,8,'#fff',C.navy,1.6)+ci(90,83,8,'#fff',C.navy,1.6)+lab(75,114,'goggles',C.slate,'middle',12)+pg('130,70 190,70 200,130 120,130','#a8742f',C.navy,2.2)+lab(160,148,'apron',C.slate,'middle',12)
+ +rc(236,92,40,34,'#fde68a',C.navy,{w:2})+rc(236,70,8,24,'#fde68a',C.navy,{w:1.6})+rc(246,66,8,28,'#fde68a',C.navy,{w:1.6})+rc(256,70,8,24,'#fde68a',C.navy,{w:1.6})+rc(266,76,8,18,'#fde68a',C.navy,{w:1.6})+rc(276,100,16,10,'#fde68a',C.navy,{w:1.6})+rc(234,124,44,6,M3,C.navy,{w:1.6})+lab(262,146,'gloves',C.slate,'middle',12)
+ +rc(318,66,22,50,'#475569',C.navy,{w:2.2})+rc(318,106,54,18,'#475569',C.navy,{w:2.2})+rc(352,106,20,18,M2,C.navy,{w:1.6})+lab(345,142,'safety boots',C.slate,'middle',12);
+ return F('PPE',o,'Personal protective equipment (PPE) = clothing and gear that protects you, such as goggles, an apron, gloves and boots','Wear the right PPE for the job');});
+// ---- Odd-leg calipers ----
+d(MW,['Odd-leg calipers'],function(){var o=rc(100,96,260,60,M1,C.navy,{w:2})+pth('M190 50 L190 92 L96 92 L96 126',null,M3,6)+ln(190,50,232,96,M3,6)+ci(190,50,6,M2,C.navy,1.6)+pth('M232 96 L232 156',null,C.red,2.6,'5 3')
+ +lab(56,70,'bent leg rides the edge',C.blue,'start',12)+lab(246,62,'scribing leg',C.red,'start',12)+lab(246,134,'scribed line',C.red,'start',12)+lab(246,148,'(parallel to edge)',C.red,'start',12)+lab(200,176,'the bent foot hooks over the edge of the plate',C.slate,'middle',12);
+ return F('ODD-LEG CALIPERS',o,'Odd-leg calipers = one bent leg rides along an edge while the other leg scribes a line parallel to it','Set the distance before scribing');});
+// ---- Mitre cramp ----
+d(WW,['Mitre cramp'],function(){var o=pth('M84 72 H262 V172',null,M3,6)+pg('90,80 250,80 226,104 90,104',W1,C.navy,2.2)+pg('250,80 250,170 226,170 226,104',W1,C.navy,2.2)+ln(250,80,226,104,C.red,3.5)
+ +ln(150,104,150,128,M3,6)+ln(136,128,164,128,C.navy,5)+ln(226,140,200,140,M3,6)+ln(200,126,200,154,C.navy,5)
+ +lab(110,62,'mitre joint (45° cut)',C.red,'start',12)+ar(180,66,236,90,C.red)+lab(290,120,'cramp pulls',C.blue,'start',12)+lab(290,135,'the corner',C.blue,'start',12)+lab(290,150,'together',C.blue,'start',12)+ar(288,128,266,120,C.blue);
+ return F('MITRE CRAMP',o,'Mitre cramp = a cramp that holds two pieces together at a 45° corner while glue dries','Used for picture frames');});
+// ---- Adjusting lever ----
+d(WW,['Adjusting lever'],function(){var o=rc(60,130,260,16,M2,C.navy,{w:1.8})+pg('120,130 150,76 170,76 170,130','#cbd5e1',C.navy,1.4)+pg('150,130 196,82 204,88 170,130','#475569',C.navy,1.4)+rc(224,100,60,30,BR,C.navy,{w:1.5})+ci(110,104,12,BR,C.navy,1.5)
+ +ln(176,112,196,96,C.red,4)+ci(196,96,5,C.red,C.navy,1.2)+ar(120,60,176,106,C.red)+lab(30,58,'adjusting lever',C.red,'start',13)+lab(200,176,'moves the blade sideways to keep the edge level',C.slate,'middle',12)+lab(244,92,'blade (cutting iron)',C.slate,'start',11).replace('x="244"','x="300"').replace('start','end').replace('y="92"','y="84"');
+ return F('ADJUSTING LEVER',o,'Adjusting lever = a small lever behind the plane blade that you move sideways to keep the edge level','A separate wheel sets how deep the blade cuts');});
+})();
+
+(function(){
 var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,dar=X.dar,F=X.frame,def=X.def,sd=X.sdef;
 function lab(x,y,t,c,a,s){return tx(x,y,t,{a:a||'middle',s:s||11,w:800,c:c||C.navy});}
 function pth(dd,f,s,w,da){return '<path d="'+dd+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||2)+'" stroke-linejoin="round" stroke-linecap="round"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
@@ -4077,13 +4130,13 @@ function updateLevels(shouldRender = true) {
 }
 
 const langSearchPlaceholder = {
-  'zh-CN': 'Type any English technical word, definition, or Chinese (中文) term for instant lookup…',
-  'pl': 'Type any English technical word, definition, or Polish (Polski) term for instant lookup…',
-  'ar': 'Type any English technical word, definition, or Arabic (العربية) term for instant lookup…',
-  'ur': 'Type any English technical word, definition, or Urdu (اردو) term for instant lookup…',
-  'uk': 'Type any English technical word, definition, or Ukrainian (Українська) term for instant lookup…',
-  'ro': 'Type any English technical word, definition, or Romanian (Română) term for instant lookup…',
-  'en': 'Type any English technical word, topic, or definition for instant lookup…'
+  'zh-CN': 'Search any English word or Chinese (中文) term…',
+  'pl': 'Search any English word or Polish (Polski) term…',
+  'ar': 'Search any English word or Arabic (العربية) term…',
+  'ur': 'Search any English word or Urdu (اردو) term…',
+  'uk': 'Search any English word or Ukrainian (Українська) term…',
+  'ro': 'Search any English word or Romanian (Română) term…',
+  'en': 'Search any English word or definition…'
 };
 
 function getCachedTranslation(value, code) {
@@ -4163,9 +4216,16 @@ function practiceFor(row) {
 async function renderAll() {
   const myToken = ++renderToken;
   const code = langEl.value;
-  searchEl.placeholder = langSearchPlaceholder[code] || 'Type any technical word, definition, or translated term for instant lookup…';
+  searchEl.placeholder = langSearchPlaceholder[code] || 'Type any technical word, definition, or translated term…';
   const q = searchEl.value.trim();
   clearSearchBtn.classList.toggle('show', q.length > 0);
+  (function(){var h=document.getElementById('searchHint');if(!h)return;
+    if(q.length>0&&!searchAllSubjects&&selectedTopic!=='ALL'){
+      h.innerHTML='💡 Searching only inside <strong>'+escapeHtml(selectedTopic)+'</strong>. Choose <strong>All Topics</strong> to search the whole course. <button type="button" id="searchHintAll">Search all topics</button>';
+      h.classList.remove('hidden');
+      var b=document.getElementById('searchHintAll');if(b)b.onclick=function(){selectedTopic='ALL';currentPage=1;renderAll();searchEl.focus();};
+    }else{h.classList.add('hidden');h.innerHTML='';}
+  })();
 
   renderTopicChips();
 
