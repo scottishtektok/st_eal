@@ -3609,7 +3609,7 @@ def(['array'],function(){
  for(i=0;i<4;i++)o+=ci(40+i*26,92,8,i?C.bl3:'#60a5fa',C.blue,2);
  for(i=0;i<3;i++)for(j=0;j<3;j++)o+=ci(176+i*26,82+j*22,8,(i||j)?C.bl3:'#60a5fa',C.blue,2);
  for(i=0;i<6;i++){var a=i*Math.PI/3-Math.PI/2;o+=ci(320+34*Math.cos(a),100+34*Math.sin(a),8,i?C.bl3:'#60a5fa',C.blue,2);}
- o+=lab(78,120,'linear',C.red)+lab(202,152,'box',C.red)+lab(320,154,'polar',C.red);
+ o+=lab(78,120,'linear',C.red)+lab(202,152,'box',C.red)+lab(320,154,'radial',C.red);
  return F('ARRAY',o,'Array = copies of a feature repeated in a pattern: in a line, in rows and columns, or round a centre','The dark shape is the original');});
 def(['box array','rectangular array'],function(){
  var o='',i,j;
@@ -3824,7 +3824,9 @@ function retitle(svg,term){
  svg=svg.replace(re,function(){return out;});
  svg=svg.replace(/aria-label="[^"]*?\.\s/,'aria-label="'+esc(t)+'. ');
  return svg;}
-window.getTermVisualSvg=function(row){try{var k=(row.term||'').trim().toLowerCase(),f=window.V2.map[(row.subject||'').toLowerCase()+'|'+k]||(row.subject==='Graphic Communication'?window.V2.map[k]:null);if(f){var r=f();if(r)return retitle(r,row.term);}}catch(e){}
+(function(){var m=window.V2.map;if(m['cad library']){m['library component']=m['cad library'];m['stock component']=m['cad library'];m['graphic communication|library component']=m['cad library'];m['graphic communication|stock component']=m['cad library'];}})();
+var HOLD={'graphic communication|surface generator':1,'graphic communication|volumetric lighting':1,'graphic communication|image based lighting (ibl)':1,'graphic communication|trapped white space':1,'graphic communication|dpm (damp proof membrane)':1,'graphic communication|profile':1,'graphic communication|orientate':1,'graphic communication|edged-defined surface':1,'graphic communication|production graphic':1,'graphic communication|production graphics':1,'graphic communication|graphic type':1,'graphic communication|graphic form':1,'graphic communication|graphic media':1,'graphic communication|visual':1,'graphic communication|visual impact':1,'graphic communication|visual enhancement':1,'graphic communication|file format':1,'graphic communication|housekeeping':1,'graphic communication|work environment':1,'graphic communication|workplace':1,'graphic communication|scene':1,'graphic communication|modelling feature':1,'graphic communication|information':1,'graphic communication|illustration':1,'graphic communication|heading':1,'graphic communication|shape':1,'engineering science|nand equivalent':1};
+window.getTermVisualSvg=function(row){try{var k=(row.term||'').trim().toLowerCase();if(HOLD[(row.subject||'').toLowerCase()+'|'+k])return '';var f=window.V2.map[(row.subject||'').toLowerCase()+'|'+k]||(row.subject==='Graphic Communication'?window.V2.map[k]:null);if(f){var r=f();if(r)return retitle(r,row.term);}}catch(e){}
 return '';};
 window.extraVisualCount=Object.keys(window.V2.map).length;})();
 
