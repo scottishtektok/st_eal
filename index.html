@@ -338,8 +338,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
     <div class="header-right">
       
       <div class="header-actions">
-        <button id="toggleFlashcardsBtn" class="pill-btn" type="button" title="Practice vocabulary with interactive bilingual flashcards">🎓 Flashcards Mode</button>
-        <button id="toggleTrapBtn" class="pill-btn trap-btn" type="button" title="Show only words whose subject meaning differs from everyday English">⚠️ Subject-Specific Meanings Only</button>
+        <button id="toggleFlashcardsBtn" class="pill-btn" type="button" title="Practise words with flashcards">🎓 Flashcards Mode</button>
+        <button id="toggleTrapBtn" class="pill-btn trap-btn" type="button" title="Show only words that mean something different in this subject than in everyday English">⚠️ Different-Meaning Words Only</button>
         <button id="toggleCmdBtn" class="pill-btn" type="button">📋 SQA Exam Command Words</button>
       </div>
     </div>
@@ -350,7 +350,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
       <h3>SQA Design &amp; Technology Exam Command Words</h3>
       <button id="closeCmdBtn" class="pill-btn" type="button">Close ✕</button>
     </div>
-    <p>Key instruction verbs used in National 4, National 5, Higher, and Advanced Higher assessments.</p>
+    <p>Key words used in SQA exam questions at National 4, National 5, Higher and Advanced Higher.</p>
     <div id="cmdGrid" class="cmd-grid"></div>
   </section>
 
@@ -391,8 +391,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
   </section>
 
   <div class="status-strip">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span id="resultSummary">Loading vocabulary…</span> <button id="printBtn" class="pill-btn no-print" type="button" style="width:auto;flex:0 0 auto;padding:3px 12px;font-size:12px" title="Print or save as PDF every card matching the current filters">🖨️ Print / PDF</button> <select id="printMode" class="no-print" aria-label="Print layout" style="font-size:12px;padding:3px 6px;border:1px solid var(--line);border-radius:8px;color:#0b1f6b"><option value="list">Compact list (fewest pages)</option><option value="cards">Cards with diagrams</option></select></div>
-    <div><span style="color:var(--red);font-weight:800">Red border / badge</span> = technical meaning differs from everyday dictionary</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span id="resultSummary">Loading words…</span> <button id="printBtn" class="pill-btn no-print" type="button" style="width:auto;flex:0 0 auto;padding:3px 12px;font-size:12px" title="Print or save as PDF every card matching the current filters">🖨️ Print / PDF</button> <select id="printMode" class="no-print" aria-label="Print layout" style="font-size:12px;padding:3px 6px;border:1px solid var(--line);border-radius:8px;color:#0b1f6b"><option value="list">Compact list (fewest pages)</option><option value="cards">Cards with diagrams</option></select></div>
+    <div><span style="color:var(--red);font-weight:800">Red border / badge</span> = this word means something different in this subject than in everyday English</div>
   </div>
 
   <div id="topicChips" class="topic-chips" aria-label="Topic filters"></div>
@@ -410,7 +410,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
   <div id="notice" class="notice"></div>
 
   <footer class="footer">
-    <strong>STA<span class="sc">TO</span>Z</strong> · An A to Z of Scottish Technologies · Developed by Scottish TekTok. A free vocabulary tool for Scottish Technologies subjects, with optional translations in five languages. Works offline once loaded. † Technical translations are interpretations of the English subject meaning, not official or exam-approved translations. If in doubt, rely on the English definition and the diagram. <span style="display:block;margin-top:6px"><strong>Sources:</strong> terms are drawn from published SQA course specifications and related classroom vocabulary; explanations, examples, diagrams and translations were written by Scottish TekTok.</span><span style="display:block;margin-top:6px"><strong>Acknowledgements:</strong> Past-paper question links for Graphic Communication, Design &amp; Manufacture and Engineering Science (National 5, Higher and Advanced Higher) open papers published by DesignClass (detscotland.co.uk), used with their permission. SQA past papers are © Scottish Qualifications Authority and are linked from sqa.org.uk, not copied.</span><span style="display:block;margin-top:6px"><strong>Exam use:</strong> this is a learning and revision tool. Ask your school’s SQA coordinator what support is allowed in exams, including for candidates who use another language.</span>Translations are shown only when they have been entered; nothing is machine-translated at run time.<br>This is an independent teaching resource. It is not produced, endorsed or approved by SQA or Qualifications Scotland, and it is not a substitute for their published course specifications and exam materials. Spotted a wrong or unclear translation? <a href="mailto:scottishtektok@gmail.com?subject=STATOZ%20translation%20feedback">Report it by email</a> (please include the term, subject and language).<span style="display:block;margin-top:6px">© 2026 Scottish TekTok. All rights reserved. STA<span class="sc">TO</span>Z™ and the STA<span class="sc">TO</span>Z logo are trademarks of Scottish TekTok. Free for pupils and teachers to use for learning and teaching. Please do not copy, republish, sell or build on this site or its content without written permission: scottishtektok@gmail.com.</span><span style="display:block;margin-top:6px">Past paper links go to DesignClass (detscotland.co.uk), which hosts papers from Qualifications Scotland. They need an internet connection.</span><span style="display:block;margin-top:6px">Privacy: STAtoZ counts anonymous visits, and which subject, level and language are chosen, using GoatCounter. It uses no cookies, stores no personal data and does not follow you across sites. Nothing you type in the search box is sent anywhere.</span>
+    <strong>STA<span class="sc">TO</span>Z</strong> · An A to Z of Scottish Technologies · Developed by Scottish TekTok. A free word tool for Scottish Technologies subjects, with translations in five languages if you want them. Works offline once loaded. † Translations help you understand the English meaning. They are not official or exam-approved translations. If you are not sure, use the English definition and the diagram. <span style="display:block;margin-top:6px"><strong>Sources:</strong> the terms come from published SQA course specifications and classroom vocabulary. The explanations, examples, diagrams and translations were written by Scottish TekTok.</span><span style="display:block;margin-top:6px"><strong>Acknowledgements:</strong> Past-paper question links for Graphic Communication, Design &amp; Manufacture and Engineering Science (National 5, Higher and Advanced Higher) open papers published by DesignClass (detscotland.co.uk), used with their permission. SQA past papers are © Scottish Qualifications Authority and are linked from sqa.org.uk, not copied.</span><span style="display:block;margin-top:6px"><strong>Exam use:</strong> this tool is for learning and revision. Ask your school’s SQA coordinator what help is allowed in exams, including for candidates who use another language.</span>A translation only appears if we have written it. Nothing is machine-translated while you use the app.<br>This is an independent teaching resource. It is not made, endorsed or approved by SQA or Qualifications Scotland. It does not replace their published course specifications and exam materials. Spotted a wrong or unclear translation? <a href="mailto:scottishtektok@gmail.com?subject=STATOZ%20translation%20feedback">Report it by email</a> (please say which word, subject and language).<span style="display:block;margin-top:6px">© 2026 Scottish TekTok. All rights reserved. STA<span class="sc">TO</span>Z™ and the STA<span class="sc">TO</span>Z logo are trademarks of Scottish TekTok. Free for pupils and teachers to use for learning and teaching. Please do not copy, republish, sell or build on this site or its content without written permission: scottishtektok@gmail.com.</span><span style="display:block;margin-top:6px">Past paper links go to DesignClass (detscotland.co.uk), which hosts papers from Qualifications Scotland. You need an internet connection to open them.</span><span style="display:block;margin-top:6px">Privacy: STAtoZ counts anonymous visits, and which subject, level and language are chosen, using GoatCounter. It uses no cookies, stores no personal data and does not follow you across sites. Nothing you type in the search box is sent anywhere.</span>
 </footer>
 </main>
 
@@ -433,7 +433,7 @@ window.vocabularyData = [{"subject": "Design & Manufacture", "level": "National 
 <script>
 (function () {
   // Rows whose contrast text says "Not ..." or "Everyday English ..." describe a word that also has an everyday meaning.
-  // Flag them so the red badge and the "Subject-Specific Meanings Only" filter include them. Teacher to review.
+  // Flag them so the red badge and the "Different-Meaning Words Only" filter include them. Teacher to review.
   var flagRe = /^(Not |Everyday)/;
   (window.vocabularyData || []).forEach(function (r) {
     if (r.meaning_relationship !== 'specialist_meaning' && flagRe.test(r.everyday_meaning_contrast || '')) {
@@ -4216,7 +4216,7 @@ function practiceFor(row) {
 async function renderAll() {
   const myToken = ++renderToken;
   const code = langEl.value;
-  searchEl.placeholder = langSearchPlaceholder[code] || 'Type any technical word, definition, or translated term…';
+  searchEl.placeholder = langSearchPlaceholder[code] || 'Type a word or definition…';
   const q = searchEl.value.trim();
   clearSearchBtn.classList.toggle('show', q.length > 0);
   (function(){var h=document.getElementById('searchHint');if(!h)return;
@@ -4240,7 +4240,7 @@ async function renderAll() {
   const scopeLabel = searchAllSubjects ? 'All 5 D&T Subjects' : `${subjectEl.value} (${levelEl.value})`;
   document.getElementById('resultSummary').innerHTML =
     `Showing <strong>${pageRows.length}</strong> of <strong>${total}</strong> terms in ` + ((!searchAllSubjects && selectedTopic !== 'ALL') ? `<strong>${escapeHtml(selectedTopic)}</strong> in ` : '') + `<strong>${escapeHtml(scopeLabel)}</strong>` +
-    (onlySpecialist ? ' · <span style="color:var(--red);font-weight:700">Subject-Specific Meanings Only</span>' : '');
+    (onlySpecialist ? ' · <span style="color:var(--red);font-weight:700">Different-Meaning Words Only</span>' : '');
 
   
 
@@ -4257,7 +4257,7 @@ async function renderAll() {
 
   const termsHolder = document.getElementById('terms');
   if (!pageRows.length) {
-    termsHolder.innerHTML = `<div class="empty"><strong>No matching terms found.</strong><br>Try clearing your search, switching to "All 5 Subjects", or turning off the filter.</div>`;
+    termsHolder.innerHTML = `<div class="empty"><strong>No words found.</strong><br>Try a different word, choose "All 5 Subjects", or turn off the Different-Meaning Words filter.</div>`;
     return;
   }
 
@@ -4286,7 +4286,7 @@ async function renderAll() {
         <div class="term-meta">
           <div class="badges">
             <span class="meaning-status ${isSpec ? 'specialist' : 'pending'}">
-              ${isSpec ? '⚠️ Subject-Specific Meaning (Differs from Dictionary)' : 'Standard Technical Term'}
+              ${isSpec ? '⚠️ Different meaning in this subject' : 'Technical term'}
             </span>
             <span class="topic-tag">${escapeHtml(normT)}</span>
             ${searchAllSubjects ? `<span class="subj-tag">${escapeHtml(r.subject)}</span>` : ''}
@@ -4306,8 +4306,8 @@ async function renderAll() {
             <p class="everyday">${escapeHtml(pe.everyday)}</p>
             ${pe.also ? `<p class="eg"><strong>Also:</strong> ${escapeHtml(pe.also)}</p>` : ''}
             <p class="eg"><strong>Example:</strong> ${escapeHtml(pe.example)}</p>
-            <details class="fulldef"><summary>Full course definition</summary><p class="meaning">${escapeHtml(r.course_meaning)}</p></details>
-            ${(() => { const pq = window.pastPaperQuestions && window.pastPaperQuestions(r.subject, levelEl.value, r.term); if (pq && pq.length) return `<details class="pp-box"><summary>Practise with ${escapeHtml(levelEl.value)} past papers (${pq.reduce((n,y)=>n+y.qs.length,0)} questions)</summary>${pq.map(y => `<p class="pp-year"><strong>${y.year}</strong> ` + y.qs.map(x => `<a href="${y.url}#page=${x.p}" target="_blank" rel="noopener noreferrer">Q${escapeHtml(x.q)}</a>`).join(' ') + `</p>`).join('')}<p class="pp-note">Each link opens the question paper at the page the question is on. These are the questions whose wording names this term. Many questions test it without naming it, so also try nearby terms.</p></details>`; return ''; })()}` : `
+            <details class="fulldef"><summary>Full definition</summary><p class="meaning">${escapeHtml(r.course_meaning)}</p></details>
+            ${(() => { const pq = window.pastPaperQuestions && window.pastPaperQuestions(r.subject, levelEl.value, r.term); if (pq && pq.length) return `<details class="pp-box"><summary>Practise with ${escapeHtml(levelEl.value)} past papers (${pq.reduce((n,y)=>n+y.qs.length,0)} questions)</summary>${pq.map(y => `<p class="pp-year"><strong>${y.year}</strong> ` + y.qs.map(x => `<a href="${y.url}#page=${x.p}" target="_blank" rel="noopener noreferrer">Q${escapeHtml(x.q)}</a>`).join(' ') + `</p>`).join('')}<p class="pp-note">Each link opens the question paper at the page with the question. These questions use this exact word. Some questions test it without using the word, so also look at related words.</p></details>`; return ''; })()}` : `
             <div class="label">Course Definition</div>
             <p class="meaning">${escapeHtml(r.course_meaning)}</p>
             <div class="label">Everyday Dictionary Contrast</div>
@@ -4346,11 +4346,11 @@ async function renderAll() {
   // Update notice banner
   const noticeEl = document.getElementById('notice');
   if (code === 'zh-CN') {
-    noticeEl.textContent = 'Chinese translations are shown where they have been added. Where one is missing it says "Translation not yet available". These are interpretations, not official translations.';
+    noticeEl.textContent = 'Chinese translations are shown where we have them. If one is missing, it says "Translation not yet available". Translations help you understand the meaning. They are not official translations.';
   } else if (code === 'en') {
-    noticeEl.textContent = 'English-only mode active. Select a student home language above for side-by-side bilingual support.';
+    noticeEl.textContent = 'English only. Choose your language above to see English and your language side by side.';
   } else {
-    noticeEl.textContent = `${ealLabel} translations are shown where they have been added. Where one is missing it says "Translation not yet available". These are interpretations, not official translations.`;
+    noticeEl.textContent = `${ealLabel} translations are shown where we have them. If one is missing, it says "Translation not yet available". Translations help you understand the meaning. They are not official translations.`;
   }
 
   if (code === 'en') return;
@@ -4510,7 +4510,7 @@ async function renderFlashcard() {
     face.innerHTML = `
       <div class="fc-kicker">${escapeHtml(item.subject)} · ${escapeHtml(normT)}</div>
       <h3 class="fc-term ${isSpec ? 'spec' : ''}">${escapeHtml(item.term)}</h3>
-      ${isSpec ? '<span class="fc-flag">Different from its everyday meaning</span>' : ''}
+      ${isSpec ? '<span class="fc-flag">Different meaning in this subject</span>' : ''}
       <button type="button" id="fcSpeakBtn" class="fc-listen">🔊 Listen</button>
       <div class="fc-hint">${code === 'en' ? 'Tap to see the meaning' : 'Tap to see ' + escapeHtml(ealLabel.split('·').pop().trim())}</div>
     `;
