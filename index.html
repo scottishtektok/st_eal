@@ -213,6 +213,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 
 .bilingual-grid{display:grid;grid-template-columns:1.1fr 245px 1.1fr;gap:12px;align-items:stretch}
 .bilingual-grid.english-only{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+@media(min-width:1500px){.bilingual-grid{grid-template-columns:1fr 360px 1fr}}
+@media(min-width:1900px){.bilingual-grid{grid-template-columns:1fr 480px 1fr}}
 .visual-panel{display:flex;align-items:center;justify-content:center;background:#ffffff;border:1px solid var(--line);border-radius:11px;padding:8px}
 .visual-panel svg{width:100%;height:auto;max-height:none;display:block}
 .language-panel{min-width:0;border:1px solid var(--line);border-radius:11px;padding:13px 14px;background:#fbfcfe}
