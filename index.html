@@ -3901,6 +3901,67 @@ G(['image based lighting (ibl)'],function(){
  o+=lab(cx-R-8,cy-6,'360° HDRI\nimage',C.blue,'end',12)+lab(cx+R+8,cy+4,'lights the\n3D model',C.navy,'start',12);
  return F('IMAGE BASED LIGHTING (IBL)',o,'IBL lights a 3D scene using a 360° photo (HDRI). The photo gives the scene its real-world light and colour.',null);});
 
+
+// TANGENT ARCS FIGURE: circles R15 and R25 (centres 60 apart) joined by an external R40 arc and an internal R75 arc
+function tanFig(mode){
+ var K=2.4;function S(x,y){return [200+(x-35)*K,112-y*K];}
+ function P(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}
+ var c1=S(0,0),c2=S(60,0),T1=S(5.45,13.97),T2=S(44.6,19.70),B1=S(-9.79,-11.36),B2=S(70.4,-22.7);
+ var r1=15*K,r2=25*K,Re=40*K,Ri=75*K,o='';
+ var fillp='M'+P(T1)+' A'+r1+' '+r1+' 0 0 0 '+P(B1)+' A'+Ri+' '+Ri+' 0 0 0 '+P(B2)+' A'+r2+' '+r2+' 0 1 0 '+P(T2)+' A'+Re+' '+Re+' 0 0 1 '+P(T1)+' Z';
+ o+=pth(fillp,'#dbeafe',C.navy,2.4);
+ o+=ci(c1[0],c1[1],r1,'none',C.mut,1.2)+ci(c2[0],c2[1],r2,'none',C.mut,1.2)+ci(c1[0],c1[1],2.5,C.slate)+ci(c2[0],c2[1],2.5,C.slate);
+ o+=lab(c1[0]+4,c1[1]-6,'R15',C.slate,'middle',11)+lab(c2[0],c2[1]-6,'R25',C.slate,'middle',11);
+ var ext='M'+P(T2)+' A'+Re+' '+Re+' 0 0 1 '+P(T1),int='M'+P(B1)+' A'+Ri+' '+Ri+' 0 0 0 '+P(B2);
+ var ce=(mode==='ext')?C.red:(mode==='conn'?C.blue:C.navy),ci2=(mode==='int')?C.red:(mode==='conn'?C.blue:C.navy);
+ if(mode!=='both'){o+=pth(ext,null,ce,4.2)+pth(int,null,ci2,4.2);}
+ if(mode==='ext'||mode==='conn'){o+=ci(T1[0],T1[1],4,C.red)+ci(T2[0],T2[1],4,C.red);}
+ if(mode==='int'||mode==='conn'){o+=ci(B1[0],B1[1],4,C.red)+ci(B2[0],B2[1],4,C.red);}
+ o+=lab(164,64,'R40 external arc',(mode==='ext')?C.red:(mode==='conn'?C.blue:C.slate),'middle',12);
+ o+=lab(210,202,'R75 internal arc',(mode==='int')?C.red:(mode==='conn'?C.blue:C.slate),'middle',12);
+ return o;}
+G(['external tangency'],function(){return F('EXTERNAL TANGENCY',tanFig('ext'),'External arc (R40): it touches each circle on the outside. Its centre is found by adding radii: 15 + 40 and 25 + 40.',null);});
+G(['internal tangency'],function(){return F('INTERNAL TANGENCY',tanFig('int'),'Internal arc (R75): both circles sit inside it and it touches each from the inside. Subtract radii: 75 \u2212 15 and 75 \u2212 25.',null);});
+G(['connecting arc'],function(){return F('CONNECTING ARC',tanFig('conn'),'A connecting arc joins two circles smoothly, touching each at one point. The R40 arc is external and the R75 arc is internal.',null);});
+
+// INTERNAL / EXTERNAL RADIUS on a component corner
+function plate(){return pth('M132 70 H290 V110 H204 A14 14 0 0 0 190 124 V180 H110 V92 A22 22 0 0 1 132 70 Z',C.bl3,C.navy,2.6);}
+G(['external radius'],function(){
+ var o=plate()+ar(70,62,118,82,C.red,2)+lab(14,56,'external radius',C.red,'start',13)+pth('M110 92 A22 22 0 0 1 132 70',null,C.red,4.2);
+ return F('EXTERNAL RADIUS',o,'An external radius is a rounded outside (convex) corner or edge of a component.',null);});
+G(['internal radius'],function(){
+ var o=plate()+pth('M204 110 A14 14 0 0 0 190 124',null,C.red,4.2)+ar(300,150,206,120,C.red,2)+lab(304,156,'internal radius',C.red,'start',13);
+ o+=lab(304,171,'rounded inside',C.slate,'start',12)+lab(304,186,'(concave) corner',C.slate,'start',12);
+ return F('INTERNAL RADIUS',o,'An internal radius is a rounded inside (concave) corner where two surfaces meet.',null);});
+
+// CROP family
+function img(){return rc(60,58,230,124,'#bae6fd',C.navy,{w:2.2})+ci(176,120,28,'#fde047',C.amber,1.6);}
+G(['crop'],function(){
+ var o=img()+rc(110,70,130,100,'none',C.red,{w:2.4,d:'6 4'})+lab(300,100,'crop box:',C.red,'start',12)+lab(300,115,'keep this',C.red,'start',12)+lab(175,196,'edges outside the box are cut away',C.slate,'middle',12);
+ return F('CROP',o,'To crop is to cut away unwanted outer edges of an image, so the picture is better framed and the subject stands out.',null);});
+G(['full crop'],function(){
+ var o=img()+rc(144,90,64,60,'none',C.red,{w:2.4,d:'6 4'})+lab(300,100,'tight crop:',C.red,'start',12)+lab(300,115,'right up to',C.red,'start',12)+lab(300,130,'the subject',C.red,'start',12)+lab(175,196,'no spare border left around the subject',C.slate,'middle',12);
+ return F('FULL CROP',o,'A full crop trims the image right up to the main subject, with no spare border around it.',null);});
+G(['square crop'],function(){
+ var o=img()+rc(118,64,112,112,'none',C.red,{w:2.4,d:'6 4'})+lab(300,100,'crop box:',C.red,'start',12)+lab(300,115,'same width',C.red,'start',12)+lab(300,130,'and height',C.red,'start',12)+lab(175,196,'1 : 1 square frame',C.slate,'middle',12);
+ return F('SQUARE CROP',o,'A square crop cuts the image to a frame with equal sides (1:1).',null);});
+
+// BOUNDARY REPRESENTATION
+G(['boundary representation (b-rep)'],function(){
+ var o=X.box(200,112,58)+ar(318,66,222,84,C.red,2)+lab(322,64,'face',C.red,'start',13)+ar(318,112,232,96,C.red,2)+lab(322,116,'edge',C.red,'start',13);
+ o+=ci(200,112,5,C.red)+ar(96,150,196,114,C.red,2)+lab(92,154,'vertex (corner)',C.red,'end',13);
+ return F('BOUNDARY REPRESENTATION (B-REP)',o,'B-rep describes a solid by its boundary: the faces, edges and vertices (corners) that enclose it.',null);});
+
+// EDGE-DEFINED SURFACE
+G(['edged-defined surface'],function(){
+ var o=pth('M110 90 Q200 60 290 90 Q306 130 290 170 Q200 200 110 170 Q94 130 110 90 Z','#dbeafe',null,0),i;
+ [0.25,0.5,0.75].forEach(function(t){var y=90+80*t,yc=60+140*t,d=8*4*t*(1-t);o+=pth('M'+(110-d)+' '+y+' Q200 '+yc+' '+(290+d)+' '+y,null,C.mut,1.4);
+  var x=110+180*t,xc=-40+0;});
+ [0.25,0.5,0.75].forEach(function(u){var x=110+180*u;o+=ln(x,90-60*u*(1-u),x,170+60*u*(1-u),C.mut,1.4);});
+ o+=pth('M110 90 Q200 60 290 90',null,C.blue,3)+pth('M290 90 Q306 130 290 170',null,C.blue,3)+pth('M290 170 Q200 200 110 170',null,C.blue,3)+pth('M110 170 Q94 130 110 90',null,C.blue,3);
+ o+=lab(200,55,'edge curve',C.blue,'middle',12)+lab(200,196,'surface fills the space between the edges',C.slate,'middle',12);
+ return F('EDGED-DEFINED SURFACE',o,'An edge-defined surface is a CAD surface whose shape is controlled by the edge curves around it.',null);});
+
 // remove from HOLD lists is done in v2_wrap.js
 })();
 
@@ -3926,7 +3987,7 @@ function retitle(svg,term){
  svg=svg.replace(/aria-label="[^"]*?\.\s/,'aria-label="'+esc(t)+'. ');
  return svg;}
 (function(){var m=window.V2.map;if(m['cad library']){m['library component']=m['cad library'];m['stock component']=m['cad library'];m['graphic communication|library component']=m['cad library'];m['graphic communication|stock component']=m['cad library'];}})();
-var HOLD={'graphic communication|orientate':1,'graphic communication|orientate':1,'graphic communication|edged-defined surface':1,'graphic communication|production graphic':1,'graphic communication|production graphics':1,'graphic communication|graphic type':1,'graphic communication|graphic form':1,'graphic communication|graphic media':1,'graphic communication|visual':1,'graphic communication|visual impact':1,'graphic communication|visual enhancement':1,'graphic communication|file format':1,'graphic communication|housekeeping':1,'graphic communication|work environment':1,'graphic communication|workplace':1,'graphic communication|scene':1,'graphic communication|modelling feature':1,'graphic communication|information':1,'graphic communication|illustration':1,'engineering science|nand equivalent':1};
+var HOLD={'graphic communication|orientate':1,'graphic communication|orientate':1,'graphic communication|production graphic':1,'graphic communication|production graphics':1,'graphic communication|graphic type':1,'graphic communication|graphic form':1,'graphic communication|graphic media':1,'graphic communication|visual':1,'graphic communication|visual impact':1,'graphic communication|visual enhancement':1,'graphic communication|file format':1,'graphic communication|housekeeping':1,'graphic communication|work environment':1,'graphic communication|workplace':1,'graphic communication|scene':1,'graphic communication|modelling feature':1,'graphic communication|information':1,'graphic communication|illustration':1,'engineering science|nand equivalent':1};
 window.getTermVisualSvg=function(row){try{var k=(row.term||'').trim().toLowerCase();if(HOLD[(row.subject||'').toLowerCase()+'|'+k])return '';var f=window.V2.map[(row.subject||'').toLowerCase()+'|'+k]||(row.subject==='Graphic Communication'?window.V2.map[k]:null);if(f){var r=f();if(r)return retitle(r,row.term);}}catch(e){}
 return '';};
 window.extraVisualCount=Object.keys(window.V2.map).length;})();
