@@ -3803,8 +3803,28 @@ cp(M+'hazard',M+'hazard');
 var D='design & manufacture|';cp(D+'design factor','design factor');cp(D+'user trip','user trip');cp(D+'assembly feature','assembly feature');
 })();
 
-(function(){var old=window.getTermVisualSvg;
-window.getTermVisualSvg=function(row){try{var k=(row.term||'').trim().toLowerCase(),f=window.V2.map[(row.subject||'').toLowerCase()+'|'+k]||(row.subject==='Graphic Communication'?window.V2.map[k]:null);if(f){var r=f();if(r)return r;}}catch(e){}
+(function(){
+function nz(s){return String(s).toLowerCase().replace(/[^a-z0-9]/g,'');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// Make the diagram heading match the term shown on the card.
+function retitle(svg,term){
+ var re=/<text x="18" y="30"([^>]*font-size="17"[^>]*)>([^<]*)<\/text>/,m=re.exec(svg);if(!m)return svg;
+ var old=m[2].replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>'),t=String(term).trim();
+ var a=nz(t),b=nz(old);if(!a||a===b)return svg;
+ var head=t.toUpperCase();
+ if(head.length>30)head=head.replace(/\s*\([^)]*\)\s*$/,'');
+ var related=!(b.indexOf(a)>-1||a.indexOf(b)>-1);
+ var attrs=m[1].replace(/\s*textLength="[^"]*"/,'');
+ var est=head.length*17*0.72+head.length*0.4;
+ var extra=est>360?' textLength="360" lengthAdjust="spacingAndGlyphs"':'';
+ var ty=related?27:30;
+ var out='<text x="18" y="'+ty+'"'+attrs+extra+'>'+esc(head)+'</text>';
+ if(related){var cap='Diagram: '+old;if(cap.length>52)cap=cap.slice(0,51)+'…';
+  out+='<text x="18" y="40" text-anchor="start" font-size="10" font-weight="700" fill="#64748b">'+esc(cap)+'</text>';}
+ svg=svg.replace(re,function(){return out;});
+ svg=svg.replace(/aria-label="[^"]*?\.\s/,'aria-label="'+esc(t)+'. ');
+ return svg;}
+window.getTermVisualSvg=function(row){try{var k=(row.term||'').trim().toLowerCase(),f=window.V2.map[(row.subject||'').toLowerCase()+'|'+k]||(row.subject==='Graphic Communication'?window.V2.map[k]:null);if(f){var r=f();if(r)return retitle(r,row.term);}}catch(e){}
 return '';};
 window.extraVisualCount=Object.keys(window.V2.map).length;})();
 
