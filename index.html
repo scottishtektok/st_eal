@@ -5650,6 +5650,20 @@ function speakEnglish(text) {
 }
 
 const SPEAK_LANG = {'zh-CN':'zh-CN','pl':'pl-PL','ur':'ur-PK','ar':'ar-SA','uk':'uk-UA'};
+// Languages with no read-aloud at all (no pronunciation key either): Scottish Gaelic
+const NO_AUDIO = {'gd':1};
+function hasVoiceFor(code){
+  if (NO_AUDIO[code]) return false;
+  if (!('speechSynthesis' in window)) return false;
+  const voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) return true; // voices not loaded yet: keep button, re-check on voiceschanged
+  const lang = (SPEAK_LANG[code] || code).toLowerCase(), base = lang.split('-')[0];
+  return voices.some(v => { const vl = v.lang.toLowerCase().replace('_','-'); return vl === lang || vl.startsWith(base); });
+}
+function refreshSpeakButtons(){
+  document.querySelectorAll('.eal-speak').forEach(b => { b.hidden = !hasVoiceFor(b.dataset.lang); b.style.display = b.hidden ? 'none' : ''; });
+}
+if ('speechSynthesis' in window && window.speechSynthesis.addEventListener) window.speechSynthesis.addEventListener('voiceschanged', refreshSpeakButtons);
 function speakTranslated(btn) {
   if (!('speechSynthesis' in window)) return;
   const el = document.getElementById(btn.dataset.target);
@@ -6069,6 +6083,7 @@ async function renderAll() {
   termsHolder.querySelectorAll('.eal-speak').forEach(btn => {
     btn.addEventListener('click', () => speakTranslated(btn));
   });
+  refreshSpeakButtons();
 
   // Update notice banner
   const noticeEl = document.getElementById('notice');
