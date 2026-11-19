@@ -8280,6 +8280,7 @@ function getCachedTranslation(value, code) {
   return '';
 }
 
+function allScope(){return searchAllSubjects || (searchEl.value||'').trim().length>0;}
 function getFilteredRows() {
   const q = searchEl.value.trim().toLowerCase();
   const subj = subjectEl.value;
@@ -8287,14 +8288,14 @@ function getFilteredRows() {
   const code = langEl.value;
 
   return (window.vocabularyData || []).filter(row => {
-    if (!searchAllSubjects) {
+    if (!allScope()) {
       if (row.subject !== subj) return false;
       const levels = (row.level || '').split(';').map(x => x.trim());
       if (!levels.includes(lv)) return false;
     }
     if (onlySpecialist && row.meaning_relationship !== 'specialist_meaning') return false;
     const normT = normalizedTopic(row);
-    if (!searchAllSubjects && selectedTopic !== 'ALL' && normT !== selectedTopic) return false;
+    if (!allScope() && selectedTopic !== 'ALL' && normT !== selectedTopic) return false;
     if (q) {
       const cachedTerm = getCachedTranslation(row.term, code);
       const cachedMean = getCachedTranslation(row.course_meaning, code);
@@ -8307,7 +8308,7 @@ function getFilteredRows() {
 
 function renderTopicChips() {
   const holder = document.getElementById('topicChips');
-  if (searchAllSubjects) {
+  if (allScope()) {
     holder.innerHTML = '';
     return;
   }
@@ -8356,7 +8357,7 @@ async function renderAll() {
   const q = searchEl.value.trim();
   clearSearchBtn.classList.toggle('show', q.length > 0);
   (function(){var h=document.getElementById('searchHint');if(!h)return;
-    if(q.length>0&&!searchAllSubjects&&selectedTopic!=='ALL'){
+    if(q.length>0&&!allScope()&&selectedTopic!=='ALL'){
       h.innerHTML='💡 Searching only inside <strong>'+escapeHtml(selectedTopic)+'</strong>. Choose <strong>All Topics</strong> to search the whole course. <button type="button" id="searchHintAll">Search all topics</button>';
       h.classList.remove('hidden');
       var b=document.getElementById('searchHintAll');if(b)b.onclick=function(){selectedTopic='ALL';currentPage=1;renderAll();searchEl.focus();};
@@ -8373,9 +8374,9 @@ async function renderAll() {
   const pageRows = rows.slice(start, start + PAGE_SIZE);
 
   // Update summary bar
-  const scopeLabel = searchAllSubjects ? 'All 5 D&T Subjects' : `${subjectEl.value} (${levelEl.value})`;
+  const scopeLabel = allScope() ? 'All 5 D&T Subjects' : `${subjectEl.value} (${levelEl.value})`;
   document.getElementById('resultSummary').innerHTML =
-    `Showing <strong>${pageRows.length}</strong> of <strong>${total}</strong> terms in ` + ((!searchAllSubjects && selectedTopic !== 'ALL') ? `<strong>${escapeHtml(selectedTopic)}</strong> in ` : '') + `<strong>${escapeHtml(scopeLabel)}</strong>` +
+    `Showing <strong>${pageRows.length}</strong> of <strong>${total}</strong> terms in ` + ((!allScope() && selectedTopic !== 'ALL') ? `<strong>${escapeHtml(selectedTopic)}</strong> in ` : '') + `<strong>${escapeHtml(scopeLabel)}</strong>` +
     (onlySpecialist ? ' · <span style="color:var(--red);font-weight:700">Different-Meaning Words Only</span>' : '');
 
   
@@ -8425,7 +8426,7 @@ async function renderAll() {
               ${isSpec ? '⚠️ Different meaning in this subject' : 'Technical term'}
             </span>
             <span class="topic-tag">${escapeHtml(normT)}</span>
-            ${searchAllSubjects ? `<span class="subj-tag">${escapeHtml(r.subject)}</span>` : ''}
+            ${allScope() ? `<span class="subj-tag">${escapeHtml(r.subject)}</span>` : ''}
           </div>
           <span style="font-size:11px;color:var(--muted)">${escapeHtml(r.level)}</span>
         </div>
