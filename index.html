@@ -6599,6 +6599,21 @@ redo(ESs,['Cam and follower'],function(){var p=iso(190,172,1.05),zc=28,cam=funct
  o+=ub(p,-3,3,-3,3,zc+38,34,ALU)+ub(p,-12,12,-8,8,zc+36,3,ALU)+ub(p,-14,14,-4,4,zc+70,4,SD);
  var a=at(p,24,0,zc+52),b=at(p,24,0,zc+74);o+=ar(a[0],a[1]-6,b[0],b[1]-6,C.red,2.4)+ar(b[0],b[1]-6,a[0],a[1]-6,C.red,2.4);
  return o+tx2(320,64,'follower',C.red,'middle',11)+tx2(320,78,'(moves up and down)',C.red,'middle',10)+tx2(90,170,'cam turns round',C.green,'middle',11)+tx2(90,184,'the centre dot',C.green,'middle',10)+tx2(320,170,'off-centre shape',C.blue,'middle',11);});
+// Cam and follower (flat side view): off-centre circular cam, pivot below its centre, follower rests on the top of the rim
+redo(ESs,['Cam and follower'],function(){var N='#0f172a',o='';
+ o+='<circle cx="200" cy="148" r="40" fill="#bfdbfe" stroke="'+N+'" stroke-width="2.4"/>';
+ o+='<path d="M170 134 A34 34 0 0 1 196 112" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>';
+ o+='<line x1="200" y1="148" x2="200" y2="166" stroke="'+N+'" stroke-width="1.4" stroke-dasharray="3 2"/><path d="M195 148h10M200 143v10" stroke="'+N+'" stroke-width="1.3"/>';
+ o+='<circle cx="200" cy="166" r="5.5" fill="'+N+'"/><circle cx="200" cy="166" r="2.2" fill="#fff"/>';
+ o+='<rect x="195" y="62" width="10" height="46" fill="#94a3b8" stroke="'+N+'" stroke-width="1.8"/>';
+ o+='<rect x="184" y="56" width="32" height="8" rx="1.5" fill="#cbd5e1" stroke="'+N+'" stroke-width="1.8"/>';
+ o+='<rect x="184" y="100" width="32" height="8" rx="1.5" fill="#e2e8f0" stroke="'+N+'" stroke-width="2"/>';
+ o+='<rect x="176" y="76" width="48" height="14" rx="2" fill="#64748b" stroke="'+N+'" stroke-width="1.8"/><rect x="195" y="76" width="10" height="14" fill="#94a3b8" stroke="none"/><line x1="195" y1="76" x2="195" y2="90" stroke="'+N+'" stroke-width="1.2"/><line x1="205" y1="76" x2="205" y2="90" stroke="'+N+'" stroke-width="1.2"/>';
+ o+='<path d="M247 129 A50 50 0 0 1 232 184" fill="none" stroke="'+C.green+'" stroke-width="2.4"/><polygon points="227,189 238,185 230,177" fill="'+C.green+'"/>';
+ o+='<line x1="236" y1="76" x2="236" y2="62" stroke="'+C.red+'" stroke-width="2.4"/><polygon points="236,56 231,66 241,66" fill="'+C.red+'"/><line x1="236" y1="84" x2="236" y2="98" stroke="'+C.red+'" stroke-width="2.4"/><polygon points="236,104 231,94 241,94" fill="'+C.red+'"/>';
+ o+='<line x1="140" y1="168" x2="192" y2="166" stroke="'+C.green+'" stroke-width="1.3"/><line x1="120" y1="80" x2="174" y2="83" stroke="'+C.slate+'" stroke-width="1.3"/>';
+ return o+tx2(312,74,'follower',C.red,'middle',11)+tx2(312,88,'(moves up and down)',C.red,'middle',10)+tx2(100,84,'guide',C.slate,'middle',10)+tx2(92,176,'cam turns round',C.green,'middle',11)+tx2(92,189,'the pivot',C.green,'middle',10)+tx2(312,172,'off-centre circle',C.blue,'middle',11)+tx2(312,186,'(the cam)',C.blue,'middle',10);});
+
 // Compound gear train: A(10) meshes B(20); C(10) on B's shaft meshes D(20)
 redo(ESs,['Compound gear train'],function(){var p=iso(236,168,1.0),zc=40,o='';
  o+=gear(p,8,zc,28,20,{top:'#fde68a',lo:'#fbbf24',hi:'#d97706'},-24,-16);
