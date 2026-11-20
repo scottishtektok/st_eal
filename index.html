@@ -10,6 +10,23 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#2f6bff">
+<!--
+  STATOZ - An A to Z of Scottish Technologies
+  Copyright (c) 2026 Scottish TekTok (www.statoz.co.uk). All rights reserved.
+  The code, definitions, diagrams, translations and design in this file may not be copied,
+  reused, republished or redistributed without written permission. Contact: hello@statoz.co.uk
+  Build mark: SZ-7F3K-2611-QTA
+-->
+<meta name="copyright" content="© 2026 Scottish TekTok. All rights reserved.">
+<meta name="szid" content="SZ-7F3K-2611-QTA">
+<script>
+/* STATOZ site check: only runs on websites. Offline files and the installed app are unaffected. */
+(function(){try{var h=location.hostname,ok=/^(www\.)?statoz\.co\.uk$/.test(h)||h==='scottishtektok.github.io'||h==='localhost'||h==='127.0.0.1'||h==='[::1]'||h==='';
+if(/^https?:$/.test(location.protocol)&&!ok){window.stop();document.documentElement.innerHTML='<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>STATOZ</title></head><body style="font-family:system-ui,sans-serif;max-width:520px;margin:12vh auto;padding:0 20px;text-align:center;color:#0f172a"><h1 style="color:#2f6bff;margin-bottom:8px">This is not the official STATOZ site</h1><p style="font-size:18px;line-height:1.5">STATOZ is only available at <a href="https://www.statoz.co.uk" style="color:#2f6bff;font-weight:700">www.statoz.co.uk</a>.</p><p style="color:#475569">This copy has been published without permission. Please use the official site.</p></body>';}
+}catch(e){}})();
+window.__sz='SZ-7F3K-2611-QTA';
+</script>
+
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="STATOZ">
@@ -266,6 +283,7 @@ body{background-color:#f4f7fb;background-image:linear-gradient(rgba(30,64,175,.0
 .language-panel{min-width:0;border:1px solid var(--line);border-radius:11px;padding:13px 14px;background:#fbfcfe}
 .language-panel.eal-panel{background:#f4f8ff;border-color:#cbdcff}
 .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.panel-head:has(> .speak-btn:only-child){justify-content:flex-end}
 .panel-head h4{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#52667b;margin:0}
 .speak-btn{
   border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;
@@ -9561,7 +9579,6 @@ async function renderAll() {
         <div class="bilingual-grid${code === 'en' ? ' english-only' : ''}">
           <section class="language-panel" lang="en">
             <div class="panel-head">
-              <h4>English (Qualifications Scotland Course)</h4>
               <button class="speak-btn" type="button" data-speak="${escapeHtml((window.plainFor(r) || {}).say || r.term)}" title="Listen to English pronunciation">🔊 Listen</button>
             </div>
             <p class="panel-term ${isSpec ? 'specialist-term' : ''}">${escapeHtml(r.term)}</p>
