@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- STATOZ (c) Scottish TekTok. All rights reserved. Unauthorised copying, republication or reuse of this file, its content, diagrams or translations is prohibited. Build fc6dcc6cd422 -->
+<!-- STATOZ (c) Scottish TekTok. All rights reserved. Unauthorised copying, republication or reuse of this file, its content, diagrams or translations is prohibited. Build 4f85556261ef -->
 <meta name="copyright" content="(c) Scottish TekTok. All rights reserved.">
-<meta name="statoz-build" content="fc6dcc6cd422">
+<meta name="statoz-build" content="4f85556261ef">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="manifest" href="manifest.webmanifest">
@@ -9950,8 +9950,8 @@ renderAll();
  var deferred=null,ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
  var standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;
  var KEY='statoz_install_dismissed';
- function dismissed(){try{return localStorage.getItem(KEY)==='1';}catch(e){return false;}}
- function remember(){try{localStorage.setItem(KEY,'1');}catch(e){}}
+ function dismissed(){try{var t=+localStorage.getItem(KEY)||0;return t>Date.now()-7*864e5;}catch(e){return false;}}
+ function remember(){try{localStorage.setItem(KEY,String(Date.now()));}catch(e){}}
  function code(){var s=document.getElementById('language');var c=s&&s.value;return L[c]?c:'en';}
  function paint(){var t=L[code()];bar.dir=(code()==='ar'||code()==='ur')?'rtl':'ltr';
   if(deferred){tx.textContent=t[0];go.textContent=t[1];go.style.display='';no.textContent=t[2];}
@@ -9959,9 +9959,9 @@ renderAll();
  var touchDev=ios||/android|mobile/i.test(navigator.userAgent)||(window.matchMedia&&window.matchMedia('(pointer: coarse) and (hover: none)').matches);
  function show(){if(!touchDev||standalone||dismissed())return;paint();bar.classList.add('show');}
  no.addEventListener('click',function(){remember();bar.classList.remove('show');});
- go.addEventListener('click',function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;remember();bar.classList.remove('show');});});
+ go.addEventListener('click',function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;bar.classList.remove('show');});});
  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;setTimeout(show,2500);});
- window.addEventListener('appinstalled',function(){remember();bar.classList.remove('show');});
+ window.addEventListener('appinstalled',function(){bar.classList.remove('show');});
  var ls=document.getElementById('language');if(ls)ls.addEventListener('change',function(){if(bar.classList.contains('show'))paint();});
  if(ios&&!standalone&&/safari/i.test(navigator.userAgent)&&!/crios|fxios|edgios/i.test(navigator.userAgent)){setTimeout(show,4000);}
  if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
