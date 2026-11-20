@@ -9546,7 +9546,7 @@ async function renderAll() {
         <div class="term-meta">
           <div class="badges">
             <span class="meaning-status ${isSpec ? 'specialist' : 'pending'}">
-              ${isSpec ? '⚠️ Different meaning in this subject' : 'Technical term'}
+              ${isSpec ? '⚠️ Subject term – not in standard dictionary' : 'Technical term'}
             </span>
             <span class="topic-tag">${escapeHtml(normT)}</span>
             ${allScope() ? `<span class="subj-tag">${escapeHtml(r.subject)}</span>` : ''}
@@ -9774,7 +9774,7 @@ async function renderFlashcard() {
     face.innerHTML = `
       <div class="fc-kicker">${escapeHtml(item.subject)} · ${escapeHtml(normT)}</div>
       <h3 class="fc-term ${isSpec ? 'spec' : ''}">${escapeHtml(item.term)}</h3>
-      ${isSpec ? '<span class="fc-flag">Different meaning in this subject</span>' : ''}
+      ${isSpec ? '<span class="fc-flag">Subject term – not in standard dictionary</span>' : ''}
       <button type="button" id="fcSpeakBtn" class="fc-listen">🔊 Listen</button>
       <div class="fc-hint">${code === 'en' ? 'Tap to see the meaning' : 'Tap to see ' + escapeHtml(ealLabel.split('·').pop().trim())}</div>
     `;
