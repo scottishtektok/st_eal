@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- STATOZ (c) Scottish TekTok. All rights reserved. Unauthorised copying, republication or reuse of this file, its content, diagrams or translations is prohibited. Build 4f85556261ef -->
+<!-- STATOZ (c) Scottish TekTok. All rights reserved. Unauthorised copying, republication or reuse of this file, its content, diagrams or translations is prohibited. Build 2e91565bf61d -->
 <meta name="copyright" content="(c) Scottish TekTok. All rights reserved.">
-<meta name="statoz-build" content="4f85556261ef">
+<meta name="statoz-build" content="2e91565bf61d">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1538,7 +1538,7 @@ def(['shade'],function(){return F('SHADE',mix('shade'),'Shade = a colour with bl
 // ---------- HUE ----------
 def(['hue'],function(){var cols=['#ef4444','#f97316','#eab308','#84cc16','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#d946ef','#ec4899'],o='',cx=130,cy=116,r=56,n=cols.length;
  for(var i=0;i<n;i++){var a0=i*2*Math.PI/n-Math.PI/2,a1=(i+1)*2*Math.PI/n-Math.PI/2;o+='<path d="M'+cx+','+cy+' L'+(cx+r*Math.cos(a0)).toFixed(1)+','+(cy+r*Math.sin(a0)).toFixed(1)+' A'+r+','+r+' 0 0 1 '+(cx+r*Math.cos(a1)).toFixed(1)+','+(cy+r*Math.sin(a1)).toFixed(1)+' Z" fill="'+cols[i]+'" stroke="#fff" stroke-width="1.5"/>';}
- o+=ci(cx,cy,14,'#fff','#fff')+ar(262,96,196,132,C.navy,1.8)+tx(270,92,'Hue = which colour:',{a:'start',s:13,w:800})+tx(270,108,'red, blue, green...',{a:'start',s:13,w:600,c:C.slate});
+ o+=ci(cx,cy,14,'#fff','#fff')+ar(228,100,196,132,C.navy,1.8)+tx(234,92,'Hue = which colour:',{a:'start',s:13,w:800})+tx(234,108,'red, blue, green...',{a:'start',s:13,w:600,c:C.slate});
  return F('HUE',o,'Hue = the colour family (its place on the colour wheel)','Not "hue and cry"');});
 // ---------- SATURATION ----------
 def(['saturation'],function(){var g=X.nid('g');
@@ -2194,7 +2194,7 @@ def(['alpha channel'],function(){var o='',i,j;for(i=0;i<10;i++)for(j=0;j<6;j++)o
 def(['gradient fill','textured fill','colour fill','texture','texture map','bump map','colour picker'],function(){var id=X.nid('g'),o='<defs><linearGradient id="'+id+'" x1="0" x2="1"><stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#facc15"/></linearGradient></defs>'+rc(60,70,100,60,'#22c55e',C.navy,{w:2})+lab(110,150,'colour fill',C.slate,'middle',12)+rc(150+30,70,100,60,'url(#'+id+')',C.navy,{w:2})+lab(230,150,'gradient',C.slate,'middle',12)+rc(300,70,70,60,'#d4a373',C.navy,{w:2})+lab(335,150,'texture',C.slate,'middle',12);for(var i=0;i<12;i++)o+=ln(306,76+i*4.5,364,76+i*4.5,'#a16207',1);
  return F('FILLS',o,'Fills = ways to colour a shape: a flat colour, a gradient that blends two colours, or a texture','A colour picker copies a colour from the screen');});
 // ---------- FILES ----------
-function fmt(title,cap,note,big,lines,badge){var o=rc(130,60,140,110,'#fff',C.navy,{w:2.4})+pg('250,60 270,80 250,80','#e2e8f0',C.navy,1.6)+lab(200,112,big,C.blue,'middle',28)+lab(200,134,lines[0],C.navy,'middle',12)+lab(200,150,lines[1],C.slate,'middle',12)+(badge?lab(200,50,badge,C.red,'middle',12):'');return F(title,o,cap,note);}
+function fmt(title,cap,note,big,lines,badge){var o=rc(130,60,140,110,'#fff',C.navy,{w:2.4})+pg('250,60 270,80 250,80','#e2e8f0',C.navy,1.6)+lab(200,112,big,C.blue,'middle',28)+lab(200,134,lines[0],C.navy,'middle',12)+lab(200,150,lines[1],C.slate,'middle',12)+(badge?lab(200,190,badge,C.red,'middle',12):'');return F(title,o,cap,note);}
 def(['jpeg'],function(){return fmt('JPEG','JPEG = a common photo file that makes the file small by throwing away some detail (lossy compression)','Good for photos, not for sharp lines','.JPG',['small file size','some quality lost'],'photographs');});
 def(['png'],function(){return fmt('PNG','PNG = an image file that keeps all quality (lossless) and can have transparent areas','Good for logos and screenshots','.PNG',['no quality lost','transparent allowed'],'web graphics');});
 def(['tiff'],function(){return fmt('TIFF','TIFF = a high-quality image file with no loss of detail, often used for printing','Big files','.TIF',['highest quality','large file size'],'for print');});
@@ -2218,7 +2218,7 @@ def(['monitor','graphic display'],function(){return dev('MONITOR','Monitor = an 
 def(['projector'],function(){return dev('PROJECTOR','Projector = an output device that shines the screen image onto a large surface','Output device',rc(70,96,80,36,'#94a3b8',C.navy,{w:2.4})+ci(150,114,10,'#fff',C.navy,2)+pg('160,114 320,70 320,160','rgba(250,204,21,0.45)',null,0)+rc(318,60,10,110,'#fff',C.navy,{w:2}),'light beam makes a big image');});
 def(['graphics tablet'],function(){return dev('GRAPHICS TABLET','Graphics tablet = an input device you draw on with a pen, and the lines appear on screen','Input device',rc(90,100,200,60,'#334155',C.navy,{w:2.6,r:4})+pth('M240 90 L270 60',null,C.red,5)+ln(230,100,240,90,C.red,2),'draw like on paper');});
 def(['digital camera'],function(){return dev('DIGITAL CAMERA','Digital camera = an input device that records photos as digital files','Input device',rc(110,84,180,70,'#94a3b8',C.navy,{w:2.4,r:8})+ci(200,120,26,'#1e293b',C.navy,3)+ci(200,120,14,'#60a5fa',null,0)+rc(130,74,40,14,'#cbd5e1',C.navy,{w:2}),'light in, picture file out');});
-def(['input device','digital input device','output device','digital output device','input','output','hardware','computer system'],function(){var o=rc(40,80,90,50,'#bbf7d0',C.navy,{w:2.2})+lab(85,100,'INPUT',C.navy,'middle',13)+lab(85,116,'keyboard, mouse,',C.slate,'middle',10)+lab(85,127,'scanner, camera',C.slate,'middle',10)+ar(134,105,158,105,C.red)+rc(162,80,76,50,'#dbeafe',C.navy,{w:2.2})+lab(200,110,'COMPUTER',C.navy,'middle',12)+ar(242,105,266,105,C.red)+rc(270,80,90,50,'#fde68a',C.navy,{w:2.2})+lab(315,100,'OUTPUT',C.navy,'middle',13)+lab(315,116,'monitor, printer,',C.slate,'middle',10)+lab(315,127,'plotter, projector',C.slate,'middle',10)+lab(200,160,'in → process → out',C.slate,'middle',12);
+def(['input device','digital input device','output device','digital output device','input','output','hardware','computer system'],function(){var o=rc(16,80,124,50,'#bbf7d0',C.navy,{w:2.2})+lab(78,100,'INPUT',C.navy,'middle',13)+lab(78,116,'keyboard, mouse,',C.slate,'middle',10)+lab(78,127,'scanner, camera',C.slate,'middle',10)+ar(144,105,164,105,C.red)+rc(168,80,80,50,'#dbeafe',C.navy,{w:2.2})+lab(208,110,'COMPUTER',C.navy,'middle',12)+ar(252,105,272,105,C.red)+rc(276,80,114,50,'#fde68a',C.navy,{w:2.2})+lab(333,100,'OUTPUT',C.navy,'middle',13)+lab(333,116,'monitor, printer,',C.slate,'middle',10)+lab(333,127,'plotter, projector',C.slate,'middle',10)+lab(200,166,'in → process → out',C.slate,'middle',12);
  return F('INPUT AND OUTPUT DEVICES',o,'Input device = sends information into the computer. Output device = gets information out of it','Hardware = the physical equipment');});
 def(['cloud storage','cloud computing'],function(){var o=pth('M130 100 Q120 70 160 72 Q180 50 220 66 Q260 60 266 96 Q290 104 270 124 L140 124 Q110 124 130 100 Z','#e0f2fe',C.navy,2.4)+lab(200,104,'CLOUD',C.blue,'middle',13)+rc(60,150,50,30,'#cbd5e1',C.navy,{w:2})+rc(170,150,50,30,'#cbd5e1',C.navy,{w:2})+rc(280,150,50,30,'#cbd5e1',C.navy,{w:2})+ln(85,150,160,126,C.red,1.6,'4 3')+ln(195,150,200,126,C.red,1.6,'4 3')+ln(305,150,250,126,C.red,1.6,'4 3');
  return F('CLOUD STORAGE',o,'Cloud storage = keeping files on internet servers so you can reach them from any device','Needs an internet connection');});
@@ -2263,7 +2263,7 @@ function pth(dd,f,s,w,da){return '<path d="'+dd+'" fill="'+(f||'none')+'" stroke
 function pts(a){return a.map(function(p){return p[0]+','+p[1];}).join(' ');}
 // ---------- LINES & SKETCH ----------
 def(['line type','line','line quality','visible outline','construction line','hidden detail','line tool'],function(){var rows=[['Outline','thick, continuous',C.navy,3.6,null],['Projection','thin, continuous',C.slate,1.4,null],['Dimension','thin, continuous',C.slate,1.4,null],['Centre','thin, long-short-long',C.slate,1.6,'14 3 3 3'],['Hidden detail','thin, dashed',C.slate,1.6,'7 4'],['Cutting plane','thin chain, thick ends',C.slate,1.6,'14 3 3 3','cp'],['Fold','thin, dash-dot',C.slate,1.6,'10 3 2 3']],o='',i;
- rows.forEach(function(r,i){var y=62+i*22;o+=ln(190,y,360,y,r[2],r[3],r[4]);if(r[5])o+=ln(190,y,206,y,C.slate,4.4)+ln(344,y,360,y,C.slate,4.4);o+=lab(30,y+4,r[0],C.navy,'start',12);});
+ rows.forEach(function(r,i){var y=60+i*19;o+=ln(190,y,360,y,r[2],r[3],r[4]);if(r[5])o+=ln(190,y,206,y,C.slate,4.4)+ln(344,y,360,y,C.slate,4.4);o+=lab(30,y+4,r[0],C.navy,'start',12);});
  return F('LINE TYPES',o,'Line types = different lines have different meanings on a drawing: outline, projection, dimension, centre, hidden detail, cutting plane and fold','BS 8888 sets the rules');});
 def(['sketch','freehand sketch','orthographic sketch','manual technique','manual process'],function(){var o=pth('M120 128 Q150 124 182 129 Q184 104 181 88 Q150 86 121 90 Q119 108 120 128',null,C.navy,2.4)+pth('M121 90 Q150 74 186 76 Q212 74 238 70',null,C.navy,2.4)+pth('M181 88 Q212 80 240 72 Q242 96 238 112 Q212 124 182 129',null,C.navy,2.4)+pth('M186 76 Q184 84 181 88',null,C.navy,2.4)+lab(200,160,'drawn quickly by hand, no instruments',C.slate,'middle',12)+lab(300,86,'wobbly lines are OK',C.red,'start',12).replace('x="300"','x="256"').replace('y="86"','y="130"');
  return F('FREEHAND SKETCH',o,'Sketch = a quick drawing made by hand without instruments to show an idea','Orthographic sketch = a hand sketch of plan and elevations');});
@@ -2617,7 +2617,7 @@ d(['Ferrous metal','Non-ferrous metal'],function(){var o=rc(40,80,90,36,M2,C.nav
  return F('FERROUS / NON-FERROUS',o,'Ferrous metals contain iron and are magnetic (steel). Non-ferrous metals contain no iron (copper, aluminium)','Non-ferrous metals do not rust');});
 d(['Mild steel','High-carbon steel'],function(){var o=rc(70,64,120,18,M1,C.navy,{w:2})+rc(70,64,14,18,M3,null,{})+lab(130,98,'MILD STEEL',C.navy,'middle',13)+lab(130,114,'little carbon',C.slate,'middle',12)+lab(130,130,'soft, tough, bends',C.blue,'middle',12)+rc(220,64,120,18,M1,C.navy,{w:2})+rc(220,64,70,18,M3,null,{})+lab(280,98,'HIGH-CARBON STEEL',C.navy,'middle',13)+lab(280,114,'lots of carbon',C.slate,'middle',12)+lab(280,130,'hard, brittle',C.red,'middle',12)+lab(200,160,'dark part = amount of carbon in the steel',C.slate,'middle',12);
  return F('MILD STEEL / HIGH-CARBON STEEL',o,'Mild steel has little carbon so it is easy to shape. High-carbon steel has more carbon so it is harder','More carbon = harder but more brittle');},ALL);
-d(['Spelter'],function(){var o=rc(80,90,100,18,M2,C.navy,{w:2.2})+rc(220,90,100,18,M2,C.navy,{w:2.2})+rc(180,92,40,14,'#fbbf24',C.navy,{w:2})+pth('M200 60 Q196 40 204 30',null,HOT,3)+ar(260,60,204,90,C.red)+lab(230,52,'spelter (brass filler)',C.red)+lab(200,150,'melts and flows between the two parts, then sets',C.slate,'middle',12);
+d(['Spelter'],function(){var o=rc(80,90,100,18,M2,C.navy,{w:2.2})+rc(220,90,100,18,M2,C.navy,{w:2.2})+rc(180,92,40,14,'#fbbf24',C.navy,{w:2})+ar(260,60,204,90,C.red)+lab(230,52,'spelter (brass filler)',C.red)+lab(200,150,'melts and flows between the two parts, then sets',C.slate,'middle',12);
  return F('SPELTER',o,'Spelter = brass alloy used as the filler metal when brazing (joining metals with heat)','It melts below the metal being joined');});
 d(['Polishing compound'],function(){var o=ci(160,106,44,'#fef3c7',C.navy,2.4)+ci(160,106,8,M3,C.navy,1.8)+pth('M120 78 A48 48 0 0 1 204 76',null,C.red,2.4)+rc(240,96,70,26,'#92400e',C.navy,{w:2})+lab(275,114,'compound',C.paper,'middle',12)+ar(236,108,206,108,C.red)+lab(160,176,'soft mop wheel + polishing compound = shiny metal',C.slate,'middle',12);
  return F('POLISHING COMPOUND',o,'Polishing compound = a waxy bar with fine grit, rubbed on a mop wheel to make metal shiny','Wear eye protection');});
@@ -2667,7 +2667,7 @@ d(['Back-EMF'],function(){
  o+=ln(150,90,150,98,C.navy,2.4)+ln(150,140,150,156,C.navy,2.4)+ln(150,156,36,156,C.navy,2.4)+ln(36,156,36,90,C.navy,2.4)+lab(36,174,'supply',C.slate,'middle',12);
  o+=ln(150,90,190,90,C.navy,2.4)+ln(190,90,190,156,C.navy,2.4)+ln(190,156,150,156,C.navy,2.4)+pg('180,132 200,132 190,112',C.red,C.navy,2)+ln(180,110,200,110,C.navy,3)+lab(204,134,'diode',C.red,'start',12);
  o+=pth('M128 100 l-8 6 l8 6 l-8 6 l8 6',null,C.red,3)+lab(112,136,'spike',C.red,'end',12);
- o+=ln(250,66,250,176,C.line,1.5,'4 4')+lab(322,72,'2  motor running',C.navy,'middle',13)+ci(322,112,26,'#e2e8f0',C.navy,2.4)+lab(322,120,'M',C.navy,'middle',20)+ar(294,152,350,152,C.red,3)+lab(322,170,'back-EMF',C.red,'middle',13)+lab(322,184,'opposes the supply',C.slate,'middle',12);
+ o+=ln(250,66,250,176,C.line,1.5,'4 4')+lab(322,72,'2  motor running',C.navy,'middle',13)+ci(322,112,26,'#e2e8f0',C.navy,2.4)+lab(322,120,'M',C.navy,'middle',20)+ar(294,146,350,146,C.red,3)+lab(322,162,'back-EMF',C.red,'middle',13)+lab(322,176,'opposes the supply',C.slate,'middle',12);
  return F('BACK-EMF',o,'Back-EMF = a voltage made in a motor or coil that opposes the current. Switching a coil off makes a voltage spike','A flyback diode across the coil protects the transistor');});
 // ---------- LOGIC ----------
 function gate(x,y,t){return pth('M'+x+' '+(y-20)+' L'+(x+22)+' '+(y-20)+' A20 20 0 0 1 '+(x+22)+' '+(y+20)+' L'+x+' '+(y+20)+' Z','#dbeafe',C.navy,2.4)+lab(x+18,y+5,t,C.navy,'middle',12);}
@@ -2781,7 +2781,7 @@ d(['Questionnaire'],function(){var o=rc(110,54,180,118,'#fff',C.navy,{w:2.2})+la
  return F('QUESTIONNAIRE',o,'Questionnaire = a list of written questions given to a group of people to find out their opinions','Closed questions give easy-to-count answers');});
 d(['Psychology (Design)'],function(){var o=ci(200,90,32,'#fde68a',C.navy,2.2)+pth('M184 84 Q200 72 216 84 M186 102 Q200 112 214 102',null,C.navy,2)+lab(200,150,'how people think, feel and behave',C.red,'middle',13)+lab(200,166,'(colour, brand, what feels "friendly")',C.slate,'middle',12);
  return F('PSYCHOLOGY IN DESIGN',o,'Psychology = how people think, feel and behave, so designs can feel right to the user','Why a red button feels "stop"');});
-d(['Physiology'],function(){var o=ci(160,70,12,'#fde68a',C.navy,2)+ln(160,82,160,124,C.navy,3)+ln(160,92,138,112,C.navy,3)+ln(160,92,182,112,C.navy,3)+ln(160,124,146,160,C.navy,3)+ln(160,124,174,160,C.navy,3)+dar(212,70,212,160,C.red)+lab(222,118,'height',C.red,'start',12)+dar(130,176,190,176,C.blue).replace(/.*/,'')+lab(300,92,'body size',C.slate,'start',12)+lab(300,108,'reach, strength',C.slate,'start',12)+lab(300,124,'the human body',C.slate,'start',12);
+d(['Physiology'],function(){var o=ci(160,70,12,'#fde68a',C.navy,2)+ln(160,82,160,124,C.navy,3)+ln(160,92,138,112,C.navy,3)+ln(160,92,182,112,C.navy,3)+ln(160,124,146,160,C.navy,3)+ln(160,124,174,160,C.navy,3)+dar(212,70,212,160,C.red)+lab(222,118,'height',C.red,'start',12)+dar(130,176,190,176,C.blue).replace(/.*/,'')+lab(272,92,'body size',C.slate,'start',12)+lab(272,108,'reach, strength',C.slate,'start',12)+lab(272,124,'the human body',C.slate,'start',12);
  return F('PHYSIOLOGY',o,'Physiology = how the human body is built and works, such as size, reach and strength','Designs must fit the body');});
 d(['Inclusive design'],function(){var o=rc(40,130,80,16,'#cbd5e1',C.navy,{w:2})+rc(60,114,60,16,'#cbd5e1',C.navy,{w:2})+rc(80,98,40,16,'#cbd5e1',C.navy,{w:2})+pg('160,146 280,146 280,106','#bbf7d0',C.navy,2.2)+lab(80,168,'stairs only?',C.red,'middle',12)+lab(220,168,'ramp: more people can use it',C.green,'middle',12)+lab(330,110,'for',C.slate,'middle',12)+lab(330,126,'everyone',C.slate,'middle',12);
  return F('INCLUSIVE DESIGN',o,'Inclusive design = designing so that as many people as possible can use a product, whatever their age or ability','A ramp helps wheelchairs, prams and bags');});
@@ -2835,7 +2835,7 @@ mat('Cedar','Cedar','#e9a87c',null,'softwood',['sweet smell','resists rot'],'she
 mat('Larch','Larch','#f2b77a',null,'softwood',['hard for a softwood','durable, resinous'],'boats, fencing','Larch = a tough, durable softwood that copes well with weather','Used for boat building and cladding');
 mat('White pine','White pine','#fff1c9',null,'softwood',['pale, light','easy to work'],'furniture, joinery','White pine = a pale, light, easy-to-work softwood used for furniture and joinery','Cheap and common');
 mat('Meranti','Meranti','#b45309','#fff','hardwood',['reddish-brown','fairly durable'],'windows, doors','Meranti = a reddish-brown tropical hardwood often used for window frames and doors','Cheaper than other hardwoods');
-d(['Epoxy resin'],function(){var o=rc(80,100,100,26,W2,C.navy,{w:2.2})+rc(220,100,100,26,W2,C.navy,{w:2.2})+rc(180,102,40,22,'#fde68a',C.navy,{w:2}).replace('x="180"','x="180"')+rc(150,60,46,34,'#e2e8f0',C.navy,{w:2})+lab(173,82,'resin',C.navy,'middle',11)+rc(206,60,46,34,'#e2e8f0',C.navy,{w:2})+lab(229,82,'hardener',C.navy,'middle',10)+lab(200,160,'mix the two parts, spread, and it sets rock hard',C.slate,'middle',12);
+d(['Epoxy resin'],function(){var o=rc(80,100,100,26,W2,C.navy,{w:2.2})+rc(220,100,100,26,W2,C.navy,{w:2.2})+rc(180,102,40,22,'#fde68a',C.navy,{w:2}).replace('x="180"','x="180"')+rc(130,60,62,34,'#e2e8f0',C.navy,{w:2})+lab(161,82,'resin',C.navy,'middle',11)+rc(200,60,72,34,'#e2e8f0',C.navy,{w:2})+lab(236,82,'hardener',C.navy,'middle',11)+lab(200,160,'mix the two parts, spread, and it sets rock hard',C.slate,'middle',12);
  return F('EPOXY RESIN',o,'Epoxy resin = a very strong two-part adhesive: mix resin and hardener, and it sets hard and waterproof','Joins many different materials');});
 // ---------- MACHINES ----------
 d(['Belt sander'],function(){var o=rc(80,130,240,14,STD,C.navy,{w:2.2})+ci(110,100,24,ST,C.navy,2.4)+ci(290,100,24,ST,C.navy,2.4)+pth('M110 76 L290 76 M110 124 L290 124',null,'#a16207',6)+lab(200,60,'continuous belt of abrasive',C.red,'middle',12)+lab(200,176,'the belt moves round two rollers; hold the wood against it',C.slate,'middle',11);
@@ -5467,8 +5467,8 @@ G(['opacity'],function(){
  o+=rc(70,70,86,52,'#ef4444',C.navy,{w:2});
  o+='<g opacity=".5">'+seg('opacity',vals,tm.join(';'),8,true)+rc(116,94,86,52,'#3b82f6',C.navy,{w:2})+'</g>';
  txt.forEach(function(t,j){var k=[0,0,1,0][j];o+='<text x="300" y="122" text-anchor="middle" font-size="26" font-weight="800" fill="'+C.blue+'" opacity="'+(j==2?1:0)+'">'+t+seg('opacity',[0,1,2,3].map(function(q){return q==j?'1':'0';}),tm.join(';'),8,true)+'</text>';});
- o+=lab(113,168,'back shape',C.slate,'middle',12)+lab(300,146,'blue shape opacity',C.blue,'middle',12);
- o+=ln(256,76,256,146,C.mut,1.4);
+ o+=lab(113,168,'back shape',C.slate,'middle',12)+lab(308,146,'blue shape opacity',C.blue,'middle',12);
+ o+=ln(232,76,232,146,C.mut,1.4);
  return F('OPACITY',o,'Opacity = how solid something is (100% = solid). Transparency = how much you can see through it','Lower opacity = more see-through');});
 
 // ---------- COLOUR WHEEL: labels clear of the wheel ----------
@@ -5971,11 +5971,11 @@ redo(PWWs,['Corner rebate joint','Rebate joint'],function(){var p=iso(180,128,0.
  o+=box(iso(310,150,0.8),-28,28,-20,20,0,14,WD)+tx2(310,178,'other piece fits',C.slate);return o;});
 redo(PWWs,['Mitre joint'],function(){var p=iso(150,96,1.0),o='';
  o+=prism(p,[[-60,-10],[10,-10],[-10,10],[-60,10]],0,14,WD)+prism(p,[[10,-10],[10,60],[-10,60],[-10,10]],0,14,WL);
- var t=p(0,0,14);o+=ar(228,92,t[0]+6,t[1]+2,C.red,2)+'<text x="296" y="94" text-anchor="start" font-size="14" font-weight="800" fill="'+C.red+'">45° + 45°</text><text x="296" y="112" text-anchor="start" font-size="14" font-weight="800" fill="'+C.red+'">= a 90° corner</text>';return o;});
+ var t=p(0,0,14);o+=ar(228,92,t[0]+6,t[1]+2,C.red,2)+'<text x="268" y="94" text-anchor="start" font-size="14" font-weight="800" fill="'+C.red+'">45° + 45°</text><text x="268" y="112" text-anchor="start" font-size="14" font-weight="800" fill="'+C.red+'">= a 90° corner</text>';return o;});
 function housing(){var o='',pa=iso(100,128,0.9),pb=iso(300,128,0.9);
  function bd(p,stopped){var q=box(p,-34,34,-34,34,0,8,WL)+box(p,-34,-8,-34,34,8,10,WL)+box(p,8,34,-34,34,8,10,WL);if(stopped)q+=box(p,-8,8,10,34,8,10,WL);return q;}
  o+=tx2(100,58,'THROUGH',C.blue)+tx2(300,58,'STOPPED',C.blue)+bd(pa,0)+bd(pb,1)+tx2(100,172,'groove reaches both edges',C.slate)+tx2(300,172,'groove stops before the edge',C.slate);return o;}
-redo(PWWs,['Housing joint','Through housing','Stopped housing'],housing);
+
 redo(PWWs,['Rubbed joint'],function(){var p=iso(196,108,0.9),o='';
  o+=box(p,-70,-3,-24,24,0,14,WD)+box(p,-3,3,-24,24,0,14,{top:'#fde047',lo:'#facc15',hi:'#eab308'},{sw:1})+box(p,3,70,-24,24,0,14,WD);
  o+=rl(200,56,'glue on the edges, then rub')+tx2(200,176,'two boards slid together until the glue grips',C.slate);return o;});
@@ -6695,6 +6695,7 @@ function ppe(){var o='<g transform="translate(0,10)"><g transform="translate(65 
  return F('PPE',o,'Personal protective equipment (PPE) = clothing and gear that protects you, such as goggles, an apron, gloves and boots','Wear the right PPE for the job');}
 ['Practical Metalworking','Design & Manufacture','Practical Woodworking','Graphic Communication','Engineering Science'].forEach(function(sb){X.sdef(sb,['Personal protective equipment','PPE'],ppe);});
 })();
+window.V3H={iso:iso,box:box,prism:prism,cyl:cyl,P:P,rectPts:rectPts,circPts:circPts,shade:shade,WL:WL,WD:WD,ST:ST,SD:SD};
 // Compound gear train: A(10) meshes B(20); C(10) on B's shaft meshes D(20)
 redo(ESs,['Compound gear train'],function(){var p=iso(236,168,1.0),zc=40,o='';
  o+=gear(p,8,zc,28,20,{top:'#fde68a',lo:'#fbbf24',hi:'#d97706'},-24,-16);
@@ -6739,7 +6740,7 @@ redo(PMWs,['Centre punch'],function(){var p=iso(195,150,1.0),o=ub(p,-70,70,-40,4
  o+=cyl(p,0,0,7,74,6,{top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'});
  var a=p(0,0,130),b=p(0,0,92);o+=ar(a[0],a[1],b[0],b[1],C.red,3);
  o+=ci(tip[0],tip[1],2.6,C.red);
- return o+tx2(310,60,'hammer hits the top',C.red,'middle',11)+tx2(300,188,'tip sits in the marked dot',C.slate,'middle',11)+tx2(80,184,'metal plate',C.slate,'middle',11);});
+ return o+tx2(310,60,'hammer hits the top',C.red,'middle',11)+tx2(96,64,'tip sits in the marked dot',C.slate,'middle',11)+tx2(80,184,'metal plate',C.slate,'middle',11);});
 // Die and die stock
 function dieBody(p,withStock){var o='';
  if(withStock){o+=ub(p,-106,-34,-6,6,2,9,STL)+ub(p,34,106,-6,6,2,9,STL);o+=cyl(p,0,0,38,0,14,{top:'#e2e8f0',lo:'#cbd5e1',hi:'#94a3b8'});}
@@ -6764,7 +6765,7 @@ function toolAt(p,u,r,w){var s=UP(p,u,r,20);return ub(p,u-4,u+4,r,r+46,17,6,SD)+
 redo(PMWs,['Parallel turning'],lathe2(function(){return 14;},[-84,70],tx2(70,172,'chuck',C.slate)+tx2(250,184,'same smaller diameter along the whole length',C.slate,'middle',11)+tx2(300,66,'tool feeds along the bar',C.red,'middle',11),function(p){var a=UP(p,50,36,34),b=UP(p,0,36,34);return toolAt(p,28,14)+ar(a[0],a[1],b[0],b[1]+4,C.red,2.2);}));
 redo(PMWs,['Step turning'],lathe2(function(u){return u<10?20:11;},[-84,9.9,10.1,70],tx2(70,172,'chuck',C.slate)+tx2(120,66,'big diameter',C.navy,'middle',11)+tx2(300,66,'small diameter',C.navy,'middle',11)+rl(250,184,'sharp step (shoulder) where the tool stops'),function(p){return toolAt(p,24,11);}));
 redo(PMWs,['Taper turning'],lathe2(function(u){return 20-12*(u+84)/154;},[-84,70],tx2(70,172,'chuck',C.slate)+rl(260,184,'diameter changes gradually: a cone')+tx2(300,66,'tool follows the slope',C.slate,'middle',11),function(p){return toolAt(p,24,13);}));
-redo(PMWs,['Facing'],lathe2(function(){return 18;},[-84,70],tx2(70,172,'chuck',C.slate)+tx2(150,66,'bar spinning',C.slate,'middle',11)+rl(280,184,'tool moves across the end face'),function(p){var a=UP(p,76,10,52),b=UP(p,76,10,-6);return ub(p,70,88,12,60,16,7,SD)+ar(a[0],a[1],b[0],b[1],C.red,2.2);}));
+redo(PMWs,['Facing'],lathe2(function(){return 18;},[-84,70],tx2(70,172,'chuck',C.slate)+tx2(150,66,'bar spinning',C.slate,'middle',11)+rl(292,64,'tool moves across the end face'),function(p){var a=UP(p,76,10,52),b=UP(p,76,10,-6);return ub(p,70,88,12,60,16,7,SD)+ar(a[0],a[1],b[0],b[1],C.red,2.2);}));
 redo(PMWs,['Parting off'],lathe2(function(u){return (u>22&&u<38)?5:16;},[-84,21.9,22.1,37.9,38.1,70],tx2(70,172,'chuck',C.slate)+tx2(190,64,'parting-off tool',C.slate,'middle',11)+rl(330,150,'piece')+rl(330,164,'parts off'),function(p){return ub(p,26,34,5,56,16,7,SD);}));
 redo(PMWs,['Knurling'],lathe2(function(){return 16;},[-84,70],tx2(70,172,'chuck',C.slate)+rl(320,64,'diamond pattern')+tx2(130,172,'smooth',C.slate,'middle',11),function(p){var o='',i,j;
  for(j=-1;j<=1;j+=2)for(i=-4;i<=10;i++){var pts=[],z;for(z=8;z<=32;z+=2){var v=Math.sqrt(Math.max(0,256-(z-20)*(z-20))),uu=22+i*7+j*(z-20)*0.5;if(uu<14||uu>66)continue;pts.push(UP(p,uu,v,z));}
@@ -6820,14 +6821,14 @@ redo(PMWs,['Reaming','Reamer'],function(){var p=iso(190,146,1.05),o=ub(p,-56,56,
  for(z=26;z<70;z+=7){var a=p(-7.5,0,z),b=p(7.5,0,z+4);o+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+C.navy+'" stroke-width="1.2"/>';}
  o+=ub(p,-4,4,-4,4,76,10,STL);
  var a=p(18,0,96),b=p(-18,0,96);
- return o+tx2(90,60,'reamer (many flutes)',C.blue,'middle',11)+tx2(330,60,'turn slowly, push in',C.red,'middle',11)+tx2(200,184,'exact size, smooth hole',C.slate,'middle',11);});
+ return o+tx2(90,60,'reamer (many flutes)',C.blue,'middle',11)+tx2(330,60,'turn slowly, push in',C.red,'middle',11)+tx2(200,196,'exact size, smooth hole',C.slate,'middle',11);});
 // Odd-leg calipers: hooked leg rides the edge, point scribes parallel line
 redo(PMWs,['Odd-leg calipers','Odd-leg calipers (jenny)'],function(){var p=iso(190,136,1.05),o=ub(p,-34,70,-40,40,0,8,{top:'#e2e8f0',lo:'#cbd5e1',hi:'#94a3b8'});
  o+=L2(p,[26,-36,8],[26,12,8],C.red,2);
  o+=L2(p,[0,0,78],[26,0,9],'#475569',5);
  o+=L2(p,[0,0,78],[-44,0,24],'#475569',5)+L2(p,[-44,0,24],[-44,0,7],'#475569',5)+L2(p,[-44,0,7],[-34,0,7],'#475569',5);
  var h=UP(p,0,0,78);o+=ci(h[0],h[1],6,'#94a3b8',C.navy,2);
- return o+tx2(90,56,'bent leg:',C.blue,'middle',11)+tx2(90,70,'hook rides the edge',C.blue,'middle',10)+tx2(320,56,'straight leg scribes',C.red,'middle',11)+tx2(200,184,'scribed line is parallel to the edge',C.slate,'middle',11);});
+ return o+tx2(90,56,'bent leg:',C.blue,'middle',11)+tx2(90,70,'hook rides the edge',C.blue,'middle',10)+tx2(320,56,'straight leg scribes',C.red,'middle',11)+tx2(66,160,'scribed line is',C.slate,'middle',10.5)+tx2(66,173,'parallel to the edge',C.slate,'middle',10.5);});
 // Welding processes
 function weldBase(p){return ub(p,-64,64,-30,30,0,8,{top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'})+ub(p,-56,0,-4,4,8,3,{top:'#fb923c',lo:'#f97316',hi:'#c2410c'});}
 function weld3(kind){return function(){var p=iso(195,146,1.0),o=weldBase(p),t=UP(p,0,0,10);
@@ -6838,7 +6839,7 @@ function weld3(kind){return function(){var p=iso(195,146,1.0),o=weldBase(p),t=UP
   o+=L2(p,[-58,0,52],[-4,0,13],'#fbbf24',2.8);
   return o+ci(t[0],t[1]-2,4,'#fde047',C.amber,1.5)+tx2(340,150,'tungsten electrode',C.blue,'middle',11)+tx2(340,164,'(does not melt)',C.blue,'middle',10)+tx2(70,56,'filler rod',C.amber,'middle',11)+tx2(70,70,'added by hand',C.amber,'middle',10)+rl(120,178,'neat, precise welds');}
  o+=L2(p,[74,0,116],[36,0,70],'#dc2626',12)+L2(p,[36,0,70],[2,0,12],'#92400e',6)+L2(p,[34,0,68],[2,0,12],'#94a3b8',1.6);
- return o+ci(t[0],t[1]-2,5,'#fde047',C.amber,1.5)+tx2(350,56,'electrode holder',C.red,'middle',11)+tx2(90,56,'flux-coated stick',C.amber,'middle',11)+tx2(90,70,'(core + coating)',C.amber,'middle',10)+tx2(330,150,'flux makes gas + slag',C.slate,'middle',11);};}
+ return o+ci(t[0],t[1]-2,5,'#fde047',C.amber,1.5)+tx2(350,56,'electrode holder',C.red,'middle',11)+tx2(90,56,'flux-coated stick',C.amber,'middle',11)+tx2(90,70,'(core + coating)',C.amber,'middle',10)+tx2(318,190,'flux makes gas + slag',C.slate,'middle',11);};}
 redo(PMWs,['MIG welding'],weld3('MIG'));redo(PMWs,['TIG welding'],weld3('TIG'));redo(PMWs,['MMA welding'],weld3('MMA'));
 
 // ===================== AUDIT FIXES: PWW =====================
@@ -6905,7 +6906,7 @@ redo(PWWs,['Nail punch'],function(){var p=iso(190,150,1.0),o=ub(p,-60,60,-36,36,
  o+=ci(c[0],c[1],4,'#475569',C.navy,1.5);
  o+=pg(P([p(-3,0,36),p(3,0,36),p(0,0,17)]),'#64748b',C.navy,1.6)+cyl(p,0,0,5,36,44,{top:'#94a3b8',lo:'#64748b',hi:'#334155'})+cyl(p,0,0,7,80,5,{top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'});
  var a=p(0,0,128),b=p(0,0,94);o+=ar(a[0],a[1],b[0],b[1],C.red,3);
- return o+tx2(320,58,'hammer taps the top',C.red,'middle',11)+tx2(90,62,'tip sits on nail head',C.slate,'middle',11)+tx2(310,184,'nail ends below the surface',C.slate,'middle',10);});
+ return o+tx2(320,58,'hammer taps the top',C.red,'middle',11)+tx2(90,62,'tip sits on nail head',C.slate,'middle',11)+tx2(96,82,'nail ends below the surface',C.slate,'middle',10);});
 redo(PWWs,['Bench vice'],function(){var p=iso(180,150,1.0),o=ub(p,-84,60,-40,40,0,10,WL)+ub(p,-40,-26,-26,26,10,46,SD)+ub(p,-26,-6,-12,12,10,56,WL)+ub(p,-6,6,-26,26,10,46,SD);
  o+=cylU(p,6,66,0,34,circR(4),{top:'#e2e8f0',lo:'#cbd5e1',hi:'#94a3b8'})+ub(p,66,70,-24,24,32,4,STL);
  var h=UP(p,68,0,34),a=UP(p,40,0,70),b=UP(p,-14,0,70),c=UP(p,-33,0,60);
@@ -7068,7 +7069,7 @@ redo(PWWs,['Band saw'],function(){var p=iso(190,170,0.85),o=ub(p,-40,40,-30,30,0
  o+=discV(p,0,112,circR(22),-4,6,{top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'},{face:'#e2e8f0',axle:2.5})+discV(p,0,26,circR(22),-4,6,{top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'},{face:'#e2e8f0',axle:2.5});
  o+=L2(p,[-22,3,112],[-22,3,26],C.navy,2)+L2(p,[22,3,112],[22,3,26],C.navy,2);
  o+=ub(p,-30,30,-26,26,56,5,{top:'#e2e8f0',lo:'#cbd5e1',hi:'#94a3b8'});
- return o+tx2(100,60,'blade: a loop of steel',C.blue,'middle',11)+tx2(330,60,'2 wheels carry it',C.blue,'middle',11)+tx2(330,130,'wood table',C.slate,'middle',11)+rl(320,172,'cuts curves + straight lines');});
+ return o+tx2(100,60,'blade: a loop of steel',C.blue,'middle',11)+tx2(330,60,'2 wheels carry it',C.blue,'middle',11)+tx2(330,130,'wood table',C.slate,'middle',11)+tx2(330,154,'cuts curves +',C.red,'middle',12)+tx2(330,168,'straight lines',C.red,'middle',12);});
 redo(PWWs,['Corner rebate joint'],function(){var p=iso(200,160,1.0),o=ub(p,-56,56,-30,30,0,10,WL)+ub(p,-56,56,-30,8,10,10,WL);
  o+=ub(p,-56,56,8,30,44,10,WD);var a=p(0,19,100),b=p(0,19,72);
  return o+ar(a[0],a[1],b[0],b[1],C.red,2.6)+rl(300,60,'rebate = a step cut on the edge')+tx2(90,184,'board 1 (with rebate)',C.slate,'middle',11)+tx2(320,184,'board 2 fits the step',C.amber,'middle',11);});
@@ -7165,7 +7166,7 @@ redo(GCs,['Cavity wall'],function(){var o='',x0=110;
  o+='<rect x="152" y="40" width="46" height="136" fill="#fff" stroke="'+C.navy+'" stroke-width="1.5" stroke-dasharray="4 3"/>';
  o+='<rect x="198" y="40" width="22" height="136" fill="#fde68a" stroke="'+C.navy+'" stroke-width="2"/><rect x="220" y="40" width="42" height="136" fill="#cbd5e1" stroke="'+C.navy+'" stroke-width="2"/>';
  o+='<rect x="100" y="120" width="170" height="8" fill="#0f172a"/><line x1="152" y1="70" x2="220" y2="78" stroke="#475569" stroke-width="3"/><line x1="152" y1="150" x2="220" y2="158" stroke="#475569" stroke-width="3"/>';
- return o+tx2(70,48,'outer leaf',C.red,'middle',11)+tx2(70,62,'(brick)',C.red,'middle',10)+tx2(175,188,'cavity',C.slate,'middle',11)+tx2(320,48,'inner leaf',C.slate,'middle',11)+tx2(320,62,'(block)',C.slate,'middle',10)+tx2(320,100,'insulation',C.amber,'middle',11)+tx2(60,124,'DPC',C.navy,'middle',12)+tx2(320,160,'wall tie',C.slate,'middle',10);});
+ return o+tx2(56,62,'outer leaf',C.red,'middle',11)+tx2(56,75,'(brick)',C.red,'middle',10)+tx2(175,188,'cavity',C.slate,'middle',11)+tx2(340,62,'inner leaf',C.slate,'middle',11)+tx2(340,75,'(block)',C.slate,'middle',10)+tx2(320,100,'insulation',C.amber,'middle',11)+tx2(60,124,'DPC',C.navy,'middle',12)+tx2(320,160,'wall tie',C.slate,'middle',10);});
 redo(GCs,['Constraint fixing point'],function(){var p=iso(180,118,0.9),o=box(p,0,40,0,40,0,40,BLUE);
  var edges=[[[0,0,0],[70,0,0]],[[0,0,0],[0,70,0]],[[0,0,0],[0,0,70]],[[70,0,0],[70,70,0]],[[0,70,0],[70,70,0]],[[0,0,70],[70,0,70]],[[0,0,70],[0,70,70]],[[70,0,0],[70,0,70]],[[0,70,0],[0,70,70]],[[70,70,0],[70,70,70]],[[0,70,70],[70,70,70]],[[70,0,70],[70,70,70]]];
  edges.forEach(function(e){var a=p(e[0][0],e[0][1],e[0][2]),b=p(e[1][0],e[1][1],e[1][2]);o+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+C.slate+'" stroke-width="1.6" stroke-dasharray="5 4"/>';});
@@ -7300,7 +7301,7 @@ redo(GCs,['Kerning'],function(){var o='',T=function(x,y,t,c){return '<text x="'+
  o+=T(36,120,'A',C.slate)+T(98,120,'V',C.slate)+T(244,120,'A',C.slate)+T(276,120,'V',C.slate);
  o+='<line x1="78" y1="132" x2="98" y2="132" stroke="'+C.red+'" stroke-width="3"/><line x1="78" y1="126" x2="78" y2="138" stroke="'+C.red+'" stroke-width="3"/><line x1="98" y1="126" x2="98" y2="138" stroke="'+C.red+'" stroke-width="3"/>';
  o+='<line x1="276" y1="132" x2="280" y2="132" stroke="'+C.green+'" stroke-width="3"/><line x1="200" y1="46" x2="200" y2="180" stroke="'+C.mut+'" stroke-width="1" stroke-dasharray="4 4"/>';
- return o+tx2(70,62,'before:',C.slate,'middle',11)+tx2(70,76,'gap too big',C.red,'middle',11)+tx2(300,62,'after kerning:',C.blue,'middle',11)+tx2(300,76,'even spacing',C.blue,'middle',11)+tx2(110,160,'the gap',C.red,'middle',12)+tx2(200,184,'adjusts ONE pair of letters',C.slate,'middle',11);});
+ return o+tx2(70,62,'before:',C.slate,'middle',11)+tx2(70,76,'gap too big',C.red,'middle',11)+tx2(300,62,'after kerning:',C.blue,'middle',11)+tx2(300,76,'even spacing',C.blue,'middle',11)+tx2(110,160,'the gap',C.red,'middle',12)+tx2(300,150,'adjusts ONE pair',C.slate,'middle',11)+tx2(300,163,'of letters',C.slate,'middle',11);});
 redo(GCs,['Keyframe'],function(){var o=ln(50,150,350,150,C.navy,2.4),i;
  for(i=0;i<=10;i++)o+=ln(50+i*30,146,50+i*30,154,C.mut,1.2);
  o+=pg('50,140 58,150 50,160 42,150',C.red,C.navy,1.6)+pg('350,140 358,150 350,160 342,150',C.red,C.navy,1.6);
@@ -7514,7 +7515,7 @@ function hacksawQ(small){return function(){var o='',y=small?136:138,x0=small?100
  }
  o+=qC(x0,y,3.4,'#94a3b8',1.6)+qC(x1,y,3.4,'#94a3b8',1.6);
  return o+qT(196,60,'frame',C.blue)+ar(196,65,196,fy-8,C.blue,1.6)+(small?qT(60,98,'handle',C.amber)+ar(66,104,x0-24,y-10,C.amber,1.6):qT(46,62,'handle',C.amber)+ar(52,68,x0-30,fy+22,C.amber,1.6))
-  +qT(196,164,'blade',C.slate)+ar(196,157,196,y+11,C.slate,1.6)+rl(200,182,'teeth point away from the handle');};}
+  +qT(196,180,'blade',C.slate)+ar(196,172,196,y+13,C.slate,1.6)+rl(200,198,'teeth point away from the handle');};}
 redo(PMWs,['Hacksaw'],hacksawQ(false));redo(PMWs,['Junior hacksaw'],hacksawQ(true));
 
 // ---------- Coping saw ----------
@@ -7761,7 +7762,7 @@ function housing(stopped,ox){var p=iso(ox,128,0.95),o='';
  if(stopped)o+=box(p,-8,8,-30,12,0,9,WD)+box(p,-8,8,12,30,0,18,WL);else o+=box(p,-8,8,-30,30,0,9,WD);
  o+=box(p,8,40,-30,30,0,18,WL);return o;}
 function housingFig(){return housing(false,102)+housing(true,298)+qT(102,58,'THROUGH',C.blue,'middle',12)+qT(298,58,'STOPPED',C.blue,'middle',12)+qT(102,176,'groove reaches both edges',C.slate,'middle',11)+qT(298,176,'groove stops before the edge',C.slate,'middle',11);}
-redo(PWWs,['Housing joint','Stopped housing'],housingFig);
+redo(PWWs,['Housing joint','Through housing','Stopped housing'],housingFig);
 
 // ---------- Carcase construction ----------
 redo(PWWs,['Carcase construction'],function(){var p=iso(196,146,0.82),o='',W=62,D=34,H=58,T=8;
@@ -7913,9 +7914,9 @@ redo(PWWs,['Dovetail halving'],function(){var p=iso(212,162,0.9),o='',a,b;
  o+=extY(p,trap(0,50,84,12,26),32,46,WL);
  a=p(-12+1.4,46,50);b=p(12-1.4,46,50);o+=ln(a[0],a[1],b[0],b[1],WL.lo,3.2);
  var sk=p(0,7,84),tl=p(16,46,70),g0=p(52,48,60),g1=p(52,22,60);
- return o+qT(60,70,'tail (wider at the end)',C.slate)+ar(66,76,tl[0]-8,tl[1]-2,C.slate,1.5)+qT(322,60,'socket cut to match',C.amber)+ar(310,66,sk[0]+8,sk[1]-2,C.amber,1.5)
+ return o+qT(86,70,'tail (wider at the end)',C.slate)+ar(92,76,tl[0]-8,tl[1]-2,C.slate,1.5)+qT(322,60,'socket cut to match',C.amber)+ar(310,66,sk[0]+8,sk[1]-2,C.amber,1.5)
   +ar(g0[0],g0[1],g1[0],g1[1],C.red,2.4)+qT(344,112,'press the tail in',C.red,'middle',10)+qT(344,124,'from the front',C.red,'middle',10)
-  +rl(200,184,'the tail fits the socket and locks')+qT(344,148,'(each piece is cut',C.slate,'middle',10)+qT(344,160,'half-depth)',C.slate,'middle',10);});
+  +rl(86,158,'the tail fits')+rl(86,172,'the socket and locks')+qT(344,148,'(each piece is cut',C.slate,'middle',10)+qT(344,160,'half-depth)',C.slate,'middle',10);});
 
 // ---------- Lapped dovetail (round 9): bigger dovetail sockets, thin lap, matching tails ----------
 redo(PWWs,['Lapped dovetail'],function(){var p=iso(180,172,0.85),o='';
@@ -8912,7 +8913,7 @@ ES(['Pitch circle diameter'],function(){var o='',cx=130,cy=120,n=16,rT=62,rR=48,
  o+='<circle cx="'+cx+'" cy="'+cy+'" r="'+rP+'" fill="none" stroke="'+C.red+'" stroke-width="2" stroke-dasharray="6 4"/>';
  o+=dar(cx-rP,cy,cx+rP,cy,C.red,2.2);
  o+=lab(cx,cy+84,'pitch circle diameter',C.red,'middle',12);
- o+=ar(278,92,cx+rP*0.72,cy-rP*0.69,C.red,2)+lab(318,80,'pitch circle\n(dashed): runs\nthrough the\nmiddle of the teeth',C.red,'middle',11);
+ o+=ar(296,90,cx+rP*0.72,cy-rP*0.69,C.red,2)+lab(336,78,'pitch circle',C.red,'middle',12)+lab(336,92,'(dashed)',C.red,'middle',11);
  return F('PITCH CIRCLE DIAMETER',o,'Pitch circle diameter = the size of the imaginary circle that runs through the middle of the gear teeth','Used to work out gear sizes and spacing');});
 
 // ---------- Blueprint ----------
@@ -9015,6 +9016,449 @@ GC(['CAD modelling'],function(){var o='';
    +lab(216,156,'the whole shape is',C.red,'start',12)+lab(216,171,'projected, corner to corner',C.red,'start',12);
   return F('AUXILIARY VIEW',o,'Auxiliary view = an extra view looking at the object at right angles from the sloping face','The whole shape is projected, not just the slope');});
 })();
+})();
+
+// Tier 1 diagram redraws (Nov 2026 audit), batch 1
+(function(){
+var X=window.V2,H=window.V3H,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,F=window.FC;
+if(!H)return;
+var iso=H.iso,box=H.box,P=H.P,NV=C.navy;
+function lab(x,y,t,c,a,s){return tx(x,y,t,{a:a||'middle',s:s||12,w:800,c:c||C.red});}
+function pth(d,f,s,w,da){return '<path d="'+d+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||2)+'" stroke-linejoin="round" stroke-linecap="round"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
+function rr(x,y,w,h,r,f,sw){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+r+'" fill="'+f+'" stroke="'+NV+'" stroke-width="'+(sw||2)+'" stroke-linejoin="round"/>';}
+function el(cx,cy,rx,ry,f,sw,rot){return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+f+'" stroke="'+NV+'" stroke-width="'+(sw||2)+'"'+(rot?' transform="rotate('+rot+' '+cx+' '+cy+')"':'')+'/>';}
+function thick(d,outer,inner,wo,wi){return pth(d,null,outer,wo)+pth(d,null,inner,wi);}
+function sd(subjs,names,fn){subjs.forEach(function(s){X.sdef(s,names,fn);});}
+var ALL=['Practical Metalworking','Design & Manufacture','Practical Woodworking','Graphic Communication','Engineering Science'];
+var PAPER={top:'#ffffff',lo:'#f1f5f9',hi:'#e2e8f0'},PB={top:'#f1f5f9',lo:'#e2e8f0',hi:'#cbd5e1'},PD={top:'#475569',lo:'#334155',hi:'#1e293b'},PG={top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'};
+
+// ---- Squareness (kept inside the frame) ----
+sd(['Practical Woodworking'],['Squareness'],function(){var o='',G='#16a34a',W='#d9a864';
+ o+=lab(200,66,'try square held against the end of the board',C.slate,'middle',11);
+ // true
+ o+=rr(40,98,16,86,2,'#a8742f',2)+pg('56,106 172,106 172,176 56,176',W,NV,2)+rr(40,98,134,10,2,'#cbd5e1',1.8);
+ o+=lab(108,200,'true 90° - no gap',G,'middle',12);
+ // gap
+ o+=rr(228,98,16,86,2,'#a8742f',2)+pg('244,106 360,106 360,176 268,176',W,NV,2)+pg('244,110 268,176 244,176','#fff7ed',C.red,1.6)+rr(228,98,134,10,2,'#cbd5e1',1.8);
+ o+=ar(236,190,250,172,C.red,2)+lab(312,200,'gap = not square',C.red,'middle',12);
+ return F('SQUARENESS',o,'Squareness = how exactly two edges meet at a right angle (90°)','Checked with a try square');});
+
+// ---- SCAMPER (list layout, nothing overlaps) ----
+sd(['Design & Manufacture'],['SCAMPER'],function(){var o='',cs=['#fca5a5','#fdba74','#fde047','#86efac','#7dd3fc','#c4b5fd','#f9a8d4'],
+ L=['S','C','A','M','P','E','R'],W=['Substitute','Combine','Adapt','Modify','Put to other use','Eliminate','Reverse'],
+ T=['swap in something else','join two ideas or parts','copy an idea from elsewhere','change its size or shape','find a new job for it','take away what is not needed','turn it round or flip it'],i;
+ for(i=0;i<7;i++){var y=52+i*20;o+=rr(36,y,18,17,3,cs[i],1.8)+tx(45,y+13.5,L[i],{a:'middle',s:13,w:900,c:NV})+tx(64,y+13,W[i],{a:'start',s:12,w:800,c:NV})+tx(168,y+13,T[i],{a:'start',s:11,w:600,c:C.slate});}
+ return F('SCAMPER',o,'SCAMPER = a checklist of seven prompts to improve a product or find new ideas','Substitute, Combine, Adapt, Modify, Put to other use, Eliminate, Reverse');});
+
+// ---- Printer ----
+sd(['Graphic Communication'],['printer'],function(){var p=iso(190,128,0.86),o='';
+ o+=box(p,-46,-6,-35,-32,24,36,PAPER);
+ o+=box(p,-62,62,-36,36,0,24,PB)+box(p,-56,56,-30,30,24,7,PG);
+ o+=box(p,34,52,-16,8,31,1.5,PD);
+ o+=pg(P([p(62,-26,8),p(62,26,8),p(62,26,15),p(62,-26,15)]),'#0f172a',NV,1.6);
+ o+=box(p,56,94,-22,22,9,1.6,PAPER);
+ o+=ar(96,84,160,78,C.blue,2)+lab(96,72,'paper in',C.blue,'middle',12);
+ o+=ar(338,158,290,166,C.red,2)+lab(342,150,'paper out',C.red,'middle',12);
+ o+=lab(200,200,'file in, paper out',C.slate,'middle',12);
+ return F('PRINTER',o,'Printer = an output device that puts a digital file onto paper','Output device');
+});
+
+// ---- Vehicle wrap / decal ----
+sd(['Graphic Communication'],['vehicle wrap','decal'],function(){var o='';
+ var body='M56 134 L56 118 Q56 106 72 104 L108 98 Q124 68 152 64 L240 64 Q268 66 286 94 L326 101 Q344 105 344 120 L344 134 Z';
+ o+=pth(body,'#e2e8f0',NV,2.4);
+ o+=pth('M118 96 Q130 74 154 71 L196 71 L196 96 Z','#bfdbfe',NV,2)+pth('M204 71 L238 71 Q254 73 268 96 L204 96 Z','#bfdbfe',NV,2);
+ o+=ln(200,71,200,130,NV,1.6)+rr(208,104,16,4,2,'#94a3b8',1.4);
+ o+=pth('M56 108 L344 108 L344 126 L56 126 Z','#ef4444','#b91c1c',1.2);
+ o+=pth('M326 108 L344 108 L344 122 Z','#fca5a5',NV,1.4);
+ o+=ci(112,134,22,'#cbd5e1',NV,2)+ci(112,134,17,'#1e293b',NV,2)+ci(112,134,8,'#cbd5e1',NV,1.6)+ci(112,134,3,'#64748b');
+ o+=ci(288,134,22,'#cbd5e1',NV,2)+ci(288,134,17,'#1e293b',NV,2)+ci(288,134,8,'#cbd5e1',NV,1.6)+ci(288,134,3,'#64748b');
+ o+=lab(200,122,'YOUR LOGO','#fff','middle',13);
+ o+=ar(200,170,200,130,C.red,2)+lab(200,184,'printed vinyl stuck over the vehicle',C.slate,'middle',12);
+ return F('VEHICLE WRAP / DECAL',o,'Vehicle wrap / decal = a printed vinyl sticker or skin stuck onto a surface to advertise or decorate','Wrap covers a large area');});
+
+// ---- Pincers (carpenter's end-cutting pincers, drawn along the tool axis then tilted) ----
+sd(['Practical Woodworking'],['Pincers'],function(){var o='',K='#1f2937',B='#2563eb',M='#d5dde7';
+ // one forged half (upper jaw -> lower handle); the other half is its mirror, so the two cross at the pivot
+ var half=function(){var h='';
+  h+=pth('M-2 -2 Q-12 -20 0 -40 Q14 -58 42 -56 Q68 -52 76 -30 L90 -2 Q112 14 170 14 L170 28 Q112 32 84 14 L70 -2 L56 -2 Q55 -28 38 -28 Q21 -28 20 -2 Z',K,NV,2.6);
+  h+=pth('M-2 -2 Q-12 -20 0 -40 Q6 -48 16 -52 Q6 -36 10 -20 Q12 -8 20 -2 Z',M,NV,2.2);
+  h+=pth('M-6 -22 Q-4 -34 4 -43',null,'#ffffff',2);
+  h+=pth('M34 -52 Q60 -48 72 -34',null,'#475569',2);
+  h+=thick('M166 22 L290 24',NV,K,22,17)+thick('M276 24 L400 26',NV,B,21,16);
+  return h;};
+ o+='<g transform="translate(50,166) rotate(-22) scale(.68)">'+half()+'<g transform="scale(1,-1)">'+half()+'</g>'+ci(78,0,13,'#334155',NV,2.6)+ci(78,0,4.5,'#cbd5e1')+'</g>';
+ o+=lab(20,122,'jaws',C.red,'middle',12)+ar(26,128,38,144,C.red,2);
+ o+=lab(72,104,'pivot',C.slate,'middle',12)+ar(86,110,100,130,C.slate,1.8);
+ o+=lab(342,156,'long handles',C.blue,'middle',12)+ar(300,144,240,114,C.blue,2);
+ return F('PINCERS',o,'Pincers = a tool with two long handles and strong jaws, used to pull out nails','Pull with a rocking movement');});
+
+// ---- Scroll saw (side view) ----
+sd(['Practical Woodworking'],['Scroll saw'],function(){var o='';
+ o+=rr(108,170,196,16,3,'#475569',2)+rr(118,146,176,24,3,'#64748b',2);
+ o+=rr(106,138,150,9,2,'#cbd5e1',1.8);
+ o+=pth('M262 170 L262 80 Q262 56 238 56 L150 56 Q132 56 132 72 L132 84 L150 84 L238 84 Q246 84 246 92 L246 170 Z','#64748b',NV,2.2);
+ o+=rr(128,84,16,12,2,'#94a3b8',1.6)+rr(128,150,16,10,2,'#94a3b8',1.6);
+ o+=rr(150,128,62,10,2,'#d9a864',1.8);
+ o+=ln(136,96,136,150,C.red,2.4);
+ o+=ar(110,100,110,126,C.red,1.8)+ar(110,126,110,100,C.red,1.8);
+ o+=lab(92,92,'thin blade',C.red,'end',11)+lab(92,106,'moves up',C.red,'end',11)+lab(92,120,'and down',C.red,'end',11);
+ o+=ar(70,142,104,142,C.blue,1.8)+lab(58,146,'table',C.blue,'end',11);
+ return F('SCROLL SAW','<g transform="translate(0,8)">'+o+'</g>','Scroll saw = a machine with a thin blade that moves up and down to cut tight curves','For fretwork and fine detail');});
+
+// ---- Brake (disc brake, cross-section) ----
+sd(['Engineering Science'],['Brake'],function(){var o='';
+ o+=rr(96,64,208,16,3,'#f97316',2)+rr(96,64,28,104,3,'#f97316',2)+rr(276,64,28,104,3,'#f97316',2);
+ o+=rr(100,96,20,50,2,'#93c5fd',1.6)+rr(280,96,20,50,2,'#93c5fd',1.6);
+ o+=rr(124,98,18,46,2,'#cbd5e1',1.8)+rr(258,98,18,46,2,'#cbd5e1',1.8);
+ o+=rr(142,92,22,58,2,'#334155',2)+rr(236,92,22,58,2,'#334155',2);
+ o+=rr(182,52,36,128,3,'#94a3b8',2.2)+ln(190,60,190,172,'#e2e8f0',2)+ln(210,60,210,172,'#64748b',1.6);
+ o+=ar(150,122,178,122,C.red,2.4)+ar(250,122,222,122,C.red,2.4);
+ o='<g transform="translate(0,6)">'+o+'</g>';
+ o+=lab(200,53,'disc (spins with the wheel)',C.slate,'middle',11);
+ o+=lab(46,104,'caliper',C.orange||'#c2410c','middle',12)+ar(66,110,92,128,'#c2410c',1.8);
+ o+=lab(356,100,'fluid',C.blue,'middle',12)+lab(356,114,'pressure',C.blue,'middle',12)+ar(336,120,304,134,C.blue,1.8);
+ o+=lab(200,203,'pads squeeze the disc: friction slows it',C.red,'middle',12);
+ return F('BRAKE',o,'Brake = a device that slows or stops something by using friction','Brakes turn movement energy into heat');});
+
+// ================= Tier 1, batch 2 =================
+// ---- Planned obsolescence ----
+sd(['Design & Manufacture'],['Planned obsolescence'],function(){var o='';
+ function phone(x,y,st){var r='',scr=st==='new'?'#bfdbfe':(st==='old'?'#e2e8f0':'#bfdbfe');
+  r+=rr(x,y,52,84,9,'#475569',2.2)+rr(x+5,y+9,42,60,3,scr,1.6)+ci(x+26,y+76,3,'#94a3b8',1.2);
+  if(st==='old'){r+=pth('M'+(x+14)+' '+(y+12)+' L'+(x+26)+' '+(y+36)+' L'+(x+20)+' '+(y+44)+' L'+(x+38)+' '+(y+66),null,C.red,2.2);
+   r+=rr(x+16,y+20,20,10,2,'#fff',1.4)+rr(x+17.5,y+22,4,6,1,C.red,0.6);}
+  if(st==='new'||st==='new2'){r+=pth('M'+(x+15)+' '+(y+38)+' L'+(x+23)+' '+(y+47)+' L'+(x+38)+' '+(y+28),null,'#16a34a',3.4);}
+  return r;}
+ o+=phone(46,58,'new')+phone(174,58,'old')+phone(302,58,'new2');
+ o+=ar(106,100,166,100,C.slate,2.2)+ar(234,100,294,100,C.slate,2.2);
+ o+=lab(72,154,'brand new',C.green||'#16a34a','middle',12);
+ o+=lab(200,154,'2 years later: worn out',C.red,'middle',12);
+ o+=lab(328,154,'buy a new one',C.blue,'middle',12);
+ o+=rr(40,178,70,18,4,'#fecaca',1.8)+tx(75,191,'2 years',{a:'middle',s:11,w:800,c:C.red});
+ o+=pth('M112 187 L350 187',null,'#64748b',2,'6 5')+tx(232,176,'could have lasted 10 years',{a:'middle',s:10.5,w:700,c:C.slate});
+ return F('PLANNED OBSOLESCENCE',o,'Planned obsolescence = designing a product to wear out or go out of date quickly','So people have to buy a replacement');});
+
+// ---- Offset lithography ----
+sd(['Graphic Communication'],['Offset lithography'],function(){var o='',I='#dc2626';
+ function arc(cx,cy,r,a0,a1,c,w){var p0=[cx+r*Math.cos(a0*Math.PI/180),cy+r*Math.sin(a0*Math.PI/180)],p1=[cx+r*Math.cos(a1*Math.PI/180),cy+r*Math.sin(a1*Math.PI/180)];return pth('M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+' A'+r+' '+r+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1),null,c,w);}
+ // cylinders
+ o+=ci(58,98,13,'#fde68a',2)+ci(100,98,28,'#dbeafe',2.2)+ci(156,98,28,'#fde68a',2.2)+ci(156,154,28,'#e2e8f0',2.2);
+ o+=ci(58,98,3,NV)+ci(100,98,3,NV)+ci(156,98,3,NV)+ci(156,154,3,NV);
+ o+=arc(100,98,28,-28,28,I,4);       // ink image on plate
+ o+=arc(156,98,28,152,208,I,4);      // image offset to blanket
+ o+=arc(156,98,28,68,112,I,4);       // blanket carries it to the paper
+ // paper
+ o+=rr(110,123,230,6,1,'#ffffff',1.8)+rr(216,121.5,26,3,1,I,0.6);
+ o+=lab(320,146,'paper',C.slate,'middle',10.5);
+ // labels
+ o+=lab(58,136,'ink roller',C.slate,'middle',10.5);
+ o+=lab(100,66,'plate',C.blue,'middle',11);
+ o+=lab(156,66,'blanket',C.orange||'#b45309','middle',11);
+ o+=lab(190,160,'impression cylinder',C.slate,'start',10.5);
+ function bd(x,y,n){return ci(x,y,8.5,I,1.6)+tx(x,y+3.8,n,{a:'middle',s:11,w:900,c:'#ffffff'});}
+ o+=bd(71,84,'1')+bd(128,76,'2')+bd(176,116,'3');
+ var L=lab(236,80,'1  ink on the plate',I,'start',11.5)+lab(236,98,'2  plate → blanket',I,'start',11.5)+lab(236,116,'3  blanket → paper',I,'start',11.5);
+ return F('OFFSET LITHOGRAPHY','<g transform="translate(-10,-6) scale(1.12)">'+o+'</g>'+L,'Offset lithography = ink goes from a plate to a rubber blanket and then onto the paper','Used for books, newspapers and posters');});
+
+// ---- Aesthetics ----
+sd(['Design & Manufacture'],['Aesthetics'],function(){var o='',T='#14b8a6';
+ o+=rr(184,54,32,14,3,'#334155',2)+pth('M190 68 Q184 84 176 96 L176 184 Q176 192 186 192 L214 192 Q224 192 224 184 L224 96 Q216 84 210 68 Z',T,NV,2.4);
+ o+=pth('M182 100 L182 182',null,'#99f6e4',3);
+ for(var i=0;i<5;i++)o+=ln(177,150+i*8,223,150+i*8,'#0f766e',1.8);
+ o+=ci(200,118,9,'#ffffff',1.8)+pth('M196 118 L200 112 L204 118 L200 124 Z','#f97316',NV,1.2);
+ o+=lab(86,92,'colour',C.blue,'middle',13)+ar(120,92,176,102,C.blue,2);
+ o+=lab(86,132,'shape',C.red,'middle',13)+ar(120,130,170,126,C.red,2);
+ o+=lab(318,100,'style',C.purple||'#7c3aed','middle',13)+ar(284,102,214,116,C.purple||'#7c3aed',2);
+ o+=lab(318,164,'texture',C.green||'#15803d','middle',13)+ar(284,162,228,158,C.green||'#15803d',2);
+ return F('AESTHETICS',o,'Aesthetics = how a product looks, feels and sounds: its shape, colour, texture and style','The appearance of a design');});
+
+// ---- Form ----
+sd(['Design & Manufacture'],['Form'],function(){var o='',W='#d9a864',D='#a8742f';
+ o+=lab(200,70,'same job (to sit on), different form',C.slate,'middle',12);
+ // stool (front view)
+ o+=pth('M52 142 L44 186',null,NV,8)+pth('M52 142 L44 186',null,W,5)+pth('M92 142 L100 186',null,NV,8)+pth('M92 142 L100 186',null,W,5);
+ o+=rr(36,128,72,14,4,'#93c5fd',2)+ln(48,168,96,168,NV,2.4);
+ // dining chair (front view): slatted back, seat, four legs
+ o+=rr(164,80,56,50,4,W,2)+rr(172,86,8,38,2,'#fff7ed',1.4)+rr(188,86,8,38,2,'#fff7ed',1.4)+rr(204,86,8,38,2,'#fff7ed',1.4);
+ o+=rr(160,128,64,12,3,'#fca5a5',2)+rr(163,140,9,44,2,W,2)+rr(212,140,9,44,2,W,2);
+ // armchair (front view): tall padded back, two arms, seat cushion, short legs
+ o+=rr(272,98,92,46,14,'#a5b4fc',2.2)+rr(262,124,22,42,9,'#818cf8',2.2)+rr(352,124,22,42,9,'#818cf8',2.2);
+ o+=rr(282,138,72,26,6,'#c7d2fe',2.2)+rr(262,162,112,12,4,'#818cf8',2.2)+rr(270,174,10,10,2,D,1.8)+rr(356,174,10,10,2,D,1.8);
+ o+=lab(72,198,'stool',NV,'middle',12)+lab(192,198,'dining chair',NV,'middle',12)+lab(318,198,'armchair',NV,'middle',12);
+ return F('FORM',o,'Form = the shape and structure of a product','Form is what you see; function is what it does');});
+
+// ---- Clutch ----
+sd(['Engineering Science'],['Clutch'],function(){var o='',BL='#93c5fd',RD='#fca5a5',OR='#f97316',SH='#cbd5e1';
+ o+=lab(200,66,'engaged: both shafts turn',C.green||'#15803d','middle',11.5);
+ o+=rr(40,85,136,12,2,SH,1.8)+rr(176,74,14,34,2,BL,2)+rr(190,74,6,34,1,OR,1.6)+rr(196,74,14,34,2,RD,2)+rr(210,85,150,12,2,SH,1.8);
+ o+=lab(80,122,'driving shaft',C.blue,'middle',11)+lab(330,122,'driven shaft',C.red,'middle',11);
+ o+=lab(200,142,'disengaged: driven shaft is free',C.red,'middle',11.5);
+ o+=rr(40,165,112,12,2,SH,1.8)+rr(152,154,14,34,2,BL,2)+rr(224,154,6,34,1,OR,1.6)+rr(230,154,14,34,2,RD,2)+rr(244,165,116,12,2,SH,1.8);
+ o+=ar(170,176,220,176,C.red,2)+ar(220,176,170,176,C.red,2)+lab(195,166,'gap',C.red,'middle',11);
+ o+=lab(80,200,'engine side',C.slate,'middle',10.5)+lab(330,200,'wheel side',C.slate,'middle',10.5);
+ return F('CLUTCH',o,'Clutch = a device that connects or disconnects two turning shafts','Used in a car to change gear');});
+
+// ---- Crank and slider ----
+sd(['Engineering Science'],['Crank and slider'],function(){var o='',cx=90,cy=128;
+ o+=rr(186,108,196,42,5,'#e2e8f0',2)+ln(186,128,382,128,'#94a3b8',1.4);
+ o+=ci(cx,cy,34,'#fde68a',2.4)+ci(cx,cy,5,NV);
+ var px=cx+34*Math.cos(50*Math.PI/180),py=cy-34*Math.sin(50*Math.PI/180),sx=px+Math.sqrt(120*120-(cy-py)*(cy-py));
+ o+=thick('M'+px.toFixed(1)+' '+py.toFixed(1)+' L'+sx.toFixed(1)+' 128',NV,'#60a5fa',9,5);
+ o+=rr(sx-20,112,40,32,3,'#f87171',2.2)+ci(sx,128,5,'#ffffff',1.8)+ci(px,py,6,'#ffffff',2);
+ o+=pth('M54 103 A44 44 0 0 1 94 84',null,C.slate,2.4)+pg('88,77 104,85 90,92',C.slate,C.slate,1);
+ o+=lab(cx,70,'crank (turns)',C.blue,'middle',12);
+ o+=lab(168,92,'connecting rod',C.slate,'middle',11);
+ o+=lab(sx+50,102,'slider',C.red,'middle',12);
+ o+=ar(sx-26,164,sx+66,164,C.red,2)+ar(sx+66,164,sx-26,164,C.red,2);
+ o+=lab(200,194,'turning becomes back and forth',C.red,'middle',12);
+ return F('CRANK AND SLIDER',o,'Crank and slider = a turning crank pushes and pulls a slider back and forth','Turning motion becomes straight-line motion');});
+
+// ---- CAM bolt (plan view: round hole seen from above, bolt hidden inside the shelf) ----
+sd(['Graphic Communication','Practical Woodworking','Design & Manufacture'],['CAM bolt'],function(){var o='',W='#d9a864',St='#94a3b8';
+ o+=rr(60,78,36,112,3,W,2)+rr(96,102,204,66,3,W,2);
+ o+=pth('M96 131 L224 131 M96 139 L224 139',null,'#7c5a2b',1.8,'4 3');
+ o+=rr(70,131,144,8,2,St,1.8);
+ for(var k=0;k<5;k++)o+=ln(72+k*5,131,77+k*5,139,'#475569',1.4);
+ o+=ci(236,135,28,'#e2e8f0',2.4)+ci(236,135,23,'#fb923c',2.2)+pth('M236 113 L236 157',null,NV,2.6)+pth('M222 135 L236 135',null,'#ffffff',2.4);
+ o+=ci(214,135,6.5,St,1.8);
+ o+=pth('M271 143 A36 36 0 0 1 250 168',null,C.red,2.8)+pg('240,172 252.5,173.4 247.5,162.6',C.red,C.red,1);
+ o+=lab(150,92,'bolt',C.blue,'middle',12)+ar(150,98,150,128,C.blue,1.8);
+ o+=lab(28,126,'upright',C.slate,'middle',11.5)+lab(28,140,'panel',C.slate,'middle',11.5);
+ o+=lab(190,188,'shelf panel',C.slate,'middle',12);
+ o+=lab(350,104,'round cam hole',C.slate,'middle',12)+ar(326,110,266,120,C.slate,1.8);
+ o+=lab(348,190,'turn the cam',C.red,'middle',12)+ar(330,180,272,162,C.red,1.8);
+ return F('CAM BOLT',o,'Cam bolt = a bolt pulled tight by turning a round cam in the other part, used in flat-pack furniture','Tighten with a screwdriver');});
+
+})();
+
+// Tier 2 redraws (Nov 2026 audit) - overnight batch A: Graphic Communication devices
+(function(){
+var X=window.V2,H=window.V3H,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,F=window.FC;
+if(!H)return;
+var iso=H.iso,box=H.box,cyl=H.cyl,P=H.P,NV=C.navy;
+function lab(x,y,t,c,a,s){return tx(x,y,t,{a:a||'middle',s:s||12,w:800,c:c||C.red});}
+function pth(d,f,s,w,da){return '<path d="'+d+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||2)+'" stroke-linejoin="round" stroke-linecap="round"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
+function rr(x,y,w,h,r,f,sw){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+r+'" fill="'+f+'" stroke="'+NV+'" stroke-width="'+(sw||2)+'" stroke-linejoin="round"/>';}
+function thick(d,outer,inner,wo,wi){return pth(d,null,outer,wo)+pth(d,null,inner,wi);}
+function sd(subjs,names,fn){subjs.forEach(function(s){X.sdef(s,names,fn);});}
+var PAPER={top:'#ffffff',lo:'#f1f5f9',hi:'#e2e8f0'},PB={top:'#f1f5f9',lo:'#e2e8f0',hi:'#cbd5e1'},PD={top:'#475569',lo:'#334155',hi:'#1e293b'},PG={top:'#cbd5e1',lo:'#94a3b8',hi:'#64748b'},PW={top:'#ffffff',lo:'#e2e8f0',hi:'#cbd5e1'};
+function poly(p,pts,f,s,w){return pg(P(pts.map(function(q){return p(q[0],q[1],q[2]);})),f,s||NV,w||2);}
+function seg(p,a,b,c,w){var u=p(a[0],a[1],a[2]),v=p(b[0],b[1],b[2]);return '<line x1="'+u[0].toFixed(1)+'" y1="'+u[1].toFixed(1)+'" x2="'+v[0].toFixed(1)+'" y2="'+v[1].toFixed(1)+'" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round"/>';}
+
+// ---------- figures (reused by the Device card) ----------
+function scannerFig(cx,cy,k){var p=iso(cx,cy,k),o='';
+ o+=box(p,-60,60,-42,42,0,14,PB);
+ o+=poly(p,[[-52,-34,14],[52,-34,14],[52,34,14],[-52,34,14]],'#bfdbfe',NV,1.8);
+ o+=poly(p,[[-30,-22,14.4],[22,-22,14.4],[22,24,14.4],[-30,24,14.4]],'#ffffff',NV,1.4);
+ [-14,-6,2,10,18].forEach(function(y){o+=seg(p,[-24,y,14.8],[14,y,14.8],'#94a3b8',1.4);});
+ o+=seg(p,[-52,12,14.6],[52,12,14.6],'#ef4444',3);
+ // lid raised at the back
+ o+=poly(p,[[-60,-42,14],[60,-42,14],[60,-52,58],[-60,-52,58]],'#e2e8f0',NV,2.2);
+ o+=poly(p,[[-60,-52,58],[60,-52,58],[60,-50,62],[-60,-50,62]],'#cbd5e1',NV,1.6);
+ return o;}
+function tabletFig(cx,cy,k){var p=iso(cx,cy,k),o='';
+ o+=box(p,-64,64,-44,44,0,7,PD);
+ o+=poly(p,[[-54,-36,7],[54,-36,7],[54,36,7],[-54,36,7]],'#64748b',NV,1.6);
+ // line being drawn
+ var pts=[[-36,10],[-26,-8],[-14,-14],[-4,2],[8,16],[22,6],[34,-12]],d='';
+ pts.forEach(function(q,i){var s=p(q[0],q[1],7.4);d+=(i?'L':'M')+s[0].toFixed(1)+' '+s[1].toFixed(1);});
+ o+=pth(d,null,'#7dd3fc',3.2);
+ // pen
+ var tip=p(34,-12,7.4),end=p(58,-30,74);
+ o+=thick('M'+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+' L'+end[0].toFixed(1)+' '+end[1].toFixed(1),NV,'#ef4444',8*k+3,6*k+1.6);
+ o+=ci(tip[0],tip[1],2.2*k+1,'#0f172a');
+ return o;}
+function plotterFig(cx,cy,k){var p=iso(cx,cy,k),o='';
+ o+=box(p,-58,-50,-18,18,0,34,PG)+box(p,50,58,-18,18,0,34,PG);
+ // paper coming out of the front
+ o+=poly(p,[[-50,18,34],[50,18,34],[50,58,6],[-50,58,6]],'#ffffff',NV,1.8);
+ o+=seg(p,[-34,26,31],[-34,46,13],'#2563eb',2.2)+seg(p,[-34,46,13],[-6,50,9],'#2563eb',2.2)+seg(p,[-6,50,9],[-6,30,28],'#2563eb',2.2)+seg(p,[-6,30,28],[-34,26,31],'#2563eb',2.2);
+ o+=seg(p,[12,26,31],[40,30,28],'#ef4444',2.2)+seg(p,[12,34,24],[40,38,20],'#ef4444',2.2);
+ // body with a slot and the pen carriage
+ o+=box(p,-64,64,-22,18,34,26,PW);
+ o+=poly(p,[[-60,18,38],[60,18,38],[60,18,50],[-60,18,50]],'#1e293b',NV,1.4);
+ o+=box(p,6,18,14,22,36,12,{top:'#fca5a5',lo:'#f87171',hi:'#dc2626'});
+ o+=seg(p,[12,22,36],[12,26,31],'#ef4444',2.4);
+ return o;}
+function printerFig(cx,cy,k){var p=iso(cx,cy,k),o='';
+ o+=box(p,-46,-6,-35,-32,24,36,PAPER);
+ o+=box(p,-62,62,-36,36,0,24,PB)+box(p,-56,56,-30,30,24,7,PG);
+ o+=box(p,34,52,-16,8,31,1.5,PD);
+ o+=pg(P([p(62,-26,8),p(62,26,8),p(62,26,15),p(62,-26,15)]),'#0f172a',NV,1.6);
+ o+=box(p,56,94,-22,22,9,1.6,PAPER);
+ return o;}
+
+sd(['Graphic Communication'],['Scanner'],function(){var o=scannerFig(200,154,1.0);
+ o+=lab(84,112,'lid',C.slate,'middle',12)+ar(104,118,150,126,C.slate,1.6);
+ o+=lab(330,112,'glass',C.blue,'middle',12)+ar(310,118,262,144,C.blue,1.8);
+ o+=lab(326,184,'light bar moves',C.red,'middle',12)+lab(326,198,'under the page',C.red,'middle',12)+ar(298,176,252,164,C.red,1.8);
+ return F('SCANNER',o,'Scanner = an input device that copies a paper picture or document into a digital file','Input device');});
+
+sd(['Graphic Communication'],['Graphics tablet'],function(){var o=tabletFig(150,146,1.0);
+ // screen showing the same line
+ o+=rr(268,84,100,66,6,'#1e293b',2.4)+rr(274,90,88,54,3,'#e0f2fe',1.6)+rr(308,150,20,10,1,'#94a3b8',1.8)+rr(290,160,56,6,3,'#64748b',1.8);
+ o+=pth('M284 128 Q292 104 302 112 Q312 120 320 128 Q330 134 348 102',null,'#2563eb',3);
+ o+=ar(226,156,262,132,C.red,2);
+ o+=lab(318,76,'appears on screen',C.red,'middle',11.5);
+ o+=lab(86,92,'pen',C.slate,'middle',12)+ar(100,98,130,118,C.slate,1.6);
+ return F('GRAPHICS TABLET',o,'Graphics tablet = an input device you draw on with a pen, and the lines appear on screen','Input device');});
+
+sd(['Graphic Communication'],['Plotter'],function(){var o=plotterFig(190,128,1.0);
+ o+=lab(330,92,'pen carriage',C.red,'middle',12)+ar(312,98,222,116,C.red,1.8);
+ o+=lab(60,168,'large paper',C.blue,'middle',12)+ar(84,162,106,150,C.blue,1.8);
+ return F('PLOTTER',o,'Plotter = a machine that draws large, accurate drawings by moving a pen across the paper','Output device');});
+
+sd(['Graphic Communication'],['Device'],function(){var o='';
+ o+=scannerFig(76,116,0.56)+tabletFig(200,126,0.52)+printerFig(326,114,0.5);
+ o+=lab(76,170,'scanner',C.slate,'middle',12)+lab(200,170,'graphics tablet',C.slate,'middle',12)+lab(326,170,'printer',C.slate,'middle',12);
+ return F('DEVICE',o,'Device = a piece of hardware, like a scanner, graphics tablet, plotter or 3D printer, used to make graphics','Hardware is the physical equipment');});
+
+
+// ================= batch B: Engineering =================
+function arcA(cx,cy,r,a0,a1,col,w){ // arrowed arc from angle a0 to a1 (degrees, screen coords)
+ var t0=a0*Math.PI/180,t1=a1*Math.PI/180,x0=cx+r*Math.cos(t0),y0=cy+r*Math.sin(t0),x1=cx+r*Math.cos(t1),y1=cy+r*Math.sin(t1),cw=a1>a0;
+ var dx=cw?-Math.sin(t1):Math.sin(t1),dy=cw?Math.cos(t1):-Math.cos(t1),nx=Math.cos(t1),ny=Math.sin(t1),L=9,W=5.5;
+ var tip=[x1+dx*L,y1+dy*L],b1=[x1+nx*W,y1+ny*W],b2=[x1-nx*W,y1-ny*W];
+ return pth('M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+r+' '+r+' 0 '+(Math.abs(a1-a0)>180?1:0)+' '+(cw?1:0)+' '+x1.toFixed(1)+' '+y1.toFixed(1),null,col,w||2.6)+pg(tip[0].toFixed(1)+','+tip[1].toFixed(1)+' '+b1[0].toFixed(1)+','+b1[1].toFixed(1)+' '+b2[0].toFixed(1)+','+b2[1].toFixed(1),col,col,1);}
+
+// ---- Belt drive ----
+sd(['Engineering Science'],['Belt drive'],function(){var o='',cy=118,x1=110,x2=270,r1=24,r2=50;
+ var belt='M106.1 '+(cy-23.7)+' L261.9 '+(cy-49.3)+' A50 50 0 1 1 261.9 '+(cy+49.3)+' L106.1 '+(cy+23.7)+' A24 24 0 0 1 106.1 '+(cy-23.7)+' Z';
+ o+=ci(x2,cy,r2,'#dbeafe',2.4)+ci(x1,cy,r1,'#dbeafe',2.4);
+ [0,60,120,180,240,300].forEach(function(a){var t=a*Math.PI/180;o+=ln(x2,cy,x2+(r2-8)*Math.cos(t),cy+(r2-8)*Math.sin(t),'#93c5fd',3);});
+ o+=ci(x2,cy,r2-10,'none','#93c5fd',2)+ci(x2,cy,9,'#94a3b8',2)+ci(x1,cy,r1-7,'none','#93c5fd',2)+ci(x1,cy,7,'#94a3b8',2);
+ o+=pth(belt,null,NV,9)+pth(belt,null,'#475569',5.4);
+ o+=arcA(x1,cy,r1+14,200,300,C.blue,2.4)+arcA(x2,cy,r2+14,210,290,C.red,2.4);
+ o+=lab(x1,cy+r1+30,'driver (small)',C.blue,'middle',12)+lab(x1,cy+r1+44,'turns faster',C.blue,'middle',11);
+ o+=lab(x2,cy+r2+20,'driven (large)',C.red,'middle',12)+lab(x2,cy+r2+34,'turns slower',C.red,'middle',11);
+ o+=lab(186,cy-58,'belt',C.slate,'middle',12)+ar(186,cy-50,186,cy-34,C.slate,1.6);
+ return F('BELT DRIVE',o,'Belt drive = a belt around two pulleys carries turning motion','Both pulleys turn the same way');});
+
+// ---- Pawl and ratchet ----
+sd(['Engineering Science'],['Pawl and ratchet'],function(){var o='',cx=190,cy=134,R=54,r=42,n=12,d='',i;
+ for(i=0;i<n;i++){var A=(-117+30*i)*Math.PI/180,T=(-117+30*i+26)*Math.PI/180,V=(-117+30*i+26.6)*Math.PI/180;
+  var pv=[cx+r*Math.cos(A),cy+r*Math.sin(A)],pt=[cx+R*Math.cos(T),cy+R*Math.sin(T)],pb=[cx+r*Math.cos(V),cy+r*Math.sin(V)];
+  d+=(i?'L':'M')+pv[0].toFixed(1)+' '+pv[1].toFixed(1)+' L'+pt[0].toFixed(1)+' '+pt[1].toFixed(1)+' L'+pb[0].toFixed(1)+' '+pb[1].toFixed(1)+' ';}
+ d+='Z';
+ o+=pth(d,'#bfdbfe',NV,2.4)+ci(cx,cy,30,'none','#93c5fd',2)+ci(cx,cy,8,'#94a3b8',2);
+ [0,90,180,270].forEach(function(a){var t=(a+45)*Math.PI/180;o+=ln(cx+9*Math.cos(t),cy+9*Math.sin(t),cx+28*Math.cos(t),cy+28*Math.sin(t),'#93c5fd',4);});
+ // pawl: pivot top right, tip sits in the tooth gap at the top
+ var tip=[cx,cy-r-1],pv=[cx+66,cy-r-12];
+ o+=thick('M'+pv[0]+' '+pv[1]+' L'+tip[0]+' '+tip[1],NV,'#fca5a5',11,7.2);
+ o+=pg((tip[0]-3)+','+(tip[1]-1)+' '+(tip[0]+4)+','+(tip[1]-6)+' '+(tip[0]+4)+','+(tip[1]+6),'#ef4444',NV,1.6);
+ o+=ci(pv[0],pv[1],7,'#94a3b8',2.2)+ci(pv[0],pv[1],2.4,NV)+rr(pv[0]-3,pv[1]-24,6,17,1,'#64748b',1.8);
+ o+=arcA(cx,cy,R+14,-30,-76,C.green||'#16a34a',2.6).replace(/-76/g,'-76');
+ o+=lab(78,128,'ratchet wheel',C.blue,'middle',12)+ar(112,130,cx-R+4,cy,C.blue,1.8);
+ o+=lab(pv[0]+34,pv[1]-18,'pawl',C.red,'middle',12)+ar(pv[0]+30,pv[1]-12,pv[0]+10,pv[1]-2,C.red,1.8);
+ o+=lab(326,150,'turns this way',C.green||'#16a34a','middle',11)+lab(326,164,'only: the pawl',C.green||'#16a34a','middle',11)+lab(326,178,'blocks the other',C.green||'#16a34a','middle',11);
+ return F('PAWL AND RATCHET',o,'Pawl and ratchet = a toothed wheel that can only turn one way','The pawl catches the teeth');});
+
+// ---- Shuttle valve (OR gate) ----
+sd(['Engineering Science'],['Shuttle valve (OR gate)'],function(){var o='';
+ // body (cross-section) with three ports
+ o+=rr(120,108,160,44,6,'#cbd5e1',2.6)+rr(130,116,140,28,4,'#f1f5f9',1.8);
+ o+=rr(54,122,66,16,3,'#cbd5e1',2.4)+rr(280,122,66,16,3,'#cbd5e1',2.4)+rr(192,66,16,42,3,'#cbd5e1',2.4);
+ o+=rr(54,126,76,8,0,'#f1f5f9',0)+rr(270,126,76,8,0,'#f1f5f9',0)+rr(196,66,8,52,0,'#f1f5f9',0);
+ // ball seated against port A
+ o+=ci(146,130,14,'#fb923c',2.4)+pth('M138 124 Q142 120 148 121',null,'#fff',2);
+ o+=ci(254,130,14,'none','#94a3b8',1.8).replace('/>',' stroke-dasharray="4 3"/>');
+ // air in from B, out the top
+ o+=ar(360,130,284,130,C.blue,2.6)+ar(200,114,200,72,C.blue,2.6)+ar(236,130,210,118,C.blue,2.2);
+ o+=lab(86,108,'input A',C.slate,'middle',12)+lab(86,160,'(no air)',C.slate,'middle',11);
+ o+=lab(332,108,'input B',C.blue,'middle',12)+lab(332,160,'air in',C.blue,'middle',11);
+ o+=lab(242,66,'output',C.green||'#16a34a','start',12);
+ o+=lab(146,176,'ball blocks A',C.red,'middle',11.5)+ar(146,168,146,150,C.red,1.8);
+ o+=lab(254,176,'(ball moves here',C.slate,'middle',10.5)+lab(254,189,'if air is at A)',C.slate,'middle',10.5);
+ return F('SHUTTLE VALVE (OR GATE)',o,'Shuttle valve = a pneumatic valve that gives an output if either input has air (an OR gate)','The shuttle (ball) seals the unused input');});
+
+// ---- Thrust bearing ----
+sd(['Engineering Science'],['Thrust bearing'],function(){var o='';
+ // housing and shaft (cross-section)
+ o+=rr(110,150,180,18,3,'#94a3b8',2.4)+rr(124,134,152,16,2,'#cbd5e1',2)+rr(124,118,152,16,2,'#cbd5e1',2);
+ o+=rr(186,70,28,64,2,'#64748b',2.4)+rr(172,116,56,18,2,'#64748b',2.2);
+ [146,170,230,254].forEach(function(x){o+=ci(x,134,7,'#fb923c',2);});
+ o+=ar(200,66,200,112,C.red,2.8);
+ o+=lab(200,60,'thrust load (along the shaft)',C.red,'middle',12);
+ o+=lab(78,100,'shaft',C.slate,'middle',12)+ar(104,104,184,100,C.slate,1.6);
+ o+=lab(332,108,'turning plate',C.blue,'middle',12)+ar(298,112,276,124,C.blue,1.8);
+ o+=lab(332,150,'steel balls',C.orange||'#c2410c','middle',12)+ar(298,148,258,138,'#c2410c',1.8);
+ o+=lab(332,186,'fixed plate',C.slate,'middle',12)+ar(298,182,278,166,C.slate,1.8);
+ return F('THRUST BEARING',o,'Thrust bearing = a bearing that supports a load acting along the shaft','Example: a drill press or a screw jack');});
+
+
+// ================= batch C: moulding =================
+sd(['Design & Manufacture'],['Injection moulding'],function(){var o='',O='#c2410c';
+ o+='<g transform="translate(-8,0)">';
+ o+=rr(40,112,170,26,3,'#fde68a',2.4)+rr(44,120,150,10,2,'#64748b',1.8);
+ [58,76,94,112,130,148,166,184].forEach(function(x){o+=ln(x,120,x+8,130,'#e2e8f0',2);});
+ o+=pg('52,76 96,76 82,112 66,112','#fef3c7',NV,2.2)+ci(70,92,3,'#f59e0b',1)+ci(82,98,3,'#f59e0b',1);
+ [120,146,172].forEach(function(x){o+=rr(x,108,10,34,1,'#ef4444',1.6);});
+ o+=rr(210,119,22,12,2,'#fde68a',2)+rr(232,96,30,58,3,'#94a3b8',2.4)+rr(262,96,30,58,3,'#94a3b8',2.4)+rr(240,108,44,34,3,'#fb923c',1.8);
+ o+='</g>';
+ o+=lab(70,70,'hopper',C.slate,'middle',12);
+ o+=lab(142,170,'heated barrel + screw',C.red,'middle',12)+ar(142,160,142,146,C.red,1.8);
+ o+=lab(276,84,'two-part mould',C.blue,'middle',12);
+ o+=lab(276,176,'cavity filled with',O,'middle',11.5)+lab(276,190,'melted plastic',O,'middle',11.5)+ar(276,164,276,146,O,1.8);
+ return F('INJECTION MOULDING',o,'Injection moulding = melted plastic is forced into a mould, cools, and is ejected','Used for toys, bottle tops and phone cases');});
+
+sd(['Design & Manufacture'],['Die casting'],function(){var o='',O='#c2410c';
+ // two die halves with a cavity between
+ o+=rr(150,84,60,90,4,'#94a3b8',2.4)+rr(210,84,60,90,4,'#94a3b8',2.4);
+ o+=rr(196,112,28,34,4,'#fb923c',1.8);
+ // runner from shot sleeve to cavity
+ o+=rr(84,122,114,14,0,'#fb923c',0)+ln(84,122,198,122,NV,2)+ln(84,136,198,136,NV,2);
+ o+=rr(50,116,40,26,2,'#cbd5e1',2.2)+rr(54,121,34,16,2,'#fb923c',1.6)+rr(30,120,26,18,1,'#64748b',2);
+ o+=ar(10,129,30,129,C.red,2.8);
+ o+=lab(48,104,'plunger',C.red,'middle',12);
+ o+=lab(172,72,'fixed half',C.slate,'middle',12)+lab(258,72,'moving half',C.slate,'middle',12);
+ o+=lab(310,128,'molten metal',O,'start',12)+lab(310,142,'fills the shape',O,'start',12)+ar(306,130,228,130,O,1.8);
+ return F('DIE CASTING',o,'Die casting = molten metal is forced into a metal mould (die) under high pressure','Used for toy cars and door handles');});
+
+
+// ================= batch D =================
+function mat(n,fill,txt,type,props,uses,cap,note){sd(['Practical Woodworking'],[n],function(){var fs=n.length>8?15:18;
+ var o=rr(40,70,110,100,8,fill,2.4)+lab(95,126,n,txt||NV,'middle',fs)+lab(164,80,'TYPE',C.slate,'start',11)+lab(164,96,type,NV,'start',13)+lab(164,118,'PROPERTIES',C.slate,'start',11)+lab(164,134,props[0],C.blue,'start',13)+lab(164,150,props[1],C.blue,'start',13)+lab(164,172,'USES: '+uses,C.red,'start',12);
+ return F(n.toUpperCase(),o,cap,note);});}
+mat('Cedar','#e9a87c',null,'softwood',['sweet smell','resists rot'],'sheds, cladding','Cedar = a softwood with a sweet smell that resists rot, so it is used outdoors','Often used for sheds and fences');
+mat('Larch','#f2b77a',null,'softwood',['hard for a softwood','durable, resinous'],'boats, fencing','Larch = a tough, durable softwood that copes well with weather','Used for boat building and cladding');
+mat('White pine','#fff1c9',null,'softwood',['pale, light','easy to work'],'furniture, joinery','White pine = a pale, light, easy-to-work softwood used for furniture and joinery','Cheap and common');
+mat('Meranti','#b45309','#fff','hardwood',['reddish-brown','fairly durable'],'windows, doors','Meranti = a reddish-brown tropical hardwood often used for window frames and doors','Cheaper than other hardwoods');
+
+// CFD: car in an airflow
+sd(['Graphic Communication'],['CFD','Computational fluid dynamics (CFD)'],function(){var o='',i;
+ var body='M120 150 L120 134 Q122 126 140 124 L170 120 Q186 100 214 98 L246 98 Q268 100 280 122 L300 126 Q308 130 308 150 Z';
+ for(i=0;i<5;i++){var y=84+i*11,m=92-(4-i)*6;o+=pth('M20 '+y+' L90 '+y+' C130 '+y+' 150 '+m+' 212 '+m+' C274 '+m+' 294 '+y+' 334 '+y+' L380 '+y,null,i%2?C.blue:C.red,2.2);}
+ o+=pth('M20 168 L380 168',null,C.blue,2.2);
+ o+=pth(body,'#cbd5e1',NV,2.4)+pth('M178 124 Q190 106 214 104 L240 104 Q256 106 266 124 Z','#e0f2fe',NV,1.8);
+ o+=ci(152,152,15,'#475569',NV,2.4)+ci(152,152,5,'#cbd5e1',NV,1.4)+ci(272,152,15,'#475569',NV,2.4)+ci(272,152,5,'#cbd5e1',NV,1.4);
+ o+=lab(200,196,'lines show how the air flows over the car',C.slate,'middle',11.5);
+ return F('CFD',o,'CFD (computational fluid dynamics) = computer simulation of how air or liquid flows around a design','Tests a shape before it is made');});
+
+
+// ================= batch E =================
+sd(['Practical Metalworking'],['Vernier height gauge'],function(){var o='<g transform="translate(0,-14)">',i;
+ o+=rr(60,172,150,16,3,'#94a3b8',2.4);            // heavy base
+ o+=rr(104,70,24,102,2,'#cbd5e1',2.2);            // column
+ for(i=0;i<9;i++)o+=ln(104,78+i*10,i%2?112:118,78+i*10,NV,1.4);
+ o+=rr(128,104,40,36,3,'#e2e8f0',2.2)+rr(166,118,56,10,1,'#94a3b8',2) // slider + scriber arm
+   +pg('222,118 250,126 222,128','#64748b',NV,1.8);   // scriber tip
+ o+=ln(250,126,330,126,C.red,2,'4 3');
+ o+=ln(180,126,180,172,C.blue,1.6,'4 3');
+ o+=lab(268,112,'scribes at',C.red,'start',12)+lab(268,148,'a set height',C.red,'start',12);
+ o+='</g>'+lab(135,194,'heavy base',C.slate,'middle',12);
+ o+='<g transform="translate(0,-14)">'+lab(70,96,'scale',C.blue,'middle',12)+ar(88,100,104,106,C.blue,1.6);
+ o+=lab(150,92,'slider',C.blue,'middle',12)+'</g>';
+ return F('VERNIER HEIGHT GAUGE',o,'Vernier height gauge = a tool that scribes a line at a very accurate height from a flat surface','Used on a surface plate');});
+
+sd(['Practical Woodworking'],['Strip heater'],function(){var o='';
+ o+=rr(70,142,260,16,3,'#64748b',2.2)+rr(100,134,200,8,2,'#f97316',2);
+ o+=pth('M100 128 Q106 120 100 112 M200 128 Q206 120 200 112 M300 128 Q306 120 300 112',null,C.red,2);
+ o+=pth('M92 104 L308 104 L308 112 L92 112 Z','#bae6fd',NV,2);
+ o+=lab(200,92,'acrylic sheet, heated along a line',C.red,'middle',12);
+ o+=lab(200,190,'heating element',C.slate,'middle',12)+ar(200,174,200,160,C.slate,1.8);
+ return F('STRIP HEATER',o,'Strip heater = a heater with a hot line that softens plastic so you can bend it','When soft, bend it and hold until it cools');});
+
 })();
 
 // Freeze an animated diagram at one moment: evaluates every SMIL animation at time T and writes the
