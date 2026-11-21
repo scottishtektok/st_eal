@@ -26,6 +26,14 @@ if(/^https?:$/.test(location.protocol)&&!ok){window.stop();document.documentElem
 }catch(e){}})();
 window.__sz='SZ-7F3K-2611-QTA';
 </script>
+<script>
+/* Stop casual right-click / drag / long-press saving of diagrams and the logo (text is unaffected) */
+(function(){try{var sel='svg,img,canvas';function hit(t){return t&&t.closest&&t.closest(sel)&&!(t.closest('input,textarea,select,[contenteditable]'));}
+document.addEventListener('contextmenu',function(e){if(hit(e.target))e.preventDefault();},true);
+document.addEventListener('dragstart',function(e){if(hit(e.target))e.preventDefault();},true);
+document.addEventListener('selectstart',function(e){if(hit(e.target))e.preventDefault();},true);
+}catch(e){}})();
+</script>
 
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -280,6 +288,9 @@ body{background-color:#f4f7fb;background-image:linear-gradient(rgba(30,64,175,.0
 .visual-panel{display:flex;align-items:center;justify-content:center;background:#ffffff;border:1px solid var(--line);border-radius:11px;padding:8px}
 .visual-panel svg{width:100%;height:auto;max-height:none;display:block}
 .visual-panel svg,.fc-fig svg{direction:ltr}
+.visual-panel svg,.fc-fig svg,header svg,.brand svg,.logo svg,img{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+.visual-panel svg text,.fc-fig svg text{-webkit-user-select:none;user-select:none}
+
 .language-panel{min-width:0;border:1px solid var(--line);border-radius:11px;padding:13px 14px;background:#fbfcfe}
 .language-panel.eal-panel{background:#f4f8ff;border-color:#cbdcff}
 .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
@@ -6644,6 +6655,46 @@ redo(ESs,['Cam and follower'],function(){var N='#0f172a',o='';
  o+='<line x1="140" y1="168" x2="192" y2="166" stroke="'+C.green+'" stroke-width="1.3"/><line x1="120" y1="80" x2="174" y2="83" stroke="'+C.slate+'" stroke-width="1.3"/>';
  return o+tx2(312,74,'follower',C.red,'middle',11)+tx2(312,88,'(moves up and down)',C.red,'middle',10)+tx2(100,84,'guide',C.slate,'middle',10)+tx2(92,176,'cam turns round',C.green,'middle',11)+tx2(92,189,'the pivot',C.green,'middle',10)+tx2(312,172,'off-centre circle',C.blue,'middle',11)+tx2(312,186,'(the cam)',C.blue,'middle',10);});
 
+// ---- PPE (redrawn: goggles, apron, gloves, safety boot) ----
+(function(){
+var NV=C.navy;
+function rr(x,y,w,h,r,f,sw){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+r+'" fill="'+f+'" stroke="'+NV+'" stroke-width="'+(sw||2)+'" stroke-linejoin="round"/>';}
+function gog(){var o='';
+ o+=pth('M30 80 L14 84 Q8 86 8 94 L8 104',null,NV,5.2)+pth('M30 80 L14 84 Q8 86 8 94 L8 104',null,'#1e3a8a',3)+ci(8,106,3,'#1e3a8a',NV,1.4);
+ o+=pth('M100 80 L116 84 Q122 86 122 94 L122 104',null,NV,5.2)+pth('M100 80 L116 84 Q122 86 122 94 L122 104',null,'#1e3a8a',3)+ci(122,106,3,'#1e3a8a',NV,1.4);
+ o+=rr(28,70,36,34,13,'#38bdf8',2.4)+rr(66,70,36,34,13,'#38bdf8',2.4);
+ o+=rr(33,75,26,24,9,'#e0f2fe',1.6)+rr(71,75,26,24,9,'#e0f2fe',1.6);
+ o+=ln(60,86,68,86,NV,3)+ln(38,80,46,78,'#fff',2.4)+ln(76,80,84,78,'#fff',2.4);
+ return o;}
+function apr(){var o='';
+ o+=pth('M138 62 Q155 36 172 62',null,'#475569',3.2);
+ o+=ln(114,98,104,104,'#d6a86a',5)+ln(196,98,206,104,'#d6a86a',5);
+ o+=pth('M138 60 L172 60 L174 84 Q186 94 198 94 L202 148 L108 148 L112 94 Q124 94 136 84 Z','#b9803a',NV,2.4);
+ o+=ln(140,66,140,80,'#8a5a22',1.4)+ln(170,66,170,80,'#8a5a22',1.4);
+ o+=rr(132,112,44,24,3,'#a06a2a',2)+pth('M138 118 H170',null,'#e8c88a',1.4,'3 2');
+ o+=ln(124,104,186,104,'#8a5a22',1.4);
+ return o;}
+function glv(){var o='',Y='#fcd34d';
+ o+=pth('M222 134 V74 Q222 66 226.5 66 Q231 66 231 74 V92 H233 V66 Q233 58 238 58 Q243 58 243 66 V92 H245 V68 Q245 60 249.5 60 Q254 60 254 68 V92 H256 V70 Q256 64 260.5 64 Q265 64 265 70 V102 L284 92 Q292 87 297 94 Q300 101 294 107 L270 134 Z',Y,NV,2.4);
+ o+=pth('M266 106 Q272 112 274 120',null,'#d9a514',1.6);
+ o+=rr(220,132,50,16,3,'#3b82f6',2.2);
+ for(var i=0;i<5;i++)o+=ln(228+i*9,134,228+i*9,146,'#bfdbfe',1.6);
+ return o;}
+function boot(){var o='';
+ o+=pth('M312 56 L346 56 Q350 56 350 62 L352 90 Q358 100 368 104 Q390 108 394 126 L394 136 L306 136 L306 112 Q304 84 312 56 Z','#475569',NV,2.4);
+ o+=pth('M313 56 L346 56 Q349 56 349 62 L349 68 L311 68 Z','#64748b',NV,1.8);
+ o+=pth('M332 62 L347 62 L366 104 L353 104 Z','#94a3b8',NV,1.8);
+ o+=ln(336,72,346,69,'#f1f5f9',2.4)+ln(341,82,352,78,'#f1f5f9',2.4)+ln(346,92,358,88,'#f1f5f9',2.4)+ln(351,101,363,97,'#f1f5f9',2.4);
+ o+=pth('M366 106 Q390 108 394 126 L394 136 L362 136 Q360 118 366 106 Z','#cbd5e1',NV,2);
+ o+=pth('M312 116 Q330 124 358 120',null,'#94a3b8',1.4,'3 2');
+ o+=rr(304,134,92,14,4,'#1e293b',2.4)+rr(304,134,28,18,4,'#0f172a',2.2);
+ for(var k=0;k<5;k++)o+=ln(342+k*10,141,346+k*10,141,'#64748b',1.8);
+ return '<g transform="translate(-12,0)">'+o+'</g>';}
+function ppe(){var o='<g transform="translate(0,10)"><g transform="translate(65 90) scale(.85) translate(-65 -90)">'+gog()+'</g>'+apr()+'<g transform="translate(-10,0)">'+glv()+'</g><g transform="translate(382 140) scale(.9) translate(-382 -140)">'+boot()+'</g></g>';
+ o+=lab(65,174,'goggles',C.slate,'middle',12)+lab(155,174,'apron',C.slate,'middle',12)+lab(247,174,'gloves',C.slate,'middle',12)+lab(342,174,'safety boots',C.slate,'middle',12);
+ return F('PPE',o,'Personal protective equipment (PPE) = clothing and gear that protects you, such as goggles, an apron, gloves and boots','Wear the right PPE for the job');}
+['Practical Metalworking','Design & Manufacture','Practical Woodworking','Graphic Communication','Engineering Science'].forEach(function(sb){X.sdef(sb,['Personal protective equipment','PPE'],ppe);});
+})();
 // Compound gear train: A(10) meshes B(20); C(10) on B's shaft meshes D(20)
 redo(ESs,['Compound gear train'],function(){var p=iso(236,168,1.0),zc=40,o='';
  o+=gear(p,8,zc,28,20,{top:'#fde68a',lo:'#fbbf24',hi:'#d97706'},-24,-16);
