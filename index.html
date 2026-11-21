@@ -9673,6 +9673,19 @@ sd(['Shear stress'],function(){var o=shear(1)()+ci(332,176,12,'#fecaca',C.red,2.
 sd(['Work done'],function(){var o=ln(30,140,370,140,NV,3)+R(88,100,56,40,'#e6b66b',3,2.6)+rc(248,100,56,40,'none',C.slate,{r:3,w:1.8,d:'5 4'});
  o+=ar(30,120,86,120,C.red,4.5)+T(58,106,'force F',C.red,'middle',14)+dash(88,146,88,166)+dash(248,146,248,166)+dim(90,160,246,C.blue)+T(168,182,'distance d',C.blue,'middle',14);
  return F('WORK DONE',o,'Work done = the energy transferred when a force moves something','Work done = force × distance (joules)');});
+
+// Drop shadow (GC): a soft shadow placed behind a flat shape or text, moved down and to the right.
+X.sdef('Graphic Communication',['Drop shadow'],function(){
+ var o='',i;
+ // left: no shadow
+ o+=rc(30,84,110,70,'#2563eb',NV,{r:10,w:2.4})+T(85,128,'Aa',"#fff",'middle',30)+T(85,182,'no drop shadow',C.slate,'middle',13);
+ // right: shadow layers behind, offset down-right, softer outwards
+ var ox=176,oy=84;
+ for(i=3;i>=0;i--){var g=i*2.2;o+='<rect x="'+(ox+9-g)+'" y="'+(oy+9-g)+'" width="'+(110+2*g)+'" height="'+(70+2*g)+'" rx="'+(10+g)+'" fill="#0f172a" fill-opacity="'+(0.07+0.05*(3-i)).toFixed(2)+'"/>';}
+ o+=rc(ox,oy,110,70,'#2563eb',NV,{r:10,w:2.4})+T(ox+55,oy+44,'Aa',"#fff",'middle',30)+T(ox+55,182,'drop shadow',NV,'middle',13);
+ // offset marker: small arrow from the shape corner to the shadow corner
+ o+=ar(ox+116,oy+76,ox+131,oy+91,C.red,2.2)+T(ox+140,oy+80,'moved down',C.red,'start',11)+T(ox+140,oy+94,'and right',C.red,'start',11);
+ return F('DROP SHADOW',o,'Drop shadow = a soft shadow behind a shape or text, moved a little down and to the right','It makes the object look lifted off the page');});
 })();
 
 // Freeze an animated diagram at one moment: evaluates every SMIL animation at time T and writes the
