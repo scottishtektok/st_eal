@@ -4147,7 +4147,7 @@ window.extraVisualCount=Object.keys(window.V2.map).length;})();
 var g=window.getTermVisualSvg,reg={};
 window.OV=function(subj,names,fn){names.forEach(function(n){reg[subj+'|'+n.toLowerCase()]=fn;});};
 window.getTermVisualSvg=function(row){var s=g.apply(this,arguments);
- try{var f=reg[row.subject+'|'+String(row.term).toLowerCase()];
+ try{var f=reg[row.subject+'|'+String(row.term).toLowerCase()];if(window.OV_OFF&&window.OV_OFF[row.subject+'|'+String(row.term).toLowerCase()])f=null;
   if(f&&typeof s==='string'&&/<\/svg>\s*$/.test(s)){var x=f(row);if(x)s=s.replace(/<\/svg>\s*$/,x+'</svg>');}}catch(e){}
  return s;};
 })();
@@ -9460,6 +9460,208 @@ sd(['Practical Woodworking'],['Strip heater'],function(){var o='';
  o+=lab(200,190,'heating element',C.slate,'middle',12)+ar(200,174,200,160,C.slate,1.8);
  return F('STRIP HEATER',o,'Strip heater = a heater with a hot line that softens plastic so you can bend it','When soft, bend it and hold until it cools');});
 
+})();
+
+// Clarity redraws (Nov 2026): 28 Engineering Science diagrams. Flat, large shapes; labels beside what they name; few words.
+(function(){
+var X=window.V2,C=X.C,tx=X.tx,ln=X.ln,rc=X.rc,pg=X.pg,ci=X.ci,ar=X.ar,F=window.FC;
+if(!F)return;
+var NV=C.navy,ES='Engineering Science';window.OV_OFF=window.OV_OFF||{};['hydraulic system','pneumatic system','unidirectional restrictor','light-dependent resistor (ldr)'].forEach(function(n){window.OV_OFF[ES+'|'+n]=1;});
+function sd(names,fn){X.sdef(ES,names,fn);}
+function T(x,y,s,c,a,z){return tx(x,y,s,{a:a||'middle',s:z||13,w:800,c:c||NV});}
+function pth(d,f,s,w,da){return '<path d="'+d+'" fill="'+(f||'none')+'" stroke="'+(s||'none')+'" stroke-width="'+(w||2.4)+'" stroke-linejoin="round" stroke-linecap="round"'+(da?' stroke-dasharray="'+da+'"':'')+'/>';}
+function R(x,y,w,h,f,r,sw){return rc(x,y,w,h,f,NV,{r:r||0,w:sw||2.4});}
+function dash(x1,y1,x2,y2,c){return ln(x1,y1,x2,y2,c||C.slate,1.6,'4 4');}
+function dim(x1,y,x2,c){return ar(x1,y,x2,y,c||C.blue,2.2)+ar(x2,y,x1,y,c||C.blue,2.2);}
+function P2(a,r,cx,cy){return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+// round arrow around a centre; a0->a1 degrees (svg angles: increasing = clockwise on screen)
+function turn(cx,cy,r,a0,a1,c,w){var s=P2(a0*Math.PI/180,r,cx,cy),e=P2(a1*Math.PI/180,r,cx,cy),big=Math.abs(a1-a0)>180?1:0,sw=a1>a0?1:0;
+ var o=pth('M'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' A'+r+' '+r+' 0 '+big+' '+sw+' '+e[0].toFixed(1)+' '+e[1].toFixed(1),null,c,w||2.6);
+ var t=(a1+(a1>a0?90:-90))*Math.PI/180,h=8,b=[e[0]-h*Math.cos(t)+h*0.55*Math.cos(t+Math.PI/2),e[1]-h*Math.sin(t)+h*0.55*Math.sin(t+Math.PI/2)],b2=[e[0]-h*Math.cos(t)-h*0.55*Math.cos(t+Math.PI/2),e[1]-h*Math.sin(t)-h*0.55*Math.sin(t+Math.PI/2)];
+ return o+'<polygon points="'+e[0].toFixed(1)+','+e[1].toFixed(1)+' '+b[0].toFixed(1)+','+b[1].toFixed(1)+' '+b2[0].toFixed(1)+','+b2[1].toFixed(1)+'" fill="'+c+'"/>';}
+// flat gear with n teeth; Rt tip radius, Rr root radius, ph = angle (deg) of a tooth centre
+function gear(cx,cy,Rt,Rr,n,fill,ph,hub){var d='',i,p=2*Math.PI/n,t;
+ for(i=0;i<n;i++){t=(ph||0)*Math.PI/180+i*p;
+  var q=[[Rr,t-0.42*p],[Rt,t-0.2*p],[Rt,t+0.2*p],[Rr,t+0.42*p]];
+  q.forEach(function(z,j){var s=P2(z[1],z[0],cx,cy);d+=((i||j)?'L':'M')+s[0].toFixed(1)+' '+s[1].toFixed(1)+' ';});}
+ var o=pth(d+'Z',fill,NV,2.4)+ci(cx,cy,Rr*0.55,'none',NV,1.4);
+ o+=ci(cx,cy,hub||5,'#94a3b8',NV,2)+ci(cx,cy,2,C.red);return o;}
+function flow(boxes,col,fills){var o='',w=80,g=22,x0=7,y=70,h=58,i;
+ boxes.forEach(function(b,i){var x=x0+i*(w+g);o+=R(x,y,w,h,fills[i],10,2.6)+T(x+w/2,y+25,b[0],NV,'middle',b[0].length>9?12.5:16)+T(x+w/2,y+44,b[1],C.slate,'middle',13);
+  if(i<3)o+=ar(x+w+2,y+h/2,x+w+g-2,y+h/2,col,3);});return o;}
+
+// ---- Hydraulic / pneumatic systems ----
+sd(['Hydraulic system'],function(){var o=flow([['oil tank','stores oil'],['pump','pushes oil'],['valve','controls it'],['cylinder','does work']],C.amber,['#fde8cc','#fcd9a8','#fde68a','#bbf7d0'])+T(200,170,'works using liquid OIL',C.amber,'middle',17);
+ return F('HYDRAULIC SYSTEM',o,'Hydraulic system = a system that uses pressurised oil to make things move','Oil cannot be squashed: very strong force');});
+sd(['Pneumatic system'],function(){var o=flow([['compressor','makes air'],['air tank','stores air'],['valve','controls it'],['cylinder','does work']],C.blue,['#bfdbfe','#dbeafe','#fde68a','#bbf7d0'])+T(200,170,'works using compressed AIR',C.blue,'middle',17);
+ return F('PNEUMATIC SYSTEM',o,'Pneumatic system = a system that uses compressed air to make things move','Air can be squashed, so it is a bit springy');});
+
+// ---- Tension / compression ----
+sd(['Tension'],function(){var o=R(125,92,150,44,'#93c5fd',4,2.6)+rc(113,92,174,44,'none',C.slate,{r:4,w:1.6,d:'5 4'});
+ o+=ar(124,114,40,114,C.red,4)+ar(276,114,360,114,C.red,4)+T(82,96,'pull',C.red,'middle',15)+T(318,96,'pull',C.red,'middle',15)+T(200,170,'the bar gets longer',C.slate,'middle',14);
+ return F('TENSION',o,'Tension = a pulling force that tries to stretch (lengthen) something','Example: a rope or a cable holding a weight');});
+sd(['Compression'],function(){var o=rc(125,92,150,44,'none',C.slate,{r:4,w:1.6,d:'5 4'})+R(137,92,126,44,'#93c5fd',4,2.6);
+ o+=ar(40,114,136,114,C.red,4)+ar(360,114,264,114,C.red,4)+T(82,96,'push',C.red,'middle',15)+T(318,96,'push',C.red,'middle',15)+T(200,170,'the bar gets shorter',C.slate,'middle',14);
+ return F('COMPRESSION',o,'Compression = a pushing force that tries to squash (shorten) something','Example: a table leg or a column holding a weight');});
+
+// ---- Lever diagrams ----
+function beam(x1,x2,y){return R(x1,y,x2-x1,14,'#e2e8f0',3,2.6);}
+function pivot(x,y){return pg((x-20)+','+(y+30)+' '+x+','+y+' '+(x+20)+','+(y+30),'#94a3b8',NV,2.6)+ln(x-34,y+30,x+34,y+30,NV,3);}
+sd(['Moment'],function(){var o=beam(50,350,92)+pivot(140,106)+ar(310,52,310,90,C.red,4)+T(322,70,'force F',C.red,'start',14);
+ o+=dash(140,138,140,158)+dash(310,108,310,158)+dim(142,152,308,C.blue)+T(225,174,'distance d',C.blue,'middle',14)+T(140,150,'pivot',C.slate,'middle',13).replace(/.*/,'')+T(96,138,'pivot',C.slate,'end',13).replace('y="138"','y="130"');
+ return F('MOMENT',o,'Moment = the turning effect of a force: force × distance from the pivot','The unit is the newton-metre (N m)');});
+sd(['Torque'],function(){var o=R(88,98,250,18,'#e2e8f0',4,2.6)+ci(96,107,22,'#cbd5e1',NV,2.6)+ci(96,107,6,'#64748b',NV,2)+T(96,72,'bolt',C.slate,'middle',14)+ar(96,78,96,82,C.slate,0.1).replace(/.*/,'')+ar(310,52,310,96,C.red,4)+T(322,70,'force F',C.red,'start',14);
+ o+=dash(96,132,96,160)+dash(310,118,310,160)+dim(98,154,308,C.blue)+T(203,176,'distance d',C.blue,'middle',14);
+ return F('TORQUE',o,'Torque = the turning effect of a force: force × distance from the pivot','The unit is the newton-metre (N m)');});
+sd(['Equilibrium'],function(){var o=beam(50,350,94)+pivot(200,108)+ar(110,54,110,92,C.red,4)+ar(290,54,290,92,C.red,4)+T(122,72,'10 N',C.red,'start',15)+T(302,72,'10 N',C.red,'start',15);
+ o+=dash(110,110,110,158)+dash(290,110,290,158)+dash(200,140,200,158)+dim(112,152,198,C.blue)+dim(202,152,288,C.blue)+T(155,172,'d',C.blue,'middle',15)+T(245,172,'d',C.blue,'middle',15);
+ return F('EQUILIBRIUM',o,'Equilibrium = all forces are balanced, so nothing speeds up, slows down or turns','Opposite forces are equal in size');});
+sd(['Velocity ratio'],function(){var o=R(50,96,300,14,'#e2e8f0',3,2.6)+pivot(276,110)+ar(60,56,60,94,C.blue,4)+ar(330,94,330,56,C.green,4)+T(74,62,'effort\nmoves 40 cm',C.blue,'start',13)+T(316,62,'load\nmoves 10 cm',C.green,'end',13);
+ o+=T(276,160,'pivot',C.slate,'middle',13)+T(140,150,'VR = 40 ÷ 10 = 4',NV,'middle',17);
+ return F('VELOCITY RATIO',o,'Velocity ratio = distance moved by the effort ÷ distance moved by the load','VR 4: effort moves 4 cm, load moves 1 cm');});
+
+// ---- Control ----
+sd(['Open-loop control'],function(){var o=ar(14,100,98,100,NV,3)+R(100,72,96,56,'#dbeafe',10,2.6)+T(148,106,'Controller',NV,'middle',15)+ar(198,100,238,100,NV,3)+R(240,72,86,56,'#dbeafe',10,2.6)+T(283,106,'Process',NV,'middle',15)+ar(328,100,392,100,NV,3);
+ o+=T(46,88,'set value',C.slate,'middle',13)+T(360,88,'output',C.slate,'middle',13);
+ o+=pth('M346 100 L346 152 L148 152 L148 130',null,C.mut,2.4,'6 5')+T(247,146,'✕',C.red,'middle',24).replace('y="146"','y="161"')+T(247,181,'no feedback',C.red,'middle',15);
+ return F('OPEN-LOOP CONTROL',o,'Open-loop control = a system with no feedback: it does not check its output','Example: a toaster that runs for a set time');});
+
+// ---- Cylinders ----
+function cylBody(withB){var o='';
+ o+=R(70,100,210,50,'#dbeafe',3,2.6);
+ o+=R(166,100,12,50,'#94a3b8',0,2.4);
+ o+=R(178,115,168,20,'#cbd5e1',3,2.4);
+ o+=R(270,96,10,58,'#64748b',2,2.4);
+ o+=R(96,88,26,12,'#64748b',2,2.4);
+ if(withB)o+=R(236,88,26,12,'#64748b',2,2.4);
+ return o;}
+sd(['Double-acting cylinder'],function(){var o=cylBody(1)+ar(109,64,109,86,C.blue,3.5)+ar(249,64,249,86,C.blue,3.5)+T(109,58,'port A',C.blue,'middle',14)+T(249,58,'port B',C.blue,'middle',14);
+ o+=T(172,176,'piston',C.slate,'middle',13)+ar(172,164,172,152,C.slate,1.8)+T(318,158,'piston rod',C.slate,'middle',13)+ar(318,146,318,132,C.slate,1.8);
+ return F('DOUBLE-ACTING CYLINDER',o,'Double-acting cylinder = air pushes the piston out and also back','Air into A pushes out; air into B pulls back');});
+sd(['Single-acting cylinder'],function(){var o=cylBody(0),i,d='M182 125';
+ for(i=0;i<7;i++)d+=' L'+(188+i*11)+' '+(i%2?138:112)+'';
+ // spring drawn inside the right-hand chamber (replaces the rod line there)
+ o=R(70,100,210,50,'#dbeafe',3,2.6)+R(166,100,12,50,'#94a3b8',0,2.4)+R(178,115,168,20,'#cbd5e1',3,2.4)+rc(180,102,88,46,'#f8fafc',null,{})+pth('M180 125 L190 110 L202 140 L214 110 L226 140 L238 110 L250 140 L262 125',null,C.amber,3.4)+R(270,96,10,58,'#64748b',2,2.4)+R(96,88,26,12,'#64748b',2,2.4)+R(70,100,2,50,'#dbeafe',0,0.1).replace(/.*/,'');
+ o+=R(178,119,168,12,'#cbd5e1',3,2.4).replace(/.*/,'');
+ o+=pth('M280 125 L346 125',null,'#94a3b8',12)+pth('M280 125 L346 125',null,'#cbd5e1',8);
+ o+=ar(109,64,109,86,C.blue,3.5)+T(109,58,'one air port',C.blue,'middle',14);
+ o+=T(224,176,'spring',C.amber,'middle',14)+ar(224,164,224,148,C.amber,1.8)+T(172,176,'',NV)+T(318,164,'piston rod',C.slate,'middle',13)+ar(318,152,318,134,C.slate,1.8)+T(130,176,'piston',C.slate,'middle',13).replace('x="130"','x="130"')+ar(150,164,170,150,C.slate,1.8);
+ return F('SINGLE-ACTING CYLINDER',o,'Single-acting cylinder = air pushes the piston out; a spring pushes it back','It has only one air port');});
+
+// ---- Unidirectional restrictor ----
+sd(['Unidirectional restrictor'],function(){var o='',y1=94,y2=134,ym=114;
+ o+=ln(30,ym,100,ym,NV,3)+ln(300,ym,370,ym,NV,3)+ln(100,y1,100,y2,NV,3)+ln(300,y1,300,y2,NV,3);
+ o+=ln(100,y1,184,y1,NV,3)+ln(214,y1,300,y1,NV,3)+pg('184,'+y1+' 198,'+(y1-8)+' 198,'+(y1+8),'#fff',NV,2.4)+ci(206,y1,7,'#bbf7d0',NV,2.4);
+ o+=ln(100,y2,190,y2,NV,3)+ln(210,y2,300,y2,NV,3)+pth('M190 '+(y2-13)+' Q201 '+y2+' 190 '+(y2+13),null,NV,3)+pth('M210 '+(y2-13)+' Q199 '+y2+' 210 '+(y2+13),null,NV,3).replace(/.*/,'')+pth('M210 '+(y2-13)+' Q199 '+y2+' 210 '+(y2+13),null,NV,3);
+ o+=ar(112,y1,170,y1,C.green,4.5).replace(/.*/,'')+ar(112,y1-1,166,y1-1,C.green,3.5)+T(140,y1-12,'free flow',C.green,'middle',14)+T(250,y1-12,'check valve',C.slate,'middle',13);
+ o+=ar(288,y2+1,232,y2+1,C.red,3.5)+T(262,y2+22,'slow flow',C.red,'middle',14)+T(150,y2+22,'restrictor',C.slate,'middle',13);
+ return F('UNIDIRECTIONAL RESTRICTOR',o,'Unidirectional restrictor = a pneumatic part that slows the air in one direction and lets it flow freely the other way','Used to control cylinder speed');});
+
+// ---- Pawl and ratchet ----
+sd(['Pawl and ratchet'],function(){var o='',cx=170,cy=124,Rt=54,Rr=42,n=12,d='',i;
+ for(i=0;i<n;i++){var A=(-117+30*i)*Math.PI/180,Tt=(-117+30*i+26)*Math.PI/180,V=(-117+30*i+26.6)*Math.PI/180;
+  var a=P2(A,Rr,cx,cy),b=P2(Tt,Rt,cx,cy),e=P2(V,Rr,cx,cy);d+=(i?'L':'M')+a[0].toFixed(1)+' '+a[1].toFixed(1)+' L'+b[0].toFixed(1)+' '+b[1].toFixed(1)+' L'+e[0].toFixed(1)+' '+e[1].toFixed(1)+' ';}
+ o+=pth(d+'Z','#bfdbfe',NV,2.4)+ci(cx,cy,30,'none','#93c5fd',2)+ci(cx,cy,8,'#94a3b8',NV,2);
+ var tip=[cx,cy-Rr-1],pv=[cx+66,cy-Rr-12];
+ o+=pth('M'+pv[0]+' '+pv[1]+' L'+tip[0]+' '+tip[1],null,NV,11)+pth('M'+pv[0]+' '+pv[1]+' L'+tip[0]+' '+tip[1],null,'#fca5a5',7);
+ o+=pg((tip[0]-3)+','+(tip[1]-1)+' '+(tip[0]+4)+','+(tip[1]-6)+' '+(tip[0]+4)+','+(tip[1]+6),'#ef4444',NV,1.6)+ci(pv[0],pv[1],7,'#94a3b8',NV,2.2)+ci(pv[0],pv[1],2.4,NV);
+ o+=turn(cx,cy,Rt+16,235,180,C.green,3.4);
+ o+=T(52,86,'wheel turns\nthis way',C.green,'middle',14).replace(/.*/,'');
+ o+=T(66,168,'ratchet wheel',C.blue,'middle',14)+ar(104,158,cx-Rt+8,cy+14,C.blue,1.8);
+ o+=T(pv[0]+30,pv[1]-14,'pawl',C.red,'middle',14)+ar(pv[0]+24,pv[1]-8,pv[0]+9,pv[1]-1,C.red,1.8);
+ o+=T(322,126,'wheel turns\nthis way',C.green,'middle',14)+T(322,170,'pawl blocks\nthe other way',C.red,'middle',14);
+ return F('PAWL AND RATCHET',o,'Pawl and ratchet = a toothed wheel that can only turn one way','The pawl catches the teeth');});
+
+// ---- Gears ----
+sd(['Compound gear train'],function(){var o='';
+ // side view: vertical shafts, gears as flat discs seen edge-on
+ function sh(x,y1,y2){return R(x-4,y1,8,y2-y1,'#94a3b8',2,2.2);}
+ o+=sh(50,70,122)+sh(110,70,166)+sh(170,126,166);
+ function g(x1,x2,y,f,t){return R(x1,y,x2-x1,24,f,4,2.6)+T((x1+x2)/2,y+17,t,NV,'middle',14);}
+ o+=g(30,70,78,'#bbf7d0','A 10')+g(70,150,78,'#bfdbfe','B 20')+g(90,130,132,'#fed7aa','C 10')+g(130,210,132,'#fde68a','D 20');
+ o+=ar(50,56,50,72,C.slate,2.2).replace(/.*/,'')+T(50,66,'input',C.slate,'middle',13)+T(170,184,'output',C.slate,'middle',13)+T(110,66,'one shaft',C.slate,'middle',13).replace(/.*/,'');
+ o+=T(236,90,'A drives B:',C.green,'start',14)+T(236,107,'20 ÷ 10 = 2 : 1',C.green,'start',14)+T(236,138,'C drives D:',C.amber,'start',14)+T(236,155,'20 ÷ 10 = 2 : 1',C.amber,'start',14)+T(236,184,'overall 2 × 2 = 4 : 1',C.red,'start',15);
+ o+=T(122,184,'',NV);
+ return F('COMPOUND GEAR TRAIN',o,'Compound gear train = gears on shared shafts: a big change of speed','Overall ratio = ratio 1 × ratio 2');});
+sd(['Gear ratio'],function(){var o='';
+ o+=gear(140,122,31,24,10,'#bfdbfe',0)+gear(228,122,55,48,20,'#fde68a',189,6);
+ o+=T(140,66,'driver',C.blue,'middle',15)+T(140,82,'10 teeth',C.blue,'middle',14)+T(332,96,'driven',C.amber,'middle',15)+T(332,112,'20 teeth',C.amber,'middle',14);
+ o+=T(200,191,'20 ÷ 10 = 2 : 1',C.red,'middle',15);
+ return F('GEAR RATIO',o,'Gear ratio = teeth on the driven gear ÷ teeth on the driver gear','2 : 1 means the driver turns twice for one turn of the driven gear');});
+sd(['Idler gear'],function(){var o='',c=[136,200,264],f=['#bfdbfe','#fde68a','#bbf7d0'],ph=[0,18,0],cl=[C.blue,C.amber,C.green],nm=['driver','idler','driven'],i;
+ for(i=0;i<3;i++){o+=gear(c[i],124,35,29,12,f[i],ph[i]+(i?15:0),4);}
+ o+=turn(c[0],124,16,200,330,C.blue,3)+turn(c[1],124,16,-20,-150,C.amber,3)+turn(c[2],124,16,200,330,C.green,3);
+ for(i=0;i<3;i++)o+=T(c[i],68,nm[i],cl[i],'middle',15);
+ o+=T(200,188,'driver and driven turn the SAME way',C.slate,'middle',14);
+ return F('IDLER GEAR',o,'Idler gear = a gear placed between two gears so they turn the same way','It does not change the gear ratio');});
+sd(['Rack and pinion'],function(){var o='',p=18.85,x,i,d;
+ d='';for(i=-8;i<=8;i++){x=200+p/2+i*p;d+=(d?'L':'M')+(x-0.3*p).toFixed(1)+' 143 L'+(x-0.15*p).toFixed(1)+' 132 L'+(x+0.15*p).toFixed(1)+' 132 L'+(x+0.3*p).toFixed(1)+' 143 ';}
+ o+=R(48,143,304,22,'#2563eb',3,2.6).replace('fill="#2563eb"','fill="#60a5fa"');
+ o+=pth('M48 143 '+d.replace(/^M[^L]*/,'').replace(/^L/,'L')+'L352 143',null,NV,2.4).replace(/.*/,'');
+ // draw rack teeth as separate small polygons for a clean outline
+ for(i=-7;i<=7;i++){x=200+p/2+i*p;o+=pg((x-0.3*p).toFixed(1)+',143 '+(x-0.15*p).toFixed(1)+',132 '+(x+0.15*p).toFixed(1)+',132 '+(x+0.3*p).toFixed(1)+',143','#60a5fa',NV,2.2);}
+ o+=gear(200,98,40,32,12,'#fde68a',90,6)+turn(200,98,17,-60,40,C.red,3);
+ o+=T(90,84,'pinion',C.amber,'middle',15)+ar(116,86,156,96,C.amber,2)+T(310,188,'rack',C.blue,'middle',15)+ar(310,174,310,168,C.blue,0.1).replace(/.*/,'');
+ o+=ar(250,186,170,186,C.green,3.5)+T(140,191,'rack slides',C.green,'end',14);
+ return F('RACK AND PINION',o,'Rack and pinion = a gear and a toothed bar that change turning into straight-line motion','It can also work the other way round');});
+sd(['Worm and wheel'],function(){var o='',i;
+ // worm first (behind), thread slashes, then the wheel in front so its teeth dip into the thread gaps
+ o+=R(90,141,220,28,'#93c5fd',14,2.6);
+ for(i=0;i<13;i++)o+=ln(104+i*16,142,112+i*16,168,NV,1.8);
+ o+=gear(200,98,50,43,24,'#fde68a',90,7);
+ o+=T(110,189,'worm (screw)',C.blue,'middle',14)+ar(126,177,140,166,C.blue,1.8)+T(306,68,'worm wheel',C.amber,'start',14)+ar(304,72,250,86,C.amber,1.8);
+ return F('WORM AND WHEEL',o,'Worm and wheel = a screw (worm) turns a toothed wheel at 90° to it','One turn of the worm moves the wheel one tooth');});
+sd(['Worm and nut'],function(){var o='',i;
+ o+=R(70,106,262,22,'#94a3b8',4,2.6);
+ for(i=0;i<16;i++)o+=ln(82+i*16,107,90+i*16,127,NV,1.6);
+ o+=R(236,90,52,54,'#475569',6,2.8)+T(262,122,'nut',C.paper||'#fff','middle',16);
+ o+=turn(50,117,24,-150,150,C.red,3.4).replace(/.*/,'')+turn(40,117,24,-120,120,C.red,3.4)+T(40,172,'screw\nturns',C.red,'middle',14);
+ o+=ar(222,168,330,168,C.blue,3.5)+ar(330,168,222,168,C.blue,3.5).replace(/.*/,'')+T(276,190,'nut moves along',C.blue,'middle',14);
+ return F('WORM AND NUT',o,'Worm and nut = a turning screw (worm) moves a nut along its length','Turning motion becomes straight-line motion');});
+
+// ---- Couplings ----
+sd(['Rigid coupling'],function(){var o=R(30,106,140,16,'#cbd5e1',3,2.4)+R(230,106,140,16,'#cbd5e1',3,2.4)+R(150,84,50,60,'#3b82f6',4,2.6)+R(200,84,50,60,'#3b82f6',4,2.6)
+ +R(185,90,30,8,'#1e293b',2,2)+R(185,130,30,8,'#1e293b',2,2);
+ o+=T(100,98,'shaft',C.slate,'middle',14)+T(300,98,'shaft',C.slate,'middle',14)+T(200,166,'two halves bolted together',C.red,'middle',14);
+ return F('RIGID COUPLING',o,'Rigid coupling = joins two shafts firmly so they turn as one','It gives no flexibility');});
+sd(['Flexible coupling'],function(){var o=R(30,106,140,16,'#cbd5e1',3,2.4)+R(230,112,140,16,'#cbd5e1',3,2.4)+R(150,84,44,60,'#3b82f6',4,2.6)+R(206,90,44,60,'#3b82f6',4,2.6)+pg('194,88 206,94 206,144 194,140','#1e293b',NV,2.4);
+ o+=T(100,98,'shaft',C.slate,'middle',14)+T(300,104,'shaft',C.slate,'middle',14)+T(200,168,'rubber centre',C.red,'middle',14)+ar(200,156,200,142,C.red,1.8)+T(200,186,'allows a little misalignment',C.slate,'middle',13);
+ return F('FLEXIBLE COUPLING',o,'Flexible coupling = joins two shafts but allows a little movement between them','It also absorbs shocks and vibration');});
+
+// ---- Electronics / structures / shear ----
+sd(['Light-dependent resistor (LDR)'],function(){var o='';
+ function sym(cx,bright){var s=R(cx-30,112,60,24,'#fff',2,2.6)+ln(cx-72,124,cx-30,124,NV,3)+ln(cx+30,124,cx+72,124,NV,3);
+  if(bright)s+=ar(cx-46,70,cx-14,106,C.amber,3.4)+ar(cx-24,66,cx+8,102,C.amber,3.4);return s;}
+ o+=sym(100,1)+sym(300,0)+T(100,60,'BRIGHT light',C.amber,'middle',15).replace('y="60"','y="58"')+T(300,58,'DARK',C.slate,'middle',15)+T(100,162,'resistance LOW',C.green,'middle',15)+T(300,162,'resistance HIGH',C.red,'middle',15)+T(100,181,'more current',C.green,'middle',13)+T(300,181,'less current',C.red,'middle',13);
+ return F('LIGHT-DEPENDENT RESISTOR (LDR)',o,'Light-dependent resistor (LDR) = a resistor whose resistance changes with light','More light = less resistance');});
+sd(['Pin-jointed framework'],function(){var o='',A=[200,90],B=[110,156],Cc=[290,156];
+ o+=pg('110,162 94,184 126,184','#94a3b8',NV,2.4)+ln(86,184,134,184,NV,3)+ci(290,171,10,'#94a3b8',NV,2.4)+ln(268,183,312,183,NV,3);
+ o+=ln(B[0],B[1],A[0],A[1],'#1d4ed8',10)+ln(A[0],A[1],Cc[0],Cc[1],'#1d4ed8',10)+ln(B[0],B[1],Cc[0],Cc[1],'#1d4ed8',10);
+ [A,B,Cc].forEach(function(p){o+=ci(p[0],p[1],8,'#fff',NV,2.6);});
+ o+=ar(A[0],58,A[0],80,C.red,4)+T(A[0]+14,68,'load',C.red,'start',14)+T(300,112,'member (bar)',C.blue,'start',14)+ar(298,116,252,124,C.blue,1.8)+T(60,126,'pin joint',C.slate,'middle',14)+ar(80,132,100,150,C.slate,1.8);
+ return F('PIN-JOINTED FRAMEWORK',o,'Pin-jointed framework = bars joined by pins at their ends','Each bar is only pushed or pulled');});
+sd(['Resultant force'],function(){var u=16,o=R(165,92,50,40,'#94a3b8',4,2.6);
+ o+=ar(164,112,164-3*u,112,C.blue,4)+T(164-1.5*u,100,'3 N',C.blue,'middle',16)+ar(216,112,216+8*u,112,C.red,4)+T(216+4*u,100,'8 N',C.red,'middle',16);
+ o+=ar(190,162,190+5*u,162,C.green,5)+T(190+5*u+10,158,'resultant\n5 N',C.green,'start',15);
+ return F('RESULTANT FORCE',o,'Resultant force = the single force that has the same effect as all the forces together','8 N right and 3 N left gives 5 N right');});
+sd(['Second moment of area'],function(){var o=R(40,132,64,20,'#93c5fd',2,2.6)+R(300,86,20,66,'#93c5fd',2,2.6);
+ o+=ar(72,98,72,130,C.slate,3.4)+T(72,90,'load',C.slate,'middle',14)+ar(310,62,310,84,C.slate,3.4)+T(310,56,'load',C.slate,'middle',14);
+ o+=T(72,172,'flat: weak',C.red,'middle',15)+T(72,188,'bends easily',C.red,'middle',13)+T(310,172,'on edge: strong',C.green,'middle',15)+T(310,188,'bends less',C.green,'middle',13);
+ o+=T(200,104,'I = b × d³ ÷ 12',C.blue,'middle',15)+T(200,124,'depth d is cubed!',C.blue,'middle',14);
+ return F('SECOND MOMENT OF AREA',o,'Second moment of area = a number for how well a cross-section resists bending. Deeper shapes resist bending much better','Same material, different shape');});
+function shear(stress){return function(){var o=R(100,88,150,22,'#93c5fd',2,2.6)+R(150,110,150,22,'#fdba74',2,2.6)+R(189,82,22,56,'#64748b',3,2.6);
+ o+=ar(98,99,44,99,C.red,4)+T(70,86,'force',C.red,'middle',14)+ar(302,121,356,121,C.red,4)+T(330,146,'force',C.red,'middle',14);
+ o+=ln(176,110,224,110,C.red,2.4,'5 4')+T(200,166,'sliced here',C.red,'middle',14)+ar(200,154,200,114,C.red,1.8);
+ if(stress){o+=ci(330,176,0.1)+ci(320,170,12,'#fecaca',C.red,2.4).replace(/.*/,'');}
+ return o;};}
+sd(['Shear force'],function(){return F('SHEAR FORCE',shear(0)(),'Shear force = opposite forces that try to slice through a material','Like the blades of scissors');});
+sd(['Shear stress'],function(){var o=shear(1)()+ci(332,176,12,'#fecaca',C.red,2.4)+T(306,181,'area sliced',C.red,'end',14);
+ return F('SHEAR STRESS',o,'Shear stress = shear force ÷ the area being sliced (N/mm²)','Like the blades of scissors');});
+
+// ---- Work done ----
+sd(['Work done'],function(){var o=ln(30,140,370,140,NV,3)+R(88,100,56,40,'#e6b66b',3,2.6)+rc(248,100,56,40,'none',C.slate,{r:3,w:1.8,d:'5 4'});
+ o+=ar(30,120,86,120,C.red,4.5)+T(58,106,'force F',C.red,'middle',14)+dash(88,146,88,166)+dash(248,146,248,166)+dim(90,160,246,C.blue)+T(168,182,'distance d',C.blue,'middle',14);
+ return F('WORK DONE',o,'Work done = the energy transferred when a force moves something','Work done = force × distance (joules)');});
 })();
 
 // Freeze an animated diagram at one moment: evaluates every SMIL animation at time T and writes the
